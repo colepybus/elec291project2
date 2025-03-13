@@ -44,7 +44,7 @@ clean:
 	@del *.lst 2>NUL
 	
 Flash_Load:
-	@taskkill /f /im putty.exe /t /fi "status eq running" > NUL
+	@pkill CoolTerm || true
 	@echo ..\stm32flash\stm32flash -w main.hex -v -g 0x0 ^^>sflash.bat
 	@..\stm32flash\BO230\BO230 -b >>sflash.bat
 	@sflash

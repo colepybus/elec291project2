@@ -1,4 +1,4 @@
-#include "../Common/Include/stm32l051xx.h"
+#include "../STMExamples/Common/Include/stm32l051xx.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

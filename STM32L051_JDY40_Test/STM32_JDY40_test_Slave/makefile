@@ -1,18 +1,20 @@
-SHELL=cmd
-CC=arm-none-eabi-gcc
-AS=arm-none-eabi-as
-LD=arm-none-eabi-ld
+#these paths are edited specifically for coles computer
+
+SHELL=/bin/bash
+CC= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-gcc
+AS= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-as
+LD= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-ld
 CCFLAGS=-mcpu=cortex-m0 -mthumb -g 
 
 # Search for the path of the right libraries.  Works only on Windows.
-GCCPATH=$(subst \bin\arm-none-eabi-gcc.exe,\,$(shell where $(CC)))
-LIBPATH1=$(subst \libgcc.a,,$(shell dir /s /b "$(GCCPATH)*libgcc.a" | find "v6-m"))
-LIBPATH2=$(subst \libc_nano.a,,$(shell dir /s /b "$(GCCPATH)*libc_nano.a" | find "v6-m"))
+GCCPATH=$(shell dirname $(CC))
+LIBPATH1= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp
+LIBPATH2= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/lib/thumb/v6-m/nofp
 LIBSPEC=-L"$(LIBPATH1)" -L"$(LIBPATH2)"
 
 OBJS=main.o serial.o UART2.o startup.o newlib_stubs.o
 
-PORTN=$(shell type COMPORT.inc)
+PORTN=$(shell cat COMPORT.inc)
 
 # For smaller hex file remove '-u _printf_float' below
 main.elf : $(OBJS)

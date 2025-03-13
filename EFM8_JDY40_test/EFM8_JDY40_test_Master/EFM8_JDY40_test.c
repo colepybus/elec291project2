@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+// comment!
+
 #define SYSCLK 72000000
 #define BAUDRATE 115200L
 

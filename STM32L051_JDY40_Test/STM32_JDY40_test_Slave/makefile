@@ -43,14 +43,24 @@ clean:
 	@del main.elf main.hex main.map 2>NUL
 	@del *.lst 2>NUL
 	
+#Flash_Load:
+#	@pkill CoolTerm || true
+#	@echo ..\stm32flash\stm32flash -w main.hex -v -g 0x0 ^^>sflash.bat
+#	@..\stm32flash\BO230\BO230 -b >>sflash.bat
+#	@sflash
+#	@echo cmd /c start putty.exe -sercfg 115200,8,n,1,N -serial ^^>sputty.bat
+#	@..\stm32flash\BO230\BO230 -r >>sputty.bat
+#	@sputty
+
 Flash_Load:
 	@pkill CoolTerm || true
-	@echo ..\stm32flash\stm32flash -w main.hex -v -g 0x0 ^^>sflash.bat
-	@..\stm32flash\BO230\BO230 -b >>sflash.bat
-	@sflash
-	@echo cmd /c start putty.exe -sercfg 115200,8,n,1,N -serial ^^>sputty.bat
-	@..\stm32flash\BO230\BO230 -r >>sputty.bat
-	@sputty
+	@echo "../stm32flash/stm32flash -w main.hex -v -g 0x0 /dev/cu.usbserial-D30HJN8C" > sflash.sh
+	@echo "../stm32flash/BO230/BO230 -b" >> sflash.sh
+	@chmod +x sflash.sh
+	@bash sflash.sh
+	@osascript -e 'tell application "CoolTerm" to activate'
+	@echo "Flash loading complete! CoolTerm is now open."
+
 
 putty:
 	@echo cmd /c start putty.exe -sercfg 115200,8,n,1,N -serial ^^>sputty.bat

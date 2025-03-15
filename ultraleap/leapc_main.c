@@ -3,6 +3,10 @@
 #include <unistd.h> // For usleep()
 #include "ExampleConnection.h"  // Use functions from ExampleConnection.c
 
+//WORKFLOW for cole: paste in the following command to compile the code -->
+//              gcc -o example leapc_main.c ExampleConnection.c -I../include -L../lib -lLeapC -arch arm64
+//then run the executable with ./example
+
 int main() {
     printf("Starting Leap Motion connection...\n");
 

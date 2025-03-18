@@ -4,6 +4,31 @@
 #include "../Common/Include/stm32l051xx.h"
 #include "lcd.h"
 
+
+
+// LQFP32 pinout
+//             ----------
+//       VDD -|1       32|- VSS
+//      PC14 -|2       31|- BOOT0
+//      PC15 -|3       30|- PB7
+//      NRST -|4       29|- PB6
+//      VDDA -|5       28|- PB5
+//       PA0 -|6       27|- PB4
+//       PA1 -|7       26|- PB3
+//       PA2 -|8       25|- PA15
+//       PA3 -|9       24|- PA14
+//       PA4 -|10      23|- PA13
+//       PA5 -|11      22|- PA12
+//       PA6 -|12      21|- PA11
+//       PA7 -|13      20|- PA10 (Reserved for RXD)
+//       PB0 -|14      19|- PA9  (Reserved for TXD)
+//       PB1 -|15      18|- PA8  (LED+1k)
+//       VSS -|16      17|- VDD
+//             ----------
+
+
+
+
 #define F_CPU 32000000L
 
 // Uses SysTick to delay <us> micro-seconds.
@@ -117,6 +142,11 @@ void Configure_Pins (void)
 
 	GPIOA->MODER = (GPIOA->MODER & ~(BIT10|BIT11)) | BIT10; // PA5
 	GPIOA->OTYPER &= ~BIT5; // Push-pull
+
+	GPIOA->MODER &= ~((1<<22) | (1<<23)); //makes pa11 input
+	GPIOA->PUPDR |= (1<<22);  // Enables the pull up
+	GPIOA->PUPDR &= ~(1<<23);
+
 }
 
 void delay(int dly)
@@ -133,7 +163,7 @@ void wait_1ms(void)
 	SysTick->CTRL = 0x00;
 }
 
-#define PIN_PERIOD (GPIOA->IDR & BIT8)
+#define PIN_PERIOD (GPIOA->IDR & (1<<11))
 
 // GetPeriod() with added overflow tracking to handle low frequency (large capacitance).
 // Minimal changes marked below.
@@ -223,7 +253,9 @@ void main(void)
 	waitms(500);
 	printf("4-bit mode LCD Test using the STM32L051.\r\n");
 	
-	LCDprint("Capacitance:", 1, 1);
+	
+
+	LCDprint("Base: 52.328kHz", 1, 1);
 
 	RCC->IOPENR |= 0x00000001; // peripheral clock enable for port A
 	
@@ -235,6 +267,8 @@ void main(void)
 	printf("Period measurement using the Systick free running counter.\r\n"
 	       "Connect signal to PA8 (pin 18).\r\n");
 	
+
+
 	while(1)
 	{
 		count = GetPeriod(100);
@@ -243,30 +277,31 @@ void main(void)
 			// Convert to single-cycle period:
 			T = count / (F_CPU * 100.0);
 			f = 1.0 / T;
-
-			cap = (1.44 * 1000 * 1000) / (1666.666 * 3 * (double)f);
+			sprintf(buff, "%.3fHz", f);
+			LCDprint(buff, 2, 1);
+			//cap = (1.44 * 1000 * 1000) / (1666.666 * 3 * (double)f);
 
 			// Use '%lld' to print 64-bit integer:
-			printf("f=%.2fHz, cap=%.5fmicroF, count=%lld            \r", f, cap, count); // <=== CHANGED
+			//printf("f=%.2fHz, cap=%.5fmicroF, count=%lld            \r", f, cap, count); // <=== CHANGED
 
-			if(cap < 1e-3)
-			{
-				sprintf(buff, "%.3f pF", cap * 1e6);
-			}
-			else if(cap < 0.5)
-			{
-				sprintf(buff, "%.3f nF", cap * 1e3 - 0.4); 
-			}
-			else
-			{
-				sprintf(buff, "%.3f microF", cap);
-			}
-			LCDprint(buff, 2, 1);
-		}
-		else
-		{
-			printf("NO SIGNAL                     \r");
-			LCDprint("NO SIGNAL", 2, 1);
+			//if(cap < 1e-3)
+			//{
+			//	sprintf(buff, "%.3f pF", cap * 1e6);
+			//}
+			//else if(cap < 0.5)
+			//{
+			//	sprintf(buff, "%.3f nF", cap * 1e3 - 0.4); 
+			//}
+			//else
+			//{
+			//	sprintf(buff, "%.3f microF", cap);
+			//}
+			//LCDprint(buff, 2, 1);
+		//}
+		//else
+		//{
+		//	printf("NO SIGNAL                     \r");
+		//	LCDprint("NO SIGNAL", 2, 1);
 		}
 		fflush(stdout);
 		waitms(200);

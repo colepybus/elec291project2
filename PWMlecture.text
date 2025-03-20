@@ -1,0 +1,33 @@
+Logic Voltages 
+  consider logic levels for I/O voltages and currents
+  the following page lists the logic level voltages for our specific microcontroller:
+    https://electronics.stackexchange.com/questions/394846/stm32-logic-level-high-and-low-thresholds
+  options for voltage level conversion: 
+    - comparator, LM339 or LM393
+    - BJTs using current and asses the operation mode (cutoff vs. saturation) 
+    - MOSTFETs using threashold voltage and asses the operation mode (cutoff vs. triode) 
+        DO NOT use saturation mode on MOSFETs, will cause overheating
+
+Interrupts in C 
+  interrupt vector numbers:
+    #define INTERRUPT_INT0 0 // External Interrupt 0
+    #define INTERRUPT_TIMER0 1 // Timer 0 Overflow
+    #define INTERRUPT_INT1 2 // External Interrupt 1
+    #define INTERRUPT_TIMER1 3 // Timer 1 Overflow
+    #define INTERRUPT_UART0 4 // UART0
+    #define INTERRUPT_TIMER2 5 // Timer 2 Overflow
+    #define INTERRUPT_SPI0 6 // SPI0
+    #define INTERRUPT_SMBUS0 7 // SMBus0 Interface
+    #define INTERRUPT_USB0 8 // SMBus0 Interface
+    #define INTERRUPT_ADC0_WINDOW 9 // ADC0 Window Comparison
+    #define INTERRUPT_ADC0_EOC 10 // ADC0 End Of Conversion
+    #define INTERRUPT_PCA0 11 // PCA0 Peripheral
+    #define INTERRUPT_COMPARATOR0 12 // Comparator 0 Comparison
+    #define INTERRUPT_COMPARATOR1 13 // Comparator 1 Comparison
+    #define INTERRUPT_TIMER3 14 // Timer 3 Overflow
+    #define INTERRUPT_VBUS 15 // VBus Interrupt
+    #define INTERRUPT_UART1 16 // UART1
+    #define INTERRUPT_SMBUS1 18 // SMBus1 Interface
+    #define INTERRUPT_TIMER4 19 // Timer 4 Overflow
+    #define INTERRUPT_TIMER5 20 // Timer 5 Overflow
+    

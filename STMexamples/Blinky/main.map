@@ -135,10 +135,10 @@ LOAD linker stubs
  .debug_line    0x00000000      0x276 startup.o
  .debug_line    0x00000276      0x161 main.o
 
-.debug_str      0x00000000      0x2b3
- .debug_str     0x00000000      0x2b3 startup.o
+.debug_str      0x00000000      0x2ef
+ .debug_str     0x00000000      0x2ef startup.o
                                 0x2a5 (size before relaxing)
- .debug_str     0x000002b3      0x207 main.o
+ .debug_str     0x000002ef      0x219 main.o
 
 .comment        0x00000000       0x45
  .comment       0x00000000       0x45 startup.o

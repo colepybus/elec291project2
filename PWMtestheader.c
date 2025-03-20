@@ -13,14 +13,14 @@ void TIM2_IRQHandler(void) {
     count = (count + 1) % 100;
     
     if (count < duty_cycle1)
-        GPIOA->ODR |= (1 << 0);  // Set PA0 high
+        GPIOA->ODR |= (1 << 4);  // Set PA4 high
     else
-        GPIOA->ODR &= ~(1 << 0); // Set PA0 low
+        GPIOA->ODR &= ~(1 << 4); // Set PA4 low
     
     if (count < duty_cycle2)
-        GPIOA->ODR |= (1 << 1);  // Set PA1 high
+        GPIOA->ODR |= (1 << 5);  // Set PA5 high
     else
-        GPIOA->ODR &= ~(1 << 1); // Set PA1 low
+        GPIOA->ODR &= ~(1 << 5); // Set PA5 low
     
     TIM2->SR &= ~TIM_SR_UIF; // Clear update interrupt flag
 }
@@ -53,7 +53,7 @@ void UART2_Init(void) {
 
 void GPIO_Init(void) {
     RCC->AHBENR |= RCC_AHBENR_GPIOAEN; // Enable GPIOA clock
-    GPIOA->MODER |= (1 << (0 * 2)) | (1 << (1 * 2)); // Set PA0, PA1 as output
+    GPIOA->MODER |= (1 << (4 * 2)) | (1 << (5 * 2)) | (1 << (6 * 2)) | (1 << (7 * 2)); // Set PA4-PA7 as output
 }
 
 void delay_ms(uint32_t ms) {
@@ -69,7 +69,8 @@ int main(void) {
     __enable_irq(); // Enable global interrupts
     
     while (1) {
-        GPIOA->ODR ^= (1 << 0); // Toggle PA0
+        GPIOA->ODR ^= (1 << 4); // Toggle PA4
+        GPIOA->ODR ^= (1 << 6); // Toggle PA6
         delay_ms(500);          // 500 ms delay
     }
 }

@@ -95,6 +95,26 @@ void LCDprint(char * string, unsigned char line, unsigned char clear)
 	}
 }
 
+// LQFP32 pinout
+//             ----------
+//       VDD -|1       32|- VSS
+//      PC14 -|2       31|- BOOT0
+//      PC15 -|3       30|- PB7
+//      NRST -|4       29|- PB6
+//      VDDA -|5       28|- PB5
+//       PA0 -|6       27|- PB4
+//       PA1 -|7       26|- PB3
+//       PA2 -|8       25|- PA15
+//       PA3 -|9       24|- PA14
+//       PA4 -|10      23|- PA13
+//       PA5 -|11      22|- PA12
+//       PA6 -|12      21|- PA11
+//       PA7 -|13      20|- PA10 (Reserved for RXD)
+//       PB0 -|14      19|- PA9  (Reserved for TXD)
+//       PB1 -|15      18|- PA8  (LED+1k)
+//       VSS -|16      17|- VDD
+//             ----------
+
 void Configure_Pins (void)
 {
 	RCC->IOPENR |= BIT0; // peripheral clock enable for port A
@@ -117,6 +137,9 @@ void Configure_Pins (void)
 
 	GPIOA->MODER = (GPIOA->MODER & ~(BIT10|BIT11)) | BIT10; // PA5
 	GPIOA->OTYPER &= ~BIT5; // Push-pull
+
+	
+
 }
 
 void delay(int dly)

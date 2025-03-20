@@ -9,6 +9,11 @@ Logic Voltages
         DO NOT use saturation mode on MOSFETs, will cause overheating
 
 Interrupts in C 
+  C51 allows Interrupt Service Routines (ISRs) to be coded in C by using a predefined format, for example:
+    void timer_isr (void) interrupt (1) using (1)
+      {
+      ...
+      }
   interrupt vector numbers:
     #define INTERRUPT_INT0 0 // External Interrupt 0
     #define INTERRUPT_TIMER0 1 // Timer 0 Overflow
@@ -30,4 +35,21 @@ Interrupts in C
     #define INTERRUPT_SMBUS1 18 // SMBus1 Interface
     #define INTERRUPT_TIMER4 19 // Timer 4 Overflow
     #define INTERRUPT_TIMER5 20 // Timer 5 Overflow
-    
+
+use short functions for ISRs, function must take less time that the interupt rate 
+all variables must be allocated in the stack 
+always clear the interrupt flag in the ISR
+make variables volatile at top of file 
+use atomic variable flags: bit & char 
+
+PWM
+  Using a timer interrupt to generate PWM:
+    // Timer 2 ISR: Use register bank 1 for this interrupt
+    void PwmGeneration (void) interrupt 5 using 1
+      {
+      static unsigned char dutcnt;
+      dutcnt++;
+      if (dutcnt==100) dutcnt=0;
+      P2_0=dutcnt<pwm?0:1;
+      }
+    // Timer 2 is configured to interrupt every 0.1 ms 

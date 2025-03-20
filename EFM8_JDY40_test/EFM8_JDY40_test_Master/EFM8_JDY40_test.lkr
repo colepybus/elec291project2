@@ -1,0 +1,6 @@
+path=D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small
+lib=libc51.lib
+lib=libint.lib
+lib=liblong.lib
+lib=libfloat.lib
+obj=EFM8_JDY40_test.obj

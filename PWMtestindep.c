@@ -1,3 +1,4 @@
+// Turn a pin high and low to test PWM 
 #define PWM_FREQ 100  // PWM frequency in Hz
 #define SYSCLK 2000000 // System clock frequency in Hz (2 MHz for low power STM32L0)
 #define TIMER_RELOAD (SYSCLK / (PWM_FREQ * 100))

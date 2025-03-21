@@ -1,3 +1,18 @@
+/* Updated Servo_PWM to test DC motor 
+ * Function: Asks for user input and sends that input as a PWM signal
+ *     to a DC motor to control power and speed.         
+ * ELEC 291 Project 2
+ * Group B01
+ * Created March 21st, 2024 by Madison Howitt
+ *
+ * A DC motor only needs a PWM signal to control speed. Unlike a servo, it doesn’t need a specific pulse width for positioning.
+ * Changes: 
+ *  Remove the fixed 20ms period (used for servos).
+ *  Use only one output pin (e.g., PA11) for PWM.
+ *  Set the PWM frequency to something higher (~1kHz-10kHz) for smooth motor control.
+ *  User input should control duty cycle (0-100%) instead of servo position.
+ */
+
 #include "../Common/Include/stm32l051xx.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,7 +60,7 @@ void TIM2_Handler(void)
 	TIM2->SR &= ~BIT0; // clear the update interrupt flag
 	PWM_Counter++;     // increment the PWM counter
 	
-	if(pwm1>PWM_Counter)
+	if(pwm1 > PWM_Counter) // pwm1 controls duty cycle (0-100%) instead of position
 	{
 		GPIOA->ODR |= BIT11; // set PA11 HIGH 
 	}
@@ -54,19 +69,12 @@ void TIM2_Handler(void)
 		GPIOA->ODR &= ~BIT11; // set PA11 LOW
 	}
 	
-	if(pwm2>PWM_Counter)
-	{
-		GPIOA->ODR |= BIT12; // set PA12 HIGH
-	}
-	else
-	{
-		GPIOA->ODR &= ~BIT12; // set PA12 LOW
-	}
-	
-	if (PWM_Counter > 2000) // 20ms PWM cycle (period = 20ms)
+    // removed PA12 / pwm2
+
+	if (PWM_Counter >= 1000) // 1ms PWM cycle (period = 1ms)
 	{
 		PWM_Counter=0;
-		GPIOA->ODR |= (BIT11|BIT12); // reset PWM cycle
+		GPIOA->ODR |= (BIT11); // reset PWM cycle
 	}   
 }
 
@@ -132,51 +140,36 @@ int main(void)
 	Waits 500ms for terminal initialization
 	Prints program description
 	*/
+
     char buf[32];
-    int npwm;
+    int speed;
 
 	Hardware_Init();
 	
 	delayms(500); // wait for putty to start
 	
-    printf("Servo signal generatioin using the STM32L051 using TIM2\r\n");
-    printf("(outputs are PA11 and PA12, pins 21 and 22).\r\n");
-    printf("By Jesus Calvino-Fraga (c) 2018-2023.\r\n\r\n");
+    printf("Servo signal generation using the STM32L051 using TIM2\r\n");
+    printf("(output is PA11, pin 21).\r\n");
 	
 	while (1)
 	{
 		/*
 		Continuously asks the user for PWM values
-		Ensures values are between 60 and 255
-		Updates pwm1 and pwm2, which control the PWM signals
+		Ensures values are between 0 and 100
+		Updates pwm1, which controls the PWM signal
 		*/
 
-    	printf("PWM1 (60 to 255): ");
+    	printf("Enter speed (0 to 100): ");
     	fflush(stdout);
     	egets_echo(buf, 31); // wait here until data is received from user input
   		printf("\r\n");
 
-	    npwm = atoi(buf); // convert input string to integer
-
-	    if(npwm != 0) // ignore zero input
-	    {
-		    if(npwm > 255) npwm = 255; // if user input is too large, set to max value
-		    if(npwm < 60) npwm = 60;   // if user input is too small, set to min value
-		    pwm1 = npwm;               // update PWM1 duty cycle
-	    }
-	    
-    	printf("PWM2 (60 to 255): ");
-    	fflush(stdout);
-    	egets_echo(buf, 31); // wait here until data is received from user input
- 		printf("\r\n");
- 
-	    npwm = atoi(buf);
-
-	    if(npwm != 0)
-	    {
-		    if(npwm > 255) npwm = 255; // if user input is too large, set to max value
-		    if(npwm < 60) npwm = 60;   // if user input is too small, set to min value 
-		    pwm2 = npwm;               // update PWM2 duty cycle
-		}
-	}
+	    speed= atoi(buf); // convert input string to integer
+                          // changed npwm to speed
+        
+        // removed ignore zero condition
+        if(speed > 100) speed = 100; // if user input is too large, set to max value
+        if(speed < 0) speed = 0;     // if user input is too small, set to min value
+        pwm1 = speed * 10;           // convert percentage to PWM range (0-1000) and update duty cycle
+    }
 }

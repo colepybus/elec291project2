@@ -192,9 +192,19 @@ float Volts_at_Pin(unsigned char pin)
 	 return ((ADC_at_Pin(pin)*VDD)/16383.0);
 }
 
+void InitPushButton(void)
+{
+    SFRPAGE = 0x20;  // Switch to Port Configuration Page
+    P3MDOUT &= ~(1 << 2); // Set P3.2 as open-drain (input mode)
+    P3 |= (1 << 2);  // Enable internal pull-up resistor
+    SFRPAGE = 0x00;  // Restore SFRPAGE
+}
+
 void main (void)
 {
 	float v[4];
+
+	bit button_state;
 
     waitms(500); // Give PuTTy a chance to start before sending
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
@@ -209,6 +219,7 @@ void main (void)
 	InitPinADC(2, 4); // Configure P2.4 as analog input
 	InitPinADC(2, 5); // Configure P2.5 as analog input
     InitADC();
+	InitPushButton();
 
 	while(1)
 	{
@@ -221,8 +232,9 @@ void main (void)
 		float norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
 		float norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
 
+		button_state = (P3 & (1 << 2)) ? 1 : 0; // If HIGH, button not pressed; If LOW, button pressed
 
-		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f", v[0], v[1], v[2], v[3], norm_x, norm_y);
+		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%7.5", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
 		waitms(500);
 	 }  
 }	

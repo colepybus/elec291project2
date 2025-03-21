@@ -195,6 +195,8 @@ float Volts_at_Pin(unsigned char pin)
 void main (void)
 {
 	float v[4];
+	float norm_x;
+	float norm_y;
 
     waitms(500); // Give PuTTy a chance to start before sending
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
@@ -218,11 +220,11 @@ void main (void)
 		v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
 		v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
 
-		float norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
-		float norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
+		norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
+		norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
 
 
-		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f", v[0], v[1], v[2], v[3], norm_x, norm_y);
+		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f\r", v[0], v[1], v[2], v[3], norm_x, norm_y);
 		waitms(500);
 	 }  
 }	

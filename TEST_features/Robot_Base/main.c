@@ -196,6 +196,8 @@ void PrintNumber(long int val, int Base, int digits)
 	eputs(&buff[j+1]);
 }
 
+
+
 // Some 'defines' to turn pins on/off easily (pins must be configured as outputs)
 #define PB3_0 (GPIOB->ODR &= ~BIT3)
 #define PB3_1 (GPIOB->ODR |=  BIT3)
@@ -211,7 +213,6 @@ void PrintNumber(long int val, int Base, int digits)
 // A define to easily read PA14 (PA14 must be configured as input first)
 #define PA14 (GPIOA->IDR & BIT14)
 
-// TOGGLE MAGNET
 void toggleMagnet(uint8_t state) {
 	if (state) {
 		PB3_1;
@@ -220,16 +221,11 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
-
-
 int main(void)
 {
     int j, v;
 	long int count, f;
 	unsigned char LED_toggle=0; // Used to test the outputs
-
-	int p1_v, p2_v; // perimeter sensor values
-
 
 	Hardware_Init();
 	
@@ -261,7 +257,7 @@ int main(void)
 		PrintNumber(v/10000, 10, 1);
 		eputc('.');
 		PrintNumber(v%10000, 10, 4);
-		eputs("V ");
+		eputs("V ");;
 
 		j=readADC(ADC_CHSELR_CHSEL9);
 		v=(j*33000)/0xfff;
@@ -300,17 +296,17 @@ int main(void)
 			eputs("NO SIGNAL                     \r");
 		}
 
+		//toggleMagnet(1);
+
 		// Now turn on one of outputs per cycle to check
 		switch (LED_toggle++)
 		{
-			// case 0
-				// eputs("CASE ZERO: turn magnet on");
-				PB3_1;
-				// // toggleMagnet(1);
-				// waitms(5000);
-				// PB3_0;
-				// // toggleMagnet(0);
-				// waitms(5000);
+			case 0:
+				//PB3_1;
+				toggleMagnet(1);
+				waitms(5000);
+				toggleMagnet(0);
+				waitms(5000);
 				break;
 			case 1:
 				PB4_1;

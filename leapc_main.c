@@ -25,8 +25,8 @@ void setupEMF8Serial(const char* portName)
     tcgetattr(serial_fd, &tty);
 
     // Set baud rate to match your EFM8 code (9600 in your example)
-    cfsetispeed(&tty, B9600);
-    cfsetospeed(&tty, B9600);
+    cfsetispeed(&tty, B115200);
+    cfsetospeed(&tty, B115200);
 
     // 8-N-1 serial settings
     tty.c_cflag &= ~PARENB;    // No parity
@@ -76,6 +76,9 @@ int main() {
                 
                 // Get chirality (left or right)
                 const char* handType = (hand->type == eLeapHandType_Left) ? "Left" : "Right";
+
+                float pinch = hand->pinch_strength;
+                float grab = hand->grab_strength;
 
                 printf(" | Hand: %s | Pinch Strength: %f | Grab Strength: %f", handType, hand->pinch_strength, hand->grab_strength);
 

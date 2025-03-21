@@ -198,18 +198,20 @@ int getsn (char * buff, int len)
 
 void main (void)
 {
-	char buff[17];
+	char buff[64];
 	// Configure the LCD
 	LCD_4BIT();
 	
    	// Display something in the LCD
-	LCDprint("LCD 4-bit test:", 1, 1);
-	LCDprint("Hello, World!", 2, 1);
+	LCDprint("Leap -> EFM8", 1, 1);
+	LCDprint("Waiting data...", 2, 1);
 	while(1)
 	{
-		printf("Type what you want to display in line 2 (16 char max): ");
+
 		getsn(buff, sizeof(buff));
-		printf("\n");
+
+
+		LCDprint("                ", 2, 1);
 		LCDprint(buff, 2, 1);
 	}
 }

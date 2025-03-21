@@ -149,7 +149,7 @@ void waitms (unsigned int ms)
 		for (k=0; k<4; k++) Timer3us(250);
 }
 
-#define VDD 3.3035 // The measured value of VDD in volts
+#define VDD 3.300 // The measured value of VDD in volts
 
 void InitPinADC (unsigned char portno, unsigned char pin_num)
 {

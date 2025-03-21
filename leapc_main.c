@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h> // For usleep()
-
+#include <fcntl.h>
 #include <termios.h>
 #include <string.h>
 
@@ -11,6 +11,8 @@ int serial_fd = -1; //file descriptor for efm8 usb serial connection
 
 //WORKFLOW for cole: paste in the following command to compile the code -->
 //              gcc -o example leapc_main.c ExampleConnection.c -I../include -L../lib -lLeapC -arch arm64
+
+
 //then run the executable with ./example
 
 void setupEMF8Serial(const char* portName)
@@ -61,7 +63,11 @@ int main() {
     // Open Leap Motion Connection
     OpenConnection();
 
-    setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
+    printf("opened connection\n");
+
+    //setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
+
+    printf("tried setting up efm8serial with port\n");
 
     while (1) {
         LEAP_TRACKING_EVENT* frame = GetFrame();

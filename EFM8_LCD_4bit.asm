@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1170 (Feb 16 2022) (MSVC)
-; This file was generated Fri Mar 21 14:06:08 2025
+; This file was generated Fri Mar 21 14:31:21 2025
 ;--------------------------------------------------------
 $name EFM8_LCD_4bit
 $optc51 --model-small
@@ -494,7 +494,7 @@ _getsn_buff_1_42:
 _getsn_sloc0_1_0:
 	ds 2
 _main_buff_1_48:
-	ds 17
+	ds 64
 ;--------------------------------------------------------
 ; overlayable items in internal ram 
 ;--------------------------------------------------------
@@ -1066,13 +1066,13 @@ L011008?:
 _main:
 ;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:203: LCD_4BIT();
 	lcall	_LCD_4BIT
-;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:206: LCDprint("LCD 4-bit test:", 1, 1);
+;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:206: LCDprint("Leap -> EFM8", 1, 1);
 	mov	_LCDprint_PARM_2,#0x01
 	setb	_LCDprint_PARM_3
 	mov	dptr,#__str_0
 	mov	b,#0x80
 	lcall	_LCDprint
-;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:207: LCDprint("Hello, World!", 2, 1);
+;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:207: LCDprint("Waiting data...", 2, 1);
 	mov	_LCDprint_PARM_2,#0x02
 	setb	_LCDprint_PARM_3
 	mov	dptr,#__str_1
@@ -1080,36 +1080,20 @@ _main:
 	lcall	_LCDprint
 ;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:208: while(1)
 L012002?:
-;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:210: printf("Type what you want to display in line 2 (16 char max): ");
-	mov	a,#__str_2
-	push	acc
-	mov	a,#(__str_2 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
 ;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:211: getsn(buff, sizeof(buff));
-	mov	_getsn_PARM_2,#0x11
+	mov	_getsn_PARM_2,#0x40
 	clr	a
 	mov	(_getsn_PARM_2 + 1),a
 	mov	dptr,#_main_buff_1_48
 	mov	b,#0x40
 	lcall	_getsn
-;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:212: printf("\n");
-	mov	a,#__str_3
-	push	acc
-	mov	a,#(__str_3 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	dec	sp
-	dec	sp
-	dec	sp
-;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:213: LCDprint(buff, 2, 1);
+;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:214: LCDprint("                ", 2, 1);
+	mov	_LCDprint_PARM_2,#0x02
+	setb	_LCDprint_PARM_3
+	mov	dptr,#__str_2
+	mov	b,#0x80
+	lcall	_LCDprint
+;	C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:215: LCDprint(buff, 2, 1);
 	mov	_LCDprint_PARM_2,#0x02
 	setb	_LCDprint_PARM_3
 	mov	dptr,#_main_buff_1_48
@@ -1122,16 +1106,13 @@ L012002?:
 
 	rseg R_CONST
 __str_0:
-	db 'LCD 4-bit test:'
+	db 'Leap -> EFM8'
 	db 0x00
 __str_1:
-	db 'Hello, World!'
+	db 'Waiting data...'
 	db 0x00
 __str_2:
-	db 'Type what you want to display in line 2 (16 char max): '
-	db 0x00
-__str_3:
-	db 0x0A
+	db '                '
 	db 0x00
 
 	CSEG

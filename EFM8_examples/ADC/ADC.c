@@ -217,7 +217,12 @@ void main (void)
 		v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
 		v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
 		v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
-		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV\r", v[0], v[1], v[2], v[3]);
+
+		float norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
+		float norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
+
+
+		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f", v[0], v[1], v[2], v[3], norm_x, norm_y);
 		waitms(500);
 	 }  
 }	

@@ -11,17 +11,17 @@ R_GSINIT,code,0000,NO
 R_BSEG,bit,0001,NO
 R_XSEG,xdata,0000,NO
 BIT_BANK,data,0000,OV
-R_CONST,code,0058,NO
+R_CONST,code,002E,NO
 rbank0,data,0000,OV
 R_PSEG,xdata,0000,NO
 R_DINIT,code,0000,NO
-R_DSEG,data,0019,NO
+R_DSEG,data,0048,NO
 R_OSEG,data,0000,OV
 R_IXSEG,xdata,0000,NO
 R_ISEG,idata,0000,NO
 R_HOME,code,0000,NO
 R_XINIT,code,0000,NO
-R_CSEG,code,02D5,NO
+R_CSEG,code,02B9,NO
 </SEGMENTS>
 
 <LOCALS>
@@ -45,15 +45,14 @@ L010006?,R_CSEG,01A4,0000
 L010003?,R_CSEG,0170,0000
 L011008?,R_CSEG,0250,0000
 __str_0,R_CONST,0000,0000
-__str_1,R_CONST,0010,0000
-__str_2,R_CONST,001E,0000
-__str_3,R_CONST,0056,0000
+__str_1,R_CONST,000D,0000
+__str_2,R_CONST,001D,0000
 L011005?,R_CSEG,01E8,0000
 L011002?,R_CSEG,0231,0000
 L011001?,R_CSEG,0214,0000
 L012002?,R_CSEG,028C,0000
 _getsn_buff_1_42,R_DSEG,0003,0003
-_main_buff_1_48,R_DSEG,0008,0011
+_main_buff_1_48,R_DSEG,0008,0040
 L004018?,R_CSEG,008C,0000
 </LOCALS>
 
@@ -76,7 +75,6 @@ _waitms,R_CSEG,0078,0000
 
 <EXTERNALS>
 __gptrget,any,0000,0000
-_printf,any,0000,0000
 _getchar,any,0000,0000
 __gptrput,any,0000,0000
 _crt0,any,0000,0000
@@ -414,32 +412,17 @@ D2 bit(_LCDprint_PARM_3;)
 90 data16(__str_1;)  
 75 F0 80
 12 addr16(_LCDprint;)  
-74 data8(__str_2;)
-C0 E0
-74 data8(__str_2;0x0008;>>;)
-C0 E0
-74 80
-C0 E0
-12 addr16(_printf;)  
-15 81
-15 81
-15 81
-75 data8(_getsn_PARM_2;) 11
+75 data8(_getsn_PARM_2;) 40
 E4
 F5 data8(_getsn_PARM_2;0x0001;+;)
 90 data16(_main_buff_1_48;)  
 75 F0 40
 12 addr16(_getsn;)  
-74 data8(__str_3;)
-C0 E0
-74 data8(__str_3;0x0008;>>;)
-C0 E0
-74 80
-C0 E0
-12 addr16(_printf;)  
-15 81
-15 81
-15 81
+75 data8(_LCDprint_PARM_2;) 02
+D2 bit(_LCDprint_PARM_3;)
+90 data16(__str_2;)  
+75 F0 80
+12 addr16(_LCDprint;)  
 75 data8(_LCDprint_PARM_2;) 02
 D2 bit(_LCDprint_PARM_3;)
 90 data16(_main_buff_1_48;)  
@@ -455,16 +438,11 @@ D2 bit(_LCDprint_PARM_3;)
 </CODE>
 
 <CODE R_CONST>
-4C 43 44 20 34 2D 62 69 74 20 74 65 73 74 3A 
+4C 65 61 70 20 2D 3E 20 45 46 4D 38 
 00
-48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21 
+57 61 69 74 69 6E 67 20 64 61 74 61 2E 2E 2E 
 00
-54 79 70 65 20 77 68 61 74 20 79 6F 75 20 77 61 6E
-74 20 74 6F 20 64 69 73 70 6C 61 79 20 69 6E 20
-6C 69 6E 65 20 32 20 28 31 36 20 63 68 61 72 20
-6D 61 78 29 3A 20 
-00
-0A
+20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 
 00
 </CODE>
 

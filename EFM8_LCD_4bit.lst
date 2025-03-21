@@ -1,7 +1,7 @@
 0000              1   ;--------------------------------------------------------
 0000              2   ; File Created by C51
 0000              3   ; Version 1.0.0 #1170 (Feb 16 2022) (MSVC)
-0000              4   ; This file was generated Fri Mar 21 14:06:08 2025
+0000              4   ; This file was generated Fri Mar 21 14:31:21 2025
 0000              5   ;--------------------------------------------------------
                   5   $name EFM8_LCD_4bit
                   6   $optc51 --model-small
@@ -494,10 +494,10 @@
 0006            494   _getsn_sloc0_1_0:
 0006            495            ds 2
 0008            496   _main_buff_1_48:
-0008            497            ds 17
-0019            498   ;--------------------------------------------------------
-0019            499   ; overlayable items in internal ram 
-0019            500   ;--------------------------------------------------------
+0008            497            ds 64
+0048            498   ;--------------------------------------------------------
+0048            499   ; overlayable items in internal ram 
+0048            500   ;--------------------------------------------------------
 0000            501            rseg    R_OSEG
 0000            502   ;--------------------------------------------------------
 0000            503   ; indirectly addressable internal ram data
@@ -1066,13 +1066,13 @@
 026D           1066   _main:
 026D           1067   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:203: LCD_4BIT();
 026D 120000    1068            lcall   _LCD_4BIT
-0270           1069   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:206: LCDprint("LCD 4-bit test:", 1, 1);
+0270           1069   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:206: LCDprint("Leap -> EFM8", 1, 1);
 0270 755001    1070            mov     _LCDprint_PARM_2,#0x01
 0273 D2C0      1071            setb    _LCDprint_PARM_3
 0275 90B9B0    1072            mov     dptr,#__str_0
 0278 75F080    1073            mov     b,#0x80
 027B 120000    1074            lcall   _LCDprint
-027E           1075   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:207: LCDprint("Hello, World!", 2, 1);
+027E           1075   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:207: LCDprint("Waiting data...", 2, 1);
 027E 755002    1076            mov     _LCDprint_PARM_2,#0x02
 0281 D2C0      1077            setb    _LCDprint_PARM_3
 0283 90B9F0    1078            mov     dptr,#__str_1
@@ -1080,79 +1080,49 @@
 0289 120000    1080            lcall   _LCDprint
 028C           1081   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:208: while(1)
 028C           1082   L012002?:
-028C           1083   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:210: printf("Type what you want to display in line 2 (16 char max): ");
-028C 7470      1084            mov     a,#__str_2
-028E C0E0      1085            push    acc
-0290 74BA      1086            mov     a,#(__str_2 >> 8)
-0292 C0E0      1087            push    acc
-0294 7480      1088            mov     a,#0x80
-0296 C0E0      1089            push    acc
-0298 120000    1090            lcall   _printf
-029B 1581      1091            dec     sp
-029D 1581      1092            dec     sp
-029F 1581      1093            dec     sp
-02A1           1094   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:211: getsn(buff, sizeof(buff));
-02A1 750011    1095            mov     _getsn_PARM_2,#0x11
-02A4 E4        1096            clr     a
-02A5 F501      1097            mov     (_getsn_PARM_2 + 1),a
-02A7 90B1F0    1098            mov     dptr,#_main_buff_1_48
-02AA 75F040    1099            mov     b,#0x40
-02AD 120000    1100            lcall   _getsn
-02B0           1101   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:212: printf("\n");
-02B0 7430      1102            mov     a,#__str_3
-02B2 C0E0      1103            push    acc
-02B4 74BB      1104            mov     a,#(__str_3 >> 8)
-02B6 C0E0      1105            push    acc
-02B8 7480      1106            mov     a,#0x80
-02BA C0E0      1107            push    acc
-02BC 120000    1108            lcall   _printf
-02BF 1581      1109            dec     sp
-02C1 1581      1110            dec     sp
-02C3 1581      1111            dec     sp
-02C5           1112   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:213: LCDprint(buff, 2, 1);
-02C5 755002    1113            mov     _LCDprint_PARM_2,#0x02
-02C8 D2C0      1114            setb    _LCDprint_PARM_3
-02CA 90B1F0    1115            mov     dptr,#_main_buff_1_48
-02CD 75F040    1116            mov     b,#0x40
-02D0 120000    1117            lcall   _LCDprint
-02D3 8000      1118            sjmp    L012002?
-02D5           1119            rseg R_CSEG
-02D5           1120   
-0000           1121            rseg R_XINIT
-0000           1122   
-0000           1123            rseg R_CONST
-0000           1124   __str_0:
-0000 4C434420  1125            db 'LCD 4-bit test:'
-     342D6269
-     74207465
-     73743A
-000F 00        1126            db 0x00
-0010           1127   __str_1:
-0010 48656C6C  1128            db 'Hello, World!'
-     6F2C2057
-     6F726C64
-     21
-001D 00        1129            db 0x00
-001E           1130   __str_2:
-001E 54797065  1131            db 'Type what you want to display in line 2 (16 char max): '
-     20776861
-     7420796F
-     75207761
-     6E742074
-     6F206469
-     73706C61
-     7920696E
-     206C696E
-     65203220
-     28313620
-     63686172
-     206D6178
-     293A20
-0055 00        1132            db 0x00
-0056           1133   __str_3:
-0056 0A        1134            db 0x0A
-0057 00        1135            db 0x00
-0058           1136   
-0003           1137            CSEG
-0003           1138   
-0003           1139   end
+028C           1083   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:211: getsn(buff, sizeof(buff));
+028C 750040    1084            mov     _getsn_PARM_2,#0x40
+028F E4        1085            clr     a
+0290 F501      1086            mov     (_getsn_PARM_2 + 1),a
+0292 90B1F0    1087            mov     dptr,#_main_buff_1_48
+0295 75F040    1088            mov     b,#0x40
+0298 120000    1089            lcall   _getsn
+029B           1090   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:214: LCDprint("                ", 2, 1);
+029B 755002    1091            mov     _LCDprint_PARM_2,#0x02
+029E D2C0      1092            setb    _LCDprint_PARM_3
+02A0 90BA70    1093            mov     dptr,#__str_2
+02A3 75F080    1094            mov     b,#0x80
+02A6 120000    1095            lcall   _LCDprint
+02A9           1096   ;        C:\Users\leigh\Elec291Project2\EFM8_LCD_4bit.c:215: LCDprint(buff, 2, 1);
+02A9 755002    1097            mov     _LCDprint_PARM_2,#0x02
+02AC D2C0      1098            setb    _LCDprint_PARM_3
+02AE 90B1F0    1099            mov     dptr,#_main_buff_1_48
+02B1 75F040    1100            mov     b,#0x40
+02B4 120000    1101            lcall   _LCDprint
+02B7 8000      1102            sjmp    L012002?
+02B9           1103            rseg R_CSEG
+02B9           1104   
+0000           1105            rseg R_XINIT
+0000           1106   
+0000           1107            rseg R_CONST
+0000           1108   __str_0:
+0000 4C656170  1109            db 'Leap -> EFM8'
+     202D3E20
+     45464D38
+000C 00        1110            db 0x00
+000D           1111   __str_1:
+000D 57616974  1112            db 'Waiting data...'
+     696E6720
+     64617461
+     2E2E2E
+001C 00        1113            db 0x00
+001D           1114   __str_2:
+001D 20202020  1115            db '                '
+     20202020
+     20202020
+     20202020
+002D 00        1116            db 0x00
+002E           1117   
+0003           1118            CSEG
+0003           1119   
+0003           1120   end

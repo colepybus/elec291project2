@@ -45,6 +45,12 @@ void update_motor_pwm() {
     if (++PWM_Counter >= PWM_MAX) PWM_Counter = 0; // Reset PWM cycle
 }
 
+
+
+
+
+
+
 void turn_random_speed() {
     
     /* TURN OPTION 1 (controls speed)
@@ -61,9 +67,9 @@ void turn_random_speed() {
     int turn_angle = (rand() % (180 - lower + 1)) + lower; // generate random angle
     int direction = rand() % 2; // generate random turn direction (0 or 1)
   
-    float D = 0.1;   // 10 cm, COMPLETE GUESS, need to measure distance between the wheels
-    float R = 0.05;  // minimum turning radius, half of diameter above
-    float W = 0.035; // 3.5 cm, COMPLETE GUESS, need to measure radius of wheels
+    float D = 0.095;   // 9.5 cm, measured distance between the wheels
+    float R = 0.0475;  // minimum turning radius, half of diameter above
+    float W = 0.035;   // 3.5 cm, measured radius of wheels
     
     // arc length the robot must travel 
     float L = (turn_angle / 360.0) * (2 * pi * R);
@@ -128,24 +134,6 @@ void turn_random_time() {
     delayms(2000); // Turn for 2 seconds
 
     // stop motors
-    pwm1 = 0;
-    pwm2 = 0;
-}
-
-void turn_right_man ()
-{
-    pwm1 = 100;
-    pwm2 = 70;
-}
-
-void turn_left_man()
-{
-    pwm1 = 70;
-    pwm2 = 100;
-}
-
-void robot_stop()
-{
     pwm1 = 0;
     pwm2 = 0;
 }

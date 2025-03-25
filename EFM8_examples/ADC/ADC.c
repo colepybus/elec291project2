@@ -234,14 +234,10 @@ void main (void)
 		norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
 		norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
 
-		button_state = (P3 & (1 << 2)) ? 1 : 0; // If HIGH, button not pressed; If LOW, button pressed
+		button_state = (P3 & (1 << 2)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
 
-<<<<<<< HEAD
-		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f\r", v[0], v[1], v[2], v[3], norm_x, norm_y);
-=======
-		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%7.5", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
->>>>>>> 98f1ed916a205d845a64244716ac8fd1d8782dbf
-		waitms(500);
+		printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
+		waitms(50);
 	 }  
 }	
 

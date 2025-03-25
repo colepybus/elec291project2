@@ -1,15 +1,15 @@
 Modules linked:
    'EFM8_JDY40_test' from 'EFM8_JDY40_test.obj'
-   'gptrget' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
-   'divulong' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\liblong.lib'
-   'vprintf' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
-   'gptrput' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
-   'sprintf' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
-   'crt0' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
-   'strlen' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
-   'print_format' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
-   'bp' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
-   'putchar' from 'D:\Zinnia\school\ubc_second_year\ELEC291\LAB06\call51\call51\Bin\..\lib\small\libc51.lib'
+   'gptrget' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'divulong' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\liblong.lib'
+   'vprintf' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'gptrput' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'sprintf' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'crt0' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'strlen' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'print_format' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'bp' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'putchar' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
 
 Memory use per module linked:
 C:01612 D:001 I:020 B:000 X:00000 - EFM8_JDY40_test

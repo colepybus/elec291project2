@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1170 (Feb 16 2022) (MSVC)
-; This file was generated Fri Mar 21 15:27:24 2025
+; This file was generated Fri Mar 21 16:01:25 2025
 ;--------------------------------------------------------
 $name ADC
 $optc51 --model-small
@@ -26,6 +26,7 @@ $printf_float
 ;--------------------------------------------------------
 	public _InitPinADC_PARM_2
 	public _main
+	public _InitPushButton
 	public _Volts_at_Pin
 	public _ADC_at_Pin
 	public _InitPinADC
@@ -481,9 +482,9 @@ _TFRQ           BIT 0xdf
 ; internal ram data
 ;--------------------------------------------------------
 	rseg R_DSEG
-_main_v_1_59:
+_main_v_1_61:
 	ds 16
-_main_norm_x_1_59:
+_main_norm_x_1_61:
 	ds 4
 _main_sloc0_1_0:
 	ds 4
@@ -507,6 +508,8 @@ _InitPinADC_PARM_2:
 ; bit data
 ;--------------------------------------------------------
 	rseg R_BSEG
+_main_button_state_1_61:
+	DBIT	1
 ;--------------------------------------------------------
 ; paged external ram data
 ;--------------------------------------------------------
@@ -888,22 +891,40 @@ _Volts_at_Pin:
 	mov	a,r5
 	ret
 ;------------------------------------------------------------
+;Allocation info for local variables in function 'InitPushButton'
+;------------------------------------------------------------
+;------------------------------------------------------------
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:195: void InitPushButton(void)
+;	-----------------------------------------
+;	 function InitPushButton
+;	-----------------------------------------
+_InitPushButton:
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:197: SFRPAGE = 0x20;  // Switch to Port Configuration Page
+	mov	_SFRPAGE,#0x20
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:198: P3MDOUT &= ~(1 << 2); // Set P3.2 as open-drain (input mode)
+	anl	_P3MDOUT,#0xFB
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:199: P3 |= (1 << 2);  // Enable internal pull-up resistor
+	orl	_P3,#0x04
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:200: SFRPAGE = 0x00;  // Restore SFRPAGE
+	mov	_SFRPAGE,#0x00
+	ret
+;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;v                         Allocated with name '_main_v_1_59'
-;norm_x                    Allocated with name '_main_norm_x_1_59'
+;v                         Allocated with name '_main_v_1_61'
+;norm_x                    Allocated with name '_main_norm_x_1_61'
 ;norm_y                    Allocated to registers r2 r3 r4 r5 
 ;sloc0                     Allocated with name '_main_sloc0_1_0'
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:195: void main (void)
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:203: void main (void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:201: waitms(500); // Give PuTTy a chance to start before sending
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:211: waitms(500); // Give PuTTy a chance to start before sending
 	mov	dptr,#0x01F4
 	lcall	_waitms
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:202: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:212: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	mov	a,#__str_0
 	push	acc
 	mov	a,#(__str_0 >> 8)
@@ -914,8 +935,8 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:207: __FILE__, __DATE__, __TIME__);
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:206: "Compiled: %s, %s\n\n",
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:217: __FILE__, __DATE__, __TIME__);
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:216: "Compiled: %s, %s\n\n",
 	mov	a,#__str_4
 	push	acc
 	mov	a,#(__str_4 >> 8)
@@ -944,71 +965,73 @@ _main:
 	mov	a,sp
 	add	a,#0xf4
 	mov	sp,a
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:209: InitPinADC(2, 2); // Configure P2.2 as analog input
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:219: InitPinADC(2, 2); // Configure P2.2 as analog input
 	mov	_InitPinADC_PARM_2,#0x02
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:210: InitPinADC(2, 3); // Configure P2.3 as analog input
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:220: InitPinADC(2, 3); // Configure P2.3 as analog input
 	mov	_InitPinADC_PARM_2,#0x03
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:211: InitPinADC(2, 4); // Configure P2.4 as analog input
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:221: InitPinADC(2, 4); // Configure P2.4 as analog input
 	mov	_InitPinADC_PARM_2,#0x04
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:212: InitPinADC(2, 5); // Configure P2.5 as analog input
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:222: InitPinADC(2, 5); // Configure P2.5 as analog input
 	mov	_InitPinADC_PARM_2,#0x05
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:213: InitADC();
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:223: InitADC();
 	lcall	_InitADC
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:215: while(1)
-L009002?:
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:218: v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:224: InitPushButton();
+	lcall	_InitPushButton
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:226: while(1)
+L010002?:
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:229: v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
 	mov	dpl,#0x0F
 	lcall	_Volts_at_Pin
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-	mov	_main_v_1_59,r2
-	mov	(_main_v_1_59 + 1),r3
-	mov	(_main_v_1_59 + 2),r4
-	mov	(_main_v_1_59 + 3),r5
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:219: v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
+	mov	_main_v_1_61,r2
+	mov	(_main_v_1_61 + 1),r3
+	mov	(_main_v_1_61 + 2),r4
+	mov	(_main_v_1_61 + 3),r5
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:230: v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
 	mov	dpl,#0x10
 	lcall	_Volts_at_Pin
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-	mov	(_main_v_1_59 + 0x0004),r2
-	mov	((_main_v_1_59 + 0x0004) + 1),r3
-	mov	((_main_v_1_59 + 0x0004) + 2),r4
-	mov	((_main_v_1_59 + 0x0004) + 3),r5
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:220: v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
+	mov	(_main_v_1_61 + 0x0004),r2
+	mov	((_main_v_1_61 + 0x0004) + 1),r3
+	mov	((_main_v_1_61 + 0x0004) + 2),r4
+	mov	((_main_v_1_61 + 0x0004) + 3),r5
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:231: v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
 	mov	dpl,#0x11
 	lcall	_Volts_at_Pin
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-	mov	(_main_v_1_59 + 0x0008),r2
-	mov	((_main_v_1_59 + 0x0008) + 1),r3
-	mov	((_main_v_1_59 + 0x0008) + 2),r4
-	mov	((_main_v_1_59 + 0x0008) + 3),r5
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:221: v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
+	mov	(_main_v_1_61 + 0x0008),r2
+	mov	((_main_v_1_61 + 0x0008) + 1),r3
+	mov	((_main_v_1_61 + 0x0008) + 2),r4
+	mov	((_main_v_1_61 + 0x0008) + 3),r5
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:232: v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
 	mov	dpl,#0x12
 	lcall	_Volts_at_Pin
 	mov	_main_sloc0_1_0,dpl
 	mov	(_main_sloc0_1_0 + 1),dph
 	mov	(_main_sloc0_1_0 + 2),b
 	mov	(_main_sloc0_1_0 + 3),a
-	mov	(_main_v_1_59 + 0x000c),_main_sloc0_1_0
-	mov	((_main_v_1_59 + 0x000c) + 1),(_main_sloc0_1_0 + 1)
-	mov	((_main_v_1_59 + 0x000c) + 2),(_main_sloc0_1_0 + 2)
-	mov	((_main_v_1_59 + 0x000c) + 3),(_main_sloc0_1_0 + 3)
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:223: norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
+	mov	(_main_v_1_61 + 0x000c),_main_sloc0_1_0
+	mov	((_main_v_1_61 + 0x000c) + 1),(_main_sloc0_1_0 + 1)
+	mov	((_main_v_1_61 + 0x000c) + 2),(_main_sloc0_1_0 + 2)
+	mov	((_main_v_1_61 + 0x000c) + 3),(_main_sloc0_1_0 + 3)
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:234: norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
 	mov	a,#0x5C
 	push	acc
 	mov	a,#0x8F
@@ -1017,10 +1040,10 @@ L009002?:
 	push	acc
 	mov	a,#0x40
 	push	acc
-	mov	dpl,(_main_v_1_59 + 0x0004)
-	mov	dph,((_main_v_1_59 + 0x0004) + 1)
-	mov	b,((_main_v_1_59 + 0x0004) + 2)
-	mov	a,((_main_v_1_59 + 0x0004) + 3)
+	mov	dpl,(_main_v_1_61 + 0x0004)
+	mov	dph,((_main_v_1_61 + 0x0004) + 1)
+	mov	b,((_main_v_1_61 + 0x0004) + 2)
+	mov	a,((_main_v_1_61 + 0x0004) + 3)
 	lcall	___fsdiv
 	mov	r6,dpl
 	mov	r7,dph
@@ -1057,14 +1080,14 @@ L009002?:
 	mov	b,r4
 	mov	a,r5
 	lcall	___fssub
-	mov	_main_norm_x_1_59,dpl
-	mov	(_main_norm_x_1_59 + 1),dph
-	mov	(_main_norm_x_1_59 + 2),b
-	mov	(_main_norm_x_1_59 + 3),a
+	mov	_main_norm_x_1_61,dpl
+	mov	(_main_norm_x_1_61 + 1),dph
+	mov	(_main_norm_x_1_61 + 2),b
+	mov	(_main_norm_x_1_61 + 3),a
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:224: norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:235: norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
 	mov	a,#0x5C
 	push	acc
 	mov	a,#0x8F
@@ -1073,10 +1096,10 @@ L009002?:
 	push	acc
 	mov	a,#0x40
 	push	acc
-	mov	dpl,_main_v_1_59
-	mov	dph,(_main_v_1_59 + 1)
-	mov	b,(_main_v_1_59 + 2)
-	mov	a,(_main_v_1_59 + 3)
+	mov	dpl,_main_v_1_61
+	mov	dph,(_main_v_1_61 + 1)
+	mov	b,(_main_v_1_61 + 2)
+	mov	a,(_main_v_1_61 + 3)
 	lcall	___fsdiv
 	mov	r6,dpl
 	mov	r7,dph
@@ -1120,31 +1143,46 @@ L009002?:
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:227: printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f\r", v[0], v[1], v[2], v[3], norm_x, norm_y);
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:237: button_state = (P3 & (1 << 2)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
+	mov	a,_P3
+	rr	a
+	rr	a
+	anl	a,#0x01
+	mov	r6,a
+	cjne	a,#0x01,L010007?
+L010007?:
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:239: printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
+	mov  _main_button_state_1_61,c
+	clr	a
+	rlc	a
+	mov	r6,a
+	mov	r7,#0x00
+	push	ar6
+	push	ar7
 	push	ar2
 	push	ar3
 	push	ar4
 	push	ar5
-	push	_main_norm_x_1_59
-	push	(_main_norm_x_1_59 + 1)
-	push	(_main_norm_x_1_59 + 2)
-	push	(_main_norm_x_1_59 + 3)
+	push	_main_norm_x_1_61
+	push	(_main_norm_x_1_61 + 1)
+	push	(_main_norm_x_1_61 + 2)
+	push	(_main_norm_x_1_61 + 3)
 	push	_main_sloc0_1_0
 	push	(_main_sloc0_1_0 + 1)
 	push	(_main_sloc0_1_0 + 2)
 	push	(_main_sloc0_1_0 + 3)
-	push	(_main_v_1_59 + 0x0008)
-	push	((_main_v_1_59 + 0x0008) + 1)
-	push	((_main_v_1_59 + 0x0008) + 2)
-	push	((_main_v_1_59 + 0x0008) + 3)
-	push	(_main_v_1_59 + 0x0004)
-	push	((_main_v_1_59 + 0x0004) + 1)
-	push	((_main_v_1_59 + 0x0004) + 2)
-	push	((_main_v_1_59 + 0x0004) + 3)
-	push	_main_v_1_59
-	push	(_main_v_1_59 + 1)
-	push	(_main_v_1_59 + 2)
-	push	(_main_v_1_59 + 3)
+	push	(_main_v_1_61 + 0x0008)
+	push	((_main_v_1_61 + 0x0008) + 1)
+	push	((_main_v_1_61 + 0x0008) + 2)
+	push	((_main_v_1_61 + 0x0008) + 3)
+	push	(_main_v_1_61 + 0x0004)
+	push	((_main_v_1_61 + 0x0004) + 1)
+	push	((_main_v_1_61 + 0x0004) + 2)
+	push	((_main_v_1_61 + 0x0004) + 3)
+	push	_main_v_1_61
+	push	(_main_v_1_61 + 1)
+	push	(_main_v_1_61 + 2)
+	push	(_main_v_1_61 + 3)
 	mov	a,#__str_5
 	push	acc
 	mov	a,#(__str_5 >> 8)
@@ -1153,12 +1191,12 @@ L009002?:
 	push	acc
 	lcall	_printf
 	mov	a,sp
-	add	a,#0xe5
+	add	a,#0xe3
 	mov	sp,a
-;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:228: waitms(500);
-	mov	dptr,#0x01F4
+;	C:\Users\leigh\Elec291Project2\EFM8_examples\ADC\ADC.c:240: waitms(50);
+	mov	dptr,#0x0032
 	lcall	_waitms
-	ljmp	L009002?
+	ljmp	L010002?
 	rseg R_CSEG
 
 	rseg R_XINIT
@@ -1196,11 +1234,11 @@ __str_3:
 	db 'Mar 21 2025'
 	db 0x00
 __str_4:
-	db '15:27:24'
+	db '16:01:25'
 	db 0x00
 __str_5:
 	db 'V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, '
-	db 'Horizontal:%7.5f, Vertical:%7.5f'
+	db 'Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d'
 	db 0x0D
 	db 0x00
 

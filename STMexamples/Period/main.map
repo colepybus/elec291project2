@@ -1098,11 +1098,11 @@ LOAD linker stubs
  .debug_aranges
                 0x00000068       0x20 newlib_stubs.o
 
-.debug_line     0x00000000     0x107e
- .debug_line    0x00000000      0x5fc main.o
- .debug_line    0x000005fc      0x2ab startup.o
- .debug_line    0x000008a7      0x50a serial.o
- .debug_line    0x00000db1      0x2cd newlib_stubs.o
+.debug_line     0x00000000     0x1080
+ .debug_line    0x00000000      0x5fe main.o
+ .debug_line    0x000005fe      0x2ab startup.o
+ .debug_line    0x000008a9      0x50a serial.o
+ .debug_line    0x00000db3      0x2cd newlib_stubs.o
 
 .debug_str      0x00000000      0xa2f
  .debug_str     0x00000000      0xa2f main.o

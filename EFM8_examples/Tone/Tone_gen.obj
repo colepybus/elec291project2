@@ -1,0 +1,341 @@
+<MODULE>
+Tone_gen
+</MODULE>
+
+<OPTC51>
+--model-small
+</OPTC51>
+
+<SEGMENTS>
+R_GSINIT,code,0000,NO
+R_BSEG,bit,0000,NO
+R_XSEG,xdata,0000,NO
+BIT_BANK,data,0000,OV
+R_CONST,code,00B0,NO
+rbank0,data,0000,OV
+R_PSEG,xdata,0000,NO
+R_DINIT,code,0000,NO
+R_DSEG,data,0004,NO
+R_OSEG,data,0000,OV
+R_IXSEG,xdata,0000,NO
+R_ISEG,idata,0000,NO
+R_HOME,code,0000,NO
+R_XINIT,code,0000,NO
+R_CSEG,code,01A7,NO
+</SEGMENTS>
+
+<LOCALS>
+L002004?,R_CSEG,0029,0000
+L002001?,R_CSEG,001E,0000
+L004005?,R_CSEG,00AA,0000
+L004002?,R_CSEG,0134,0000
+_main_f_1_47,R_DSEG,0000,0004
+__str_0,R_CONST,0000,0000
+__str_1,R_CONST,0005,0000
+__str_2,R_CONST,0066,0000
+__str_3,R_CONST,0075,0000
+__str_4,R_CONST,0079,0000
+__str_5,R_CONST,0098,0000
+</LOCALS>
+
+<PUBLICS>
+_main,R_CSEG,0080,0000
+__c51_external_startup,R_CSEG,0000,0000
+_Timer2_ISR,R_CSEG,006F,0000
+</PUBLICS>
+
+<EXTERNALS>
+_scanf,any,0000,0000
+__divslong_PARM_2,any,0000,0000
+__divulong,any,0000,0000
+__divslong,any,0000,0000
+_printf,any,0000,0000
+__divulong_PARM_2,any,0000,0000
+_crt0,any,0000,0000
+</EXTERNALS>
+
+<CODE AT 0000>
+</CODE>
+
+<CODE R_HOME>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_CSEG>
+</CODE>
+
+<CODE AT 0000>
+02 addr16(_crt0;)  
+</CODE>
+
+<CODE AT 002B>
+02 addr16(_Timer2_ISR;)  
+</CODE>
+
+<CODE R_HOME>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_DINIT>
+</CODE>
+
+<CODE R_CSEG>
+75 A7 00
+75 97 DE
+75 97 AD
+43 FF 80
+75 EF 02
+75 A7 10
+75 C1 20
+75 A7 00
+75 A9 00
+75 A9 00
+E5 A9
+30 E7 rel3(L002001?;)
+75 A9 03
+75 A9 03
+E5 A9
+30 E7 rel3(L002004?;)
+43 A6 03
+43 A4 10
+75 E1 01
+75 E2 10
+75 E3 40
+75 98 10
+85 8E 8E
+75 8D E6
+85 8D 8B
+53 89 0F
+43 89 20
+D2 8E
+D2 99
+75 C8 00
+43 8E 10
+75 CA EE
+75 CB F6
+75 CE FF
+75 CF FF
+D2 AD
+D2 CA
+D2 AF
+75 82 00
+22
+C0 D0
+75 D0 00
+C2 CF
+B2 A0
+A2 A0
+B3
+92 A1
+D0 D0
+32
+74 data8(__str_0;)
+C0 E0
+74 data8(__str_0;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+15 81
+15 81
+15 81
+74 data8(__str_1;)
+C0 E0
+74 data8(__str_1;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+15 81
+15 81
+15 81
+74 data8(__str_2;)
+C0 E0
+74 data8(__str_2;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+15 81
+15 81
+15 81
+74 data8(_main_f_1_47;)
+C0 E0
+74 data8(_main_f_1_47;0x0008;>>;)
+C0 E0
+74 40
+C0 E0
+74 data8(__str_3;)
+C0 E0
+74 data8(__str_3;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_scanf;)  
+E5 81
+24 FA
+F5 81
+E5 data8(_main_f_1_47;)
+25 data8(_main_f_1_47;)
+F5 data8(__divulong_PARM_2;)
+E5 data8(_main_f_1_47;0x0001;+;)
+33
+F5 data8(__divulong_PARM_2;0x0001;+;)
+E5 data8(_main_f_1_47;0x0002;+;)
+33
+F5 data8(__divulong_PARM_2;0x0002;+;)
+E5 data8(_main_f_1_47;0x0003;+;)
+33
+F5 data8(__divulong_PARM_2;0x0003;+;)
+90 A2 00
+75 F0 4A
+74 04
+12 addr16(__divulong;)  
+AA 82
+AB 83
+AC F0
+FD
+C3
+74 FF
+9A
+74 FF
+9B
+E4
+9C
+E4
+9D
+50 rel2(L004002?;)
+C0 data8(_main_f_1_47;)
+C0 data8(_main_f_1_47;0x0001;+;)
+C0 data8(_main_f_1_47;0x0002;+;)
+C0 data8(_main_f_1_47;0x0003;+;)
+74 data8(__str_4;)
+C0 E0
+74 data8(__str_4;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+E5 81
+24 F9
+F5 81
+02 addr16(L004005?;)  
+C2 CA
+E4
+C3
+9A
+FA
+E4
+9B
+FB
+74 01
+9C
+E4
+9D
+8A CA
+8B CB
+D2 CA
+AA CA
+AB CB
+7C 00
+E4
+FD
+C3
+9A
+FA
+E4
+9B
+FB
+74 01
+9C
+FC
+E4
+9D
+FD
+EA
+2A
+F5 data8(__divslong_PARM_2;)
+EB
+33
+F5 data8(__divslong_PARM_2;0x0001;+;)
+EC
+33
+F5 data8(__divslong_PARM_2;0x0002;+;)
+ED
+33
+F5 data8(__divslong_PARM_2;0x0003;+;)
+90 A2 00
+75 F0 4A
+74 04
+12 addr16(__divslong;)  
+AA 82
+AB 83
+AC F0
+FD
+8A data8(_main_f_1_47;)
+8B data8(_main_f_1_47;0x0001;+;)
+8C data8(_main_f_1_47;0x0002;+;)
+8D data8(_main_f_1_47;0x0003;+;)
+C0 02
+C0 03
+C0 04
+C0 05
+74 data8(__str_5;)
+C0 E0
+74 data8(__str_5;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+E5 81
+24 F9
+F5 81
+02 addr16(L004005?;)  
+</CODE>
+
+<CODE R_CSEG>
+</CODE>
+
+<CODE R_XINIT>
+</CODE>
+
+<CODE R_CONST>
+1B
+5B 32 4A 
+00
+56 61 72 69 61 62 6C 65 20 66 72 65 71 75 65 6E 63
+79 20 67 65 6E 65 72 61 74 6F 72 20 66 6F 72 20
+74 68 65 20 45 46 4D 38 4C 42 31 2E 
+0D
+0A
+43 68 65 63 6B 20 70 69 6E 73 20 50 32 
+2E 30 20 61 6E 64 20 50 32 2E 31 20 77 69 74 68 20
+74 68 65 20 6F 73 63 69 6C 6C 6F 73 63 6F 70 65
+2E 
+0D
+0A
+00
+4E 65 77 20 66 72 65 71 75 65 6E 63 79 3D 
+00
+25 6C 75 
+00
+53 6F 72 72 79 20 25 6C 75 20 48 7A 20 69 73 20 6F
+75 74 20 6F 66 20 72 61 6E 67 65 2E 
+0A
+00
+0A
+41 63 74 75 61 6C 20 66 72 65 71 75 65 6E 63 79 3A
+20 25 6C 75 
+0A
+00
+</CODE>
+
+<CODE AT 002E>
+</CODE>

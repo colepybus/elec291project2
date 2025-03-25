@@ -3,4 +3,4 @@ lib=libc51.lib
 lib=libint.lib
 lib=liblong.lib
 lib=libfloat.lib
-obj=EFM8_JDY40_test.obj
+obj=Tone_gen.obj

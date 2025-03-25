@@ -250,13 +250,8 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
-// LIFT ARM
-void liftArm() {
-	
-}
-
 // DROP ARM (opposites of liftArm)
-void dropArm() {
+void pickCoin() {
 	ISR_pwm1=75; ISR_pwm2=75;// starts default (1 - 75) (2 - 240)
 	waitms(500);
 
@@ -320,24 +315,72 @@ void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 }
 
 // DETECT COIN
-void detectCoin (int long period, int threshold) {
-	if (period > threshold) { // checking with every reading of period
-		eputs("COIN DETECTED!");
-		toggleMagnet(1); // turn on emagnet
-		// lift arm
-		// move servo 1 full rotation
-		// move servo 2 full rotation
-		toggleMagnet(0); // turn off emagnet
-		// drop arm
-	}
-}
+// void detectCoin (int long period, int threshold) {
+// 	if (period > threshold) { // checking with every reading of period
+// 		eputs("COIN DETECTED!");
+// 		toggleMagnet(1); // turn on emagnet
+// 		// lift arm
+// 		// move servo 1 full rotation
+// 		// move servo 2 full rotation
+// 		toggleMagnet(0); // turn off emagnet
+// 		// drop arm
+// 	}
+// }
 
+
+#define METAL_THRESHOLD 0.8 // 0.05% change from baseline
+
+void detectCoin() {
+	long long int count;
+	float f;
+	float avg_f;
+
+	float baseline_f = 0;
+	float f_change;
+
+	count=GetPeriod(100);
+
+
+	if (count > 0) {
+		f = (float)(F_CPU*100.0) / (float)count;
+
+		// store in moving avg buffer
+		freqBuffer[sampleIndex] = f;
+		sampleIndex = (sampleIndex + 1) % 10; // moving average sample
+
+		// compute moving average
+		for (int i = 0; i < 10; i++) {
+			avg_f += freqBuffer[i];
+		}
+
+		avg_f = avg_f / 10;
+
+		// initilize baseline freq 
+		if (baseline_f == 0) { // 1st time reading freq
+			baseline_f = avg_f; 
+		}
+
+		// calculate percentage change 
+		f_change = ((avg_f - baseline_f) / baseline_f) * 100;
+
+		// check if significant change
+		if (!coinDetected && fabs(f_change > METAL_THRESHOLD)) {
+			coinDetected = 1;
+			eputs("COIN DETECTED!");
+			// do pickCoin();
+			baseline_f = avg_f// update baseline frequency
+			
+		}
+
+	}
+
+}
 
 
 int main(void)
 {
     int j, v;
-	long long int count;
+	// long long int count;
 	float f;
 	unsigned char LED_toggle=0; // Used to test the outputs
 
@@ -398,20 +441,20 @@ int main(void)
 
 		// Not very good for high frequencies because of all the interrupts in the background
 		// but decent for low frequencies around 10kHz.
-		count=GetPeriod(100);
-		if(count>0)
-		{
-			f=(float)(F_CPU*100.0) / (float)count;
-			eputs("f=");
-			PrintNumber(f, 10, 7);
-			eputs("Hz, count=");
-			PrintNumber(count, 10, 6);
-			eputs("          \r");
-		}
-		else
-		{
-			eputs("NO SIGNAL                     \r");
-		}
+		// count=GetPeriod(100);
+		// if(count>0)
+		// {
+		// 	f=(float)(F_CPU*100.0) / (float)count;
+		// 	eputs("f=");
+		// 	PrintNumber(f, 10, 7);
+		// 	eputs("Hz, count=");
+		// 	PrintNumber(count, 10, 6);
+		// 	eputs("          \r");
+		// }
+		// else
+		// {
+		// 	eputs("NO SIGNAL                     \r");
+		// }
 
 
 
@@ -449,41 +492,14 @@ int main(void)
 				break;
 		}
 
-		// find default positions
+		// find default positions for servo
 		//ISR_pwm1=75; ISR_pwm2=75;
 		
-		//dropArm();
+		//pickCoin();
 		//toggleMagnet(1);
-		//waitms(500);
-		//ISR_pwm2=240;
-		
-		// ISR_pwm1=75;
-		// waitms(500);
-		
-		// //ISR_pwm1=100;
-		// waitms(500);
 
-		// //ISR_pwm1=200;
-		// waitms(500);
 
-		// //ISR_pwm1=240;
-		// waitms(500);
 		
-		
-		// //ISR_pwm2=75;
-		// //waitms(1000);
-
-		// ISR_pwm2=240;
-		
-		// //ISR_pwm2=75;
-		// waitms(500);
-		
-		// //ISR_pwm1=100;
-		// waitms(500);
-
-		// //ISR_pwm1=200;
-		// waitms(500);
-
 		
 		
 		

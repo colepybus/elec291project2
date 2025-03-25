@@ -1,0 +1,227 @@
+Modules linked:
+   'EFM8_LCD_4bit' from 'EFM8_LCD_4bit.obj'
+   'gptrget' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'getchar' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'gptrput' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'crt0' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+   'putchar' from 'C:\Users\leigh\Downloads\CrossIDE\CrossIDE\Call51\Bin\..\lib\small\libc51.lib'
+
+Memory use per module linked:
+C:00743 D:072 I:000 B:001 X:00000 - EFM8_LCD_4bit
+C:00028 D:000 I:000 B:000 X:00000 - gptrget
+C:00019 D:000 I:000 B:000 X:00000 - getchar
+C:00025 D:001 I:000 B:000 X:00000 - gptrput
+C:00113 D:000 I:000 B:000 X:00000 - crt0
+C:00021 D:000 I:000 B:000 X:00000 - putchar
+C:00004 D:000 I:000 B:000 X:00000 - ABSOLUTE
+------------------------------------------------------
+C:00953 D:073 I:000 B:001 X:00000 - Totals
+
+INTERMAL RAM map (see legend below):
+00: 0 0 0 0 0 0 0 0 b . . . . . . . 
+10: . . . . . . . . . . . . . . . . 
+20: B a a a a a a a a a a a a a a a 
+30: a a a a a a a a a a a a a a a a 
+40: a a a a a a a a a a a a a a a a 
+50: a a a a a a a a a a a a a a a a 
+60: a a a a a a a a a . . . . . . . 
+70: . . . . . . . . . . . . . . . . 
+80: . . . . . . . . . . . . . . . . 
+90: . . . . . . . . . . . . . . . . 
+A0: . . . . . . . . . . . . . . . . 
+B0: . . . . . . . . . . . . . . . . 
+C0: . . . . . . . . . . . . . . . . 
+D0: . . . . . . . . . . . . . . . . 
+E0: . . . . . . . . . . . . . . . . 
+F0: . . . . . . . . . . . . . . . . 
+
+Legend:
+	0: Register bank 0
+	1: Register bank 1
+	2: Register bank 2
+	3: Register bank 3
+	B: bits (see 'BIT map' below)
+	a: EFM8_LCD_4bit:R_DSEG
+	b: R_OSEG
+
+BIT map:
+00: U . . . . . . . . . . . . . . . 
+10: . . . . . . . . . . . . . . . . 
+20: . . . . . . . . . . . . . . . . 
+30: . . . . . . . . . . . . . . . . 
+40: . . . . . . . . . . . . . . . . 
+50: . . . . . . . . . . . . . . . . 
+60: . . . . . . . . . . . . . . . . 
+70: . . . . . . . . . . . . . . . . 
+
+CODE usage map:
+0000: 256 256 256 185 000 000 000 000 000 000 000 000 000 000 000 000 
+1000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+2000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+3000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+4000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+5000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+6000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+7000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+8000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+9000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+A000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+B000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+C000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+D000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+E000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+F000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+Total: 953 bytes
+
+XDATA usage map:
+0000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+1000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+2000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+3000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+4000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+5000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+6000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+7000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+8000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+9000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+A000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+B000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+C000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+D000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+E000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+F000: 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
+Total: 0 bytes
+
+Base Segments:
+   BIT_BANK=D:0000, size=0000
+   R_BSEG=B:0000, size=0001
+   R_CONST=C:0074, size=002E
+   R_CSEG=C:00A3, size=0316
+   R_DINIT=C:00A2, size=0000
+   R_DSEG=D:0000, size=0048
+   R_GSINIT=C:0003, size=0071
+   R_HOME=C:0000, size=0000
+   R_ISEG=I:0000, size=0000
+   R_IXSEG=X:0000, size=0000
+   R_OSEG=D:0008, size=0001
+   R_PSEG=X:0000, size=0000
+   R_XINIT=C:0000, size=0000
+   R_XSEG=X:0000, size=0000
+   rbank0=D:0000, size=0008
+
+Module Segments:
+   CSEG=C:0000, size=0004
+   EFM8_LCD_4bit:R_BSEG=B:0000, size=0001
+   EFM8_LCD_4bit:R_CONST=C:0074, size=002E
+   EFM8_LCD_4bit:R_CSEG=C:00A3, size=02B9
+   EFM8_LCD_4bit:R_DSEG=D:0021, size=0048
+   crt0:R_GSINIT=C:0003, size=0071
+   getchar:R_CSEG=C:0378, size=0013
+   gptrget:R_CSEG=C:035C, size=001C
+   gptrput:R_CSEG=C:038B, size=0019
+   gptrput:R_OSEG=D:0008, size=0001
+   putchar:R_CSEG=C:03A4, size=0015
+
+Public symbols:
+   _EFM8_LCD_4bit_R_DSEG_size=L:0048
+   _EFM8_LCD_4bit_R_DSEG_start=L:0021
+   _LCD_4BIT=C:01B5
+   _LCD_byte=C:0161
+   _LCD_pulse=C:0156
+   _LCDprint=C:01E7
+   _LCDprint_PARM_2=D:0021
+   _LCDprint_PARM_3=B:0000
+   _R_BSEG_size=L:0001
+   _R_BSEG_start=L:0000
+   _R_CONST_size=L:002E
+   _R_CONST_start=L:0074
+   _R_CSEG_size=L:0316
+   _R_CSEG_start=L:00A3
+   _R_DINIT_size=L:0000
+   _R_DINIT_start=L:00A2
+   _R_GSINIT_size=L:0071
+   _R_GSINIT_start=L:0003
+   _R_HOME_size=L:0000
+   _R_HOME_start=L:0000
+   _R_ISEG_size=L:0000
+   _R_ISEG_start=L:0000
+   _R_IXSEG_size=L:0000
+   _R_IXSEG_start=L:0000
+   _R_OSEG_size=L:0001
+   _R_OSEG_start=L:0008
+   _R_PSEG_size=L:0000
+   _R_PSEG_start=L:0000
+   _R_XINIT_size=L:0000
+   _R_XINIT_start=L:0000
+   _R_XSEG_size=L:0000
+   _R_XSEG_start=L:0000
+   _Timer3us=C:00F1
+   _WriteCommand=C:01A6
+   _WriteData=C:0197
+   __c51_external_startup=C:00A3
+   __gptrget=C:035C
+   __gptrput=C:038B
+   __gptrput_PARM_2=D:0008
+   _crt0=C:0003
+   _dummy_name_crt0=C:03A4
+   _getchar=C:0378
+   _getsn=C:026F
+   _getsn_PARM_2=D:0022
+   _main=C:0310
+   _putchar=C:03A4
+   _stack_start=L:0069
+   _waitms=C:011B
+
+Local symbols:
+   EFM8_LCD_4bit:L002001?=C:00BB
+   EFM8_LCD_4bit:L002004?=C:00C6
+   EFM8_LCD_4bit:L003001?=C:010C
+   EFM8_LCD_4bit:L003004?=C:0107
+   EFM8_LCD_4bit:L003007?=C:0117
+   EFM8_LCD_4bit:L004001?=C:012C
+   EFM8_LCD_4bit:L004005?=C:0123
+   EFM8_LCD_4bit:L004007?=C:014E
+   EFM8_LCD_4bit:L004009?=C:0155
+   EFM8_LCD_4bit:L004018?=C:012F
+   EFM8_LCD_4bit:L010003?=C:0213
+   EFM8_LCD_4bit:L010006?=C:0247
+   EFM8_LCD_4bit:L010007?=C:024E
+   EFM8_LCD_4bit:L010011?=C:026E
+   EFM8_LCD_4bit:L010013?=C:01F6
+   EFM8_LCD_4bit:L010014?=C:01F8
+   EFM8_LCD_4bit:L011001?=C:02B7
+   EFM8_LCD_4bit:L011002?=C:02D4
+   EFM8_LCD_4bit:L011005?=C:028B
+   EFM8_LCD_4bit:L011008?=C:02F3
+   EFM8_LCD_4bit:L011015?=C:02B4
+   EFM8_LCD_4bit:L011018?=C:02ED
+   EFM8_LCD_4bit:L012002?=C:032F
+   EFM8_LCD_4bit:__str_0=C:0074
+   EFM8_LCD_4bit:__str_1=C:0081
+   EFM8_LCD_4bit:__str_2=C:0091
+   EFM8_LCD_4bit:_getsn_buff_1_42=D:0024
+   EFM8_LCD_4bit:_getsn_sloc0_1_0=D:0027
+   EFM8_LCD_4bit:_main_buff_1_48=D:0029
+   crt0:PClearLoop?done?=C:006C
+   crt0:PClearLoop?repeat?=C:005E
+   crt0:XClearLoop?done?=C:0054
+   crt0:XClearLoop?repeat?=C:0046
+   crt0:XInitLoop?done?=C:003C
+   crt0:XInitLoop?repeat?=C:001C
+   crt0:__c51_init_data=C:0010
+   crt0:__c51_program_startup=C:006F
+   crt0:forever?home?=C:0072
+   getchar:L002001?=C:0378
+   getchar:L002008?=C:037D
+   gptrget:codeptr?=C:0373
+   gptrget:dataptrrestore?=C:036A
+   gptrget:pdataptr?=C:0370
+   gptrget:xdataptr?=C:0376
+   gptrput:codeptr?=C:039E
+   gptrput:dataptrrestore?=C:0399
+   gptrput:pdataptr?=C:039F
+   gptrput:xdataptr?=C:03A2
+   putchar:L002001?=C:03A9
+   putchar:L002006?=C:03B1
+   putchar:L002017?=C:03AE
+   putchar:L002018?=C:03B6

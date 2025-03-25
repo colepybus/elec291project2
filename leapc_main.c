@@ -62,8 +62,8 @@ void sendToEFM8(long long frameID, unsigned int hands, float framerate, const ch
 
     char buffer[128];
     snprintf(buffer, sizeof(buffer),
-             "!%lld,%u,%.2f,%s,%.2f,%.2f\n",
-             frameID, hands, framerate, handType, pinch, grab);
+             "!%u,%.2f,%s,%.2f,%.2f\n",
+             hands, framerate, handType, pinch, grab);
 
     int n = write(serial_fd, buffer, strlen(buffer));
 

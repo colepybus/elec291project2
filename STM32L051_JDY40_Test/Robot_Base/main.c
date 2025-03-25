@@ -5,11 +5,52 @@
 #include "adc.h"
 #include <math.h>
 
+// LQFP32 pinout
+//                 ----------
+//           VDD -|1       32|- VSS
+//          PC14 -|2       31|- BOOT0
+//          PC15 -|3       30|- PB7 (OUT 5)
+//          NRST -|4       29|- PB6 (OUT 4)
+//          VDDA -|5       28|- PB5 (OUT 3)
+//           PA0 -|6       27|- PB4 (OUT 2)
+//           PA1 -|7       26|- PB3 (OUT 1)
+//           PA2 -|8       25|- PA15
+//           PA3 -|9       24|- PA14 (push button)
+//           PA4 -|10      23|- PA13
+//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
+//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
+//           PA7 -|13      20|- PA10 (Reserved for RXD)
+// (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
+// (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
+//           VSS -|16      17|- VDD
+//                 ----------
+
+
+//This is our main file for the robot base, it is responsible for the following:
+// 1. Receive signal from EFM8 using the JDY40 module
+// 2. Pick which mode (manual/automatic) to operate in based off a signal from JDY40
+// MANUAL MODE: Take input from joystick, joystick press, turn that into wheel movement, arm/magnet trigger
+// AUTOMATIC MODE: Set algorithm for robot to follow, operate wheels and arm based off algorithm and coin detection
+// (detect coin --> execute arm thing --> turn 180 --> keep going)
+
+// JDY40 NECESSARY INFORMATION TO BE RECEIEVED: 
+// Operating mode (0,1,2), Joystick (float x_norm, float y_norm, bit press), leapmotion eventually 
+
+
+
+// leapmotion possible bonus, arm 3d operation with joysticks, play song and dance after challenge complete, take in path data and optimize with ML
+
+//sets the cpu frequency to 32MHz, and makes DEF_F a 10us tick
+
 #define F_CPU 32000000L
 #define DEF_F 100000L // 10us tick
 
+// sets a pwm counter and timer pwms to 100 initially
+
 volatile int PWM_Counter = 0;
 volatile unsigned char ISR_pwm1=100, ISR_pwm2=100;
+
+//functions that makes it wait 1 ms
 
 void wait_1ms(void)
 {
@@ -21,6 +62,8 @@ void wait_1ms(void)
 	SysTick->CTRL = 0x00; // Disable Systick counter
 }
 
+//makes it wait "len" amount of ms
+
 void waitms(int len)
 {
 	while(len--) wait_1ms();
@@ -31,6 +74,7 @@ void waitms(int len)
 // The following should happen at a rate of 1kHz.
 // The following function is associated with the TIM2 interrupt 
 // via the interrupt vector table defined in startup.c
+
 void TIM2_Handler(void) 
 {
 	TIM2->SR &= ~BIT0; // clear update interrupt flag
@@ -61,25 +105,7 @@ void TIM2_Handler(void)
 	}   
 }
 
-// LQFP32 pinout
-//                 ----------
-//           VDD -|1       32|- VSS
-//          PC14 -|2       31|- BOOT0
-//          PC15 -|3       30|- PB7 (OUT 5)
-//          NRST -|4       29|- PB6 (OUT 4)
-//          VDDA -|5       28|- PB5 (OUT 3)
-//           PA0 -|6       27|- PB4 (OUT 2)
-//           PA1 -|7       26|- PB3 (OUT 1)
-//           PA2 -|8       25|- PA15
-//           PA3 -|9       24|- PA14 (push button)
-//           PA4 -|10      23|- PA13
-//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
-//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
-//           PA7 -|13      20|- PA10 (Reserved for RXD)
-// (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
-// (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
-//           VSS -|16      17|- VDD
-//                 ----------
+//initializes hardware
 
 void Hardware_Init(void)
 {
@@ -136,6 +162,8 @@ void Hardware_Init(void)
 
 // A define to easily read PA8 (PA8 must be configured as input first)
 #define PA8 (GPIOA->IDR & BIT8)
+
+// gets the period of n based on the timer from the microcontroller
 
 long long int GetPeriod(int n) //  return type changed from 'long int' to 'long long int' to account for overflow
 {
@@ -208,6 +236,7 @@ long long int GetPeriod(int n) //  return type changed from 'long int' to 'long 
 	return ((long long int)overflows << 24) + (0xffffff - SysTick->VAL); // adjusts overflows with the system tick for val
 }
 
+// prints the number given the value, the base and the number of digits
 
 void PrintNumber(long int val, int Base, int digits)
 { 
@@ -301,7 +330,7 @@ void pickCoin() {
 	waitms(500);
 }
 
-// DETECT PERIMETER
+// DETECT PERIMETER, once crosses certain voltage the perimeter has been detected
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 	if ((v1%1000) > 1000 || (v2%1000) > 1000) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
 		eputs("PERIMETER DETECTED!\r\n");

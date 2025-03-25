@@ -5,6 +5,7 @@
 
 #define SYSCLK    72000000L 
 #define BAUDRATE    115200L
+#define SARCLK 18000000L
 
 #define LCD_RS P1_7
 #define LCD_E  P2_0
@@ -84,6 +85,14 @@ char _c51_external_startup (void)
 	return 0;
 }
 
+void waitms (unsigned int ms)
+{
+	unsigned int j;
+	unsigned char k;
+	for(j=0; j<ms; j++)
+		for (k=0; k<4; k++) Timer3us(250);
+}
+
 void InitADC (void)
 {
 	SFRPAGE = 0x00;
@@ -156,13 +165,7 @@ void LCD_4BIT (void)
 	waitms(20);
 }
 
-void waitms (unsigned int ms)
-{
-	unsigned int j;
-	unsigned char k;
-	for(j=0; j<ms; j++)
-		for (k=0; k<4; k++) Timer3us(250);
-}
+
 
 #define VDD 3.300 // The measured value of VDD in volts
 

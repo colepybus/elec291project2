@@ -136,47 +136,77 @@ void Hardware_Init(void)
 // A define to easily read PA8 (PA8 must be configured as input first)
 #define PA8 (GPIOA->IDR & BIT8)
 
-long int GetPeriod (int n)
+long long int GetPeriod(int n) //  return type changed from 'long int' to 'long long int' to account for overflow
 {
 	int i;
-	unsigned int saved_TCNT1a, saved_TCNT1b;
+	long long int overflows = 0; //  tracks systick overflow in a variable
 	
-	SysTick->LOAD = 0xffffff;  // 24-bit counter set to check for signal present
-	SysTick->VAL = 0xffffff; // load the SysTick counter
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	while (PA8!=0) // Wait for square wave to be 0
+	// Wait for square wave to be 0
+	SysTick->LOAD = 0xffffff;
+	SysTick->VAL  = 0xffffff;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	while(PA8 != 0)
 	{
-		if(SysTick->CTRL & BIT16) return 0;
-	}
-	SysTick->CTRL = 0x00; // Disable Systick counter
-
-	SysTick->LOAD = 0xffffff;  // 24-bit counter set to check for signal present
-	SysTick->VAL = 0xffffff; // load the SysTick counter
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	while (PA8==0) // Wait for square wave to be 1
-	{
-		if(SysTick->CTRL & BIT16) return 0;
-	}
-	SysTick->CTRL = 0x00; // Disable Systick counter
-	
-	SysTick->LOAD = 0xffffff;  // 24-bit counter reset
-	SysTick->VAL = 0xffffff; // load the SysTick counter to initial value
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	for(i=0; i<n; i++) // Measure the time of 'n' periods
-	{
-		while (PA8!=0) // Wait for square wave to be 0
+		// Instead of returning immediately on overflow, count it:
+		if(SysTick->CTRL & BIT16) overflows++; // adds overflow counting when the period isnt 0
+		// Optional timeout to avoid infinite loop:
+		if(overflows > 100000) // gets adjusted as needed
 		{
-			if(SysTick->CTRL & BIT16) return 0;
-		}
-		while (PA8==0) // Wait for square wave to be 1
-		{
-			if(SysTick->CTRL & BIT16) return 0;
+			SysTick->CTRL = 0;
+			return 0;
 		}
 	}
-	SysTick->CTRL = 0x00; // Disable Systick counter
+	SysTick->CTRL = 0x00;
 
-	return 0xffffff-SysTick->VAL;
+	// Wait for square wave to be 1
+	SysTick->LOAD = 0xffffff;
+	SysTick->VAL  = 0xffffff;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	overflows = 0; // reseweft overflow counterrr before next wait
+	while(PA8 == 0)
+	{
+		if(SysTick->CTRL & BIT16) overflows++;
+		if(overflows > 100000)
+		{
+			SysTick->CTRL = 0;
+			return 0;
+		}
+	}
+	SysTick->CTRL = 0x00;
+	
+	// Measure n cycles
+	SysTick->LOAD = 0xffffff;
+	SysTick->VAL  = 0xffffff;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	overflows = 0; //  reset before counting nnn cycles
+	for(i=0; i<n; i++)
+	{
+		while (PA8 != 0)
+		{
+			if(SysTick->CTRL & BIT16) overflows++;
+			if(overflows > 100000)
+			{
+				SysTick->CTRL = 0;
+				return 0;
+			}
+		}
+		while (PA8 == 0)
+		{
+			if(SysTick->CTRL & BIT16) overflows++;
+			if(overflows > 100000)
+			{
+				SysTick->CTRL = 0;
+				return 0;
+			}
+		}
+	}
+	SysTick->CTRL = 0x00;
+
+	// Combine leftover SysTick counts with how many times it overflowed.
+	// Each overflow is 0xffffff (24-bit) ccounts withi ni t.
+	return ((long long int)overflows << 24) + (0xffffff - SysTick->VAL); // adjusts overflows with the system tick for val
 }
+
 
 void PrintNumber(long int val, int Base, int digits)
 { 
@@ -307,7 +337,8 @@ void detectCoin (int long period, int threshold) {
 int main(void)
 {
     int j, v;
-	long int count, f;
+	long long int count;
+	float f;
 	unsigned char LED_toggle=0; // Used to test the outputs
 
 	int p1_v, p2_v; // perimeter sensor values
@@ -367,10 +398,10 @@ int main(void)
 
 		// Not very good for high frequencies because of all the interrupts in the background
 		// but decent for low frequencies around 10kHz.
-		count=GetPeriod(60);
+		count=GetPeriod(100);
 		if(count>0)
 		{
-			f=(F_CPU*60)/count;
+			f=(float)(F_CPU*100.0) / (float)count;
 			eputs("f=");
 			PrintNumber(f, 10, 7);
 			eputs("Hz, count=");

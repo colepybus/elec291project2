@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1170 (Feb 16 2022) (MSVC)
-; This file was generated Fri Mar 21 16:01:25 2025
+; This file was generated Tue Mar 25 10:24:01 2025
 ;--------------------------------------------------------
 $name ADC
 $optc51 --model-small
@@ -1231,10 +1231,10 @@ __str_2:
 	db 'ADC.c'
 	db 0x00
 __str_3:
-	db 'Mar 21 2025'
+	db 'Mar 25 2025'
 	db 0x00
 __str_4:
-	db '16:01:25'
+	db '10:24:01'
 	db 0x00
 __str_5:
 	db 'V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, '

@@ -72,8 +72,8 @@ void TIM2_Handler(void)
 //           PA2 -|8       25|- PA15
 //           PA3 -|9       24|- PA14 (push button)
 //           PA4 -|10      23|- PA13
-//           PA5 -|11      22|- PA12 (pwm2) - servo 2
-//           PA6 -|12      21|- PA11 (pwm1) - servo 1
+//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
+//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
 //           PA7 -|13      20|- PA10 (Reserved for RXD)
 // (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
 // (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
@@ -136,47 +136,77 @@ void Hardware_Init(void)
 // A define to easily read PA8 (PA8 must be configured as input first)
 #define PA8 (GPIOA->IDR & BIT8)
 
-long int GetPeriod (int n)
+long long int GetPeriod(int n) //  return type changed from 'long int' to 'long long int' to account for overflow
 {
 	int i;
-	unsigned int saved_TCNT1a, saved_TCNT1b;
+	long long int overflows = 0; //  tracks systick overflow in a variable
 	
-	SysTick->LOAD = 0xffffff;  // 24-bit counter set to check for signal present
-	SysTick->VAL = 0xffffff; // load the SysTick counter
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	while (PA8!=0) // Wait for square wave to be 0
+	// Wait for square wave to be 0
+	SysTick->LOAD = 0xffffff;
+	SysTick->VAL  = 0xffffff;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	while(PA8 != 0)
 	{
-		if(SysTick->CTRL & BIT16) return 0;
-	}
-	SysTick->CTRL = 0x00; // Disable Systick counter
-
-	SysTick->LOAD = 0xffffff;  // 24-bit counter set to check for signal present
-	SysTick->VAL = 0xffffff; // load the SysTick counter
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	while (PA8==0) // Wait for square wave to be 1
-	{
-		if(SysTick->CTRL & BIT16) return 0;
-	}
-	SysTick->CTRL = 0x00; // Disable Systick counter
-	
-	SysTick->LOAD = 0xffffff;  // 24-bit counter reset
-	SysTick->VAL = 0xffffff; // load the SysTick counter to initial value
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	for(i=0; i<n; i++) // Measure the time of 'n' periods
-	{
-		while (PA8!=0) // Wait for square wave to be 0
+		// Instead of returning immediately on overflow, count it:
+		if(SysTick->CTRL & BIT16) overflows++; // adds overflow counting when the period isnt 0
+		// Optional timeout to avoid infinite loop:
+		if(overflows > 100000) // gets adjusted as needed
 		{
-			if(SysTick->CTRL & BIT16) return 0;
-		}
-		while (PA8==0) // Wait for square wave to be 1
-		{
-			if(SysTick->CTRL & BIT16) return 0;
+			SysTick->CTRL = 0;
+			return 0;
 		}
 	}
-	SysTick->CTRL = 0x00; // Disable Systick counter
+	SysTick->CTRL = 0x00;
 
-	return 0xffffff-SysTick->VAL;
+	// Wait for square wave to be 1
+	SysTick->LOAD = 0xffffff;
+	SysTick->VAL  = 0xffffff;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	overflows = 0; // reseweft overflow counterrr before next wait
+	while(PA8 == 0)
+	{
+		if(SysTick->CTRL & BIT16) overflows++;
+		if(overflows > 100000)
+		{
+			SysTick->CTRL = 0;
+			return 0;
+		}
+	}
+	SysTick->CTRL = 0x00;
+	
+	// Measure n cycles
+	SysTick->LOAD = 0xffffff;
+	SysTick->VAL  = 0xffffff;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	overflows = 0; //  reset before counting nnn cycles
+	for(i=0; i<n; i++)
+	{
+		while (PA8 != 0)
+		{
+			if(SysTick->CTRL & BIT16) overflows++;
+			if(overflows > 100000)
+			{
+				SysTick->CTRL = 0;
+				return 0;
+			}
+		}
+		while (PA8 == 0)
+		{
+			if(SysTick->CTRL & BIT16) overflows++;
+			if(overflows > 100000)
+			{
+				SysTick->CTRL = 0;
+				return 0;
+			}
+		}
+	}
+	SysTick->CTRL = 0x00;
+
+	// Combine leftover SysTick counts with how many times it overflowed.
+	// Each overflow is 0xffffff (24-bit) ccounts withi ni t.
+	return ((long long int)overflows << 24) + (0xffffff - SysTick->VAL); // adjusts overflows with the system tick for val
 }
+
 
 void PrintNumber(long int val, int Base, int digits)
 { 
@@ -220,12 +250,95 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
+// LIFT ARM
+void liftArm() {
+	
+}
+
+// DROP ARM (opposites of liftArm)
+void dropArm() {
+	ISR_pwm1=75; ISR_pwm2=75;// starts default (1 - 75) (2 - 240)
+	waitms(500);
+
+	// ROTATE OUT
+	//ISR_pwm2=82; // move bottom servo - 90 degrees left
+	while (ISR_pwm2 < 157) {
+		ISR_pwm2++;
+		waitms(10);
+	}
+
+	waitms(500);
+	// MOVE DOWN
+	// ISR_pwm1=240; // move top servo - 180 degrees down
+	while (ISR_pwm1 < 240) {
+		ISR_pwm1++;
+		waitms(10);
+	}
+	
+	waitms(500);
+
+	//SWEEP FOR COINS
+	//ISR_pwm2=240;// move bottom servo - 90 degrees left
+	toggleMagnet(1);
+	while (ISR_pwm2 < 240) {
+		
+		ISR_pwm2++;
+		waitms(10);
+	}
+	waitms(500);
+	// MOVE UP
+	//ISR_pwm1=75;// move top servo - 170 degrees up
+	while (ISR_pwm1 > 75) {
+		ISR_pwm1--;
+		waitms(10);
+	}
+
+	waitms(500);
+	// MOVE OVER BOX
+	//ISR_pwm2=100;// move bottom servo - 120 degrees right
+	
+	while (ISR_pwm2 > 100) {
+		ISR_pwm2--;
+		waitms(10);
+	}
+	toggleMagnet(0); // turn off magnet
+	waitms(500);
+}
+
+// DETECT PERIMETER
+void detectPerimeter(int v1, int v2, int perimeter_threshold) {
+	if ((v1%1000) > 1000 || (v2%1000) > 1000) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
+		eputs("PERIMETER DETECTED!");
+		// move backward
+		// turn left
+		// move forward
+	}
+
+	else {
+		eputs("NO PERIMETER DETECTED!");
+	}
+}
+
+// DETECT COIN
+void detectCoin (int long period, int threshold) {
+	if (period > threshold) { // checking with every reading of period
+		eputs("COIN DETECTED!");
+		toggleMagnet(1); // turn on emagnet
+		// lift arm
+		// move servo 1 full rotation
+		// move servo 2 full rotation
+		toggleMagnet(0); // turn off emagnet
+		// drop arm
+	}
+}
+
 
 
 int main(void)
 {
     int j, v;
-	long int count, f;
+	long long int count;
+	float f;
 	unsigned char LED_toggle=0; // Used to test the outputs
 
 	int p1_v, p2_v; // perimeter sensor values
@@ -285,10 +398,10 @@ int main(void)
 
 		// Not very good for high frequencies because of all the interrupts in the background
 		// but decent for low frequencies around 10kHz.
-		count=GetPeriod(60);
+		count=GetPeriod(100);
 		if(count>0)
 		{
-			f=(F_CPU*60)/count;
+			f=(float)(F_CPU*100.0) / (float)count;
 			eputs("f=");
 			PrintNumber(f, 10, 7);
 			eputs("Hz, count=");
@@ -300,12 +413,14 @@ int main(void)
 			eputs("NO SIGNAL                     \r");
 		}
 
+
+
 		// Now turn on one of outputs per cycle to check
 		switch (LED_toggle++)
 		{
 			// case 0
 				// eputs("CASE ZERO: turn magnet on");
-				PB3_1;
+				//PB3_1;
 				// // toggleMagnet(1);
 				// waitms(5000);
 				// PB3_0;
@@ -333,26 +448,68 @@ int main(void)
 				PB7_0;
 				break;
 		}
-		
-		// Change the servo PWM signals
-		if (ISR_pwm1<200)
-		{
-			ISR_pwm1++;
-		}
-		else
-		{
-			ISR_pwm1=100;	
-		}
 
-		if (ISR_pwm2>100)
-		{
-			ISR_pwm2--;
-		}
-		else
-		{
-			ISR_pwm2=200;	
-		}
+		// find default positions
+		//ISR_pwm1=75; ISR_pwm2=75;
 		
-		waitms(1000);	
+		//dropArm();
+		//toggleMagnet(1);
+		//waitms(500);
+		//ISR_pwm2=240;
+		
+		// ISR_pwm1=75;
+		// waitms(500);
+		
+		// //ISR_pwm1=100;
+		// waitms(500);
+
+		// //ISR_pwm1=200;
+		// waitms(500);
+
+		// //ISR_pwm1=240;
+		// waitms(500);
+		
+		
+		// //ISR_pwm2=75;
+		// //waitms(1000);
+
+		// ISR_pwm2=240;
+		
+		// //ISR_pwm2=75;
+		// waitms(500);
+		
+		// //ISR_pwm1=100;
+		// waitms(500);
+
+		// //ISR_pwm1=200;
+		// waitms(500);
+
+		
+		
+		
+
+
+
+		//ISR_pwm2=200;
+		// Change the servo PWM signals
+		// if (ISR_pwm1<200)
+		// {
+		// 	ISR_pwm1+= 10;
+		// }
+		// else
+		// {
+		// 	ISR_pwm1=100;	
+		// }
+
+		// if (ISR_pwm2>100)
+		// {
+		// 	ISR_pwm2-= 10;
+		// }
+		// else
+		// {
+		// 	ISR_pwm2=200;	
+		// }
+		
+		waitms(500);	
 	}
 }

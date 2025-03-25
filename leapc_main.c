@@ -17,18 +17,30 @@ int serial_fd = -1; //file descriptor for efm8 usb serial connection
 
 void setupEMF8Serial(const char* portName)
 {
-    serial_fd = open(portName, O_WRONLY | O_NOCTTY);
+
+    printf("port function 1\n");
+
+    serial_fd = open(portName, O_WRONLY | O_NOCTTY | O_NONBLOCK);
+
+    printf("port function 0.5\n");
+
     if(serial_fd < 0) {
         perror("ERROR opening EFM8 port");
         exit(1);
     }
 
+    printf("port function 2\n");
+
     struct termios tty;
     tcgetattr(serial_fd, &tty);
+
+    printf("port function 3\n");
 
     // Set baud rate to match your EFM8 code (9600 in your example)
     cfsetispeed(&tty, B115200);
     cfsetospeed(&tty, B115200);
+
+    printf("port function 4\n");
 
     // 8-N-1 serial settings
     tty.c_cflag &= ~PARENB;    // No parity
@@ -36,6 +48,8 @@ void setupEMF8Serial(const char* portName)
     tty.c_cflag &= ~CSIZE;     
     tty.c_cflag |= CS8;        // 8 bits
     tty.c_cflag |= CREAD | CLOCAL;
+
+    printf("port function 5\n");
 
     tcsetattr(serial_fd, TCSANOW, &tty);
     printf("EFM8 USB serial port configured.\n");
@@ -45,16 +59,21 @@ void setupEMF8Serial(const char* portName)
 void sendToEFM8(long long frameID, unsigned int hands, float framerate, const char* handType, float pinch, float grab)
 {
     if(serial_fd < 0) return; // Not open
-    
-    // Example format: !FRAMEID,HANDS,FRAMERATE,HANDTYPE,PINCH,GRAB\n
-    // '!' is a start marker for easy parsing on the EFM8
+
     char buffer[128];
-    snprintf(buffer, sizeof(buffer), 
-             "!%lld,%u,%.2f,%s,%.2f,%.2f\n", 
+    snprintf(buffer, sizeof(buffer),
+             "!%lld,%u,%.2f,%s,%.2f,%.2f\n",
              frameID, hands, framerate, handType, pinch, grab);
-    
-    write(serial_fd, buffer, strlen(buffer));
+
+    int n = write(serial_fd, buffer, strlen(buffer));
+
+    if (n > 0) {
+        printf("\n[DEBUG] Sent to EFM8: %s", buffer);
+    } else {
+        perror("ERROR writing to serial");
+    }
 }
+
 
 
 int main() {
@@ -65,7 +84,7 @@ int main() {
 
     printf("opened connection\n");
 
-    //setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
+    setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
 
     printf("tried setting up efm8serial with port\n");
 

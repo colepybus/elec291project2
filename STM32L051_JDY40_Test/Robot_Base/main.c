@@ -72,8 +72,8 @@ void TIM2_Handler(void)
 //           PA2 -|8       25|- PA15
 //           PA3 -|9       24|- PA14 (push button)
 //           PA4 -|10      23|- PA13
-//           PA5 -|11      22|- PA12 (pwm2) - servo 2
-//           PA6 -|12      21|- PA11 (pwm1) - servo 1
+//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
+//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
 //           PA7 -|13      20|- PA10 (Reserved for RXD)
 // (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
 // (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
@@ -220,6 +220,88 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
+// LIFT ARM
+void liftArm() {
+	
+}
+
+// DROP ARM (opposites of liftArm)
+void dropArm() {
+	ISR_pwm1=75; ISR_pwm2=75;// starts default (1 - 75) (2 - 240)
+	waitms(500);
+
+	// ROTATE OUT
+	//ISR_pwm2=82; // move bottom servo - 90 degrees left
+	while (ISR_pwm2 < 157) {
+		ISR_pwm2++;
+		waitms(10);
+	}
+
+	waitms(500);
+	// MOVE DOWN
+	// ISR_pwm1=240; // move top servo - 180 degrees down
+	while (ISR_pwm1 < 240) {
+		ISR_pwm1++;
+		waitms(10);
+	}
+	
+	waitms(500);
+
+	//SWEEP FOR COINS
+	//ISR_pwm2=240;// move bottom servo - 90 degrees left
+	toggleMagnet(1);
+	while (ISR_pwm2 < 240) {
+		
+		ISR_pwm2++;
+		waitms(10);
+	}
+	waitms(500);
+	// MOVE UP
+	//ISR_pwm1=75;// move top servo - 170 degrees up
+	while (ISR_pwm1 > 75) {
+		ISR_pwm1--;
+		waitms(10);
+	}
+
+	waitms(500);
+	// MOVE OVER BOX
+	//ISR_pwm2=100;// move bottom servo - 120 degrees right
+	
+	while (ISR_pwm2 > 100) {
+		ISR_pwm2--;
+		waitms(10);
+	}
+	toggleMagnet(0); // turn off magnet
+	waitms(500);
+}
+
+// DETECT PERIMETER
+void detectPerimeter(int v1, int v2, int perimeter_threshold) {
+	if ((v1%1000) > 1000 || (v2%1000) > 1000) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
+		eputs("PERIMETER DETECTED!");
+		// move backward
+		// turn left
+		// move forward
+	}
+
+	else {
+		eputs("NO PERIMETER DETECTED!");
+	}
+}
+
+// DETECT COIN
+void detectCoin (int long period, int threshold) {
+	if (period > threshold) { // checking with every reading of period
+		eputs("COIN DETECTED!");
+		toggleMagnet(1); // turn on emagnet
+		// lift arm
+		// move servo 1 full rotation
+		// move servo 2 full rotation
+		toggleMagnet(0); // turn off emagnet
+		// drop arm
+	}
+}
+
 
 
 int main(void)
@@ -300,12 +382,14 @@ int main(void)
 			eputs("NO SIGNAL                     \r");
 		}
 
+
+
 		// Now turn on one of outputs per cycle to check
 		switch (LED_toggle++)
 		{
 			// case 0
 				// eputs("CASE ZERO: turn magnet on");
-				PB3_1;
+				//PB3_1;
 				// // toggleMagnet(1);
 				// waitms(5000);
 				// PB3_0;
@@ -333,26 +417,68 @@ int main(void)
 				PB7_0;
 				break;
 		}
-		
-		// Change the servo PWM signals
-		if (ISR_pwm1<200)
-		{
-			ISR_pwm1++;
-		}
-		else
-		{
-			ISR_pwm1=100;	
-		}
 
-		if (ISR_pwm2>100)
-		{
-			ISR_pwm2--;
-		}
-		else
-		{
-			ISR_pwm2=200;	
-		}
+		// find default positions
+		//ISR_pwm1=75; ISR_pwm2=75;
 		
-		waitms(1000);	
+		//dropArm();
+		//toggleMagnet(1);
+		//waitms(500);
+		//ISR_pwm2=240;
+		
+		// ISR_pwm1=75;
+		// waitms(500);
+		
+		// //ISR_pwm1=100;
+		// waitms(500);
+
+		// //ISR_pwm1=200;
+		// waitms(500);
+
+		// //ISR_pwm1=240;
+		// waitms(500);
+		
+		
+		// //ISR_pwm2=75;
+		// //waitms(1000);
+
+		// ISR_pwm2=240;
+		
+		// //ISR_pwm2=75;
+		// waitms(500);
+		
+		// //ISR_pwm1=100;
+		// waitms(500);
+
+		// //ISR_pwm1=200;
+		// waitms(500);
+
+		
+		
+		
+
+
+
+		//ISR_pwm2=200;
+		// Change the servo PWM signals
+		// if (ISR_pwm1<200)
+		// {
+		// 	ISR_pwm1+= 10;
+		// }
+		// else
+		// {
+		// 	ISR_pwm1=100;	
+		// }
+
+		// if (ISR_pwm2>100)
+		// {
+		// 	ISR_pwm2-= 10;
+		// }
+		// else
+		// {
+		// 	ISR_pwm2=200;	
+		// }
+		
+		waitms(500);	
 	}
 }

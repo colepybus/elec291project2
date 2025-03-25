@@ -32,27 +32,9 @@ void main(void)
 {
 	RCC->IOPENR |= BIT0; // peripheral clock enable for port A
     GPIOA->MODER = (GPIOA->MODER & ~(BIT17|BIT16)) | BIT16; // Make pin PA8 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0))
-	
-	GPIOA->MODER = (GPIOA->MODER & ~(BIT15|BIT14)) | BIT14; 
-    GPIOA->MODER = (GPIOA->MODER & ~(BIT23|BIT22)) | BIT22; 
-	
-	//GPIOA->OTYPER &= ~(BIT4);
-	
-	// Ensure PA6 is push-pull
-    //GPIOA->OTYPER &= ~(BIT6);  // Set PA6 as push-pull output
-	
-	// Disable any pull-up/pull-down resistors
-    //GPIOA->PUPDR &= ~(BIT13 | BIT12);  // No pull-up, no pull-down
-	
-	// make sure not assigned to alternate func
-	//GPIOA->AFR[0] &= ~(0xF << (6 * 4));  // Clear alternate function bits for PA6
 	while(1)
 	{
 		GPIOA->ODR ^= BIT8; // Toggle PA8
-		
-		GPIOA->ODR ^= BIT7; // Toggle PA7
-		
-		GPIOA->ODR ^= BIT11; // Toggle PA11
 		delay(5000000);
 	}
 }

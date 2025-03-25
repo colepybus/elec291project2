@@ -29,7 +29,7 @@ LOAD C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nof
 LOAD C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libm.a
 END GROUP
 
-.text           0x08000000     0x18b0
+.text           0x08000000     0x1a48
  *(.vectors)
  .vectors       0x08000000       0xb8 startup.o
                 0x08000000                Vectors
@@ -38,7 +38,7 @@ END GROUP
                 0x080000b8       0x28 startup.o
                 0x080000b8                ResetInit
  *(.text*)
- .text          0x080000e0      0x864 main.o
+ .text          0x080000e0      0x9c0 main.o
                 0x080000e0                wait_1ms
                 0x08000118                waitms
                 0x0800013a                TIM2_Handler
@@ -46,112 +46,116 @@ END GROUP
                 0x0800041c                GetPeriod
                 0x08000518                PrintNumber
                 0x080005b8                toggleMagnet
-                0x080005f4                main
- .text          0x08000944      0x10c adc.o
-                0x08000944                initADC
-                0x080009e4                readADC
- .text          0x08000a50      0x5b4 serial.o
-                0x08000a50                ReadCom
-                0x08000ac4                WriteCom
-                0x08000b64                initUART
-                0x08000cb4                USART1_Handler
-                0x08000ce0                usart_rx
-                0x08000d10                usart_tx
-                0x08000d78                PutBuf
-                0x08000dda                GetBuf
-                0x08000e30                GetBufCount
-                0x08000e44                eputs
-                0x08000e80                eputc
-                0x08000e9e                egetc
-                0x08000eb8                egets
-                0x08000f44                egetc_echo
-                0x08000f6a                egets_echo
- .text          0x08001004      0x1a8 startup.o
-                0x0800107c                initClock
-                0x08001184                EXTI2_3_Handler
-                0x08001184                TIM21_Handler
-                0x08001184                SysTick_Handler
-                0x08001184                I2C1_Handler
-                0x08001184                PendSV_Handler
-                0x08001184                NMI_Handler
-                0x08001184                WWDG_Handler
-                0x08001184                RTC_Handler
-                0x08001184                EXTI4_15_Handler
-                0x08001184                DMA_CH4_5_6_7_Handler
-                0x08001184                Default_Handler
-                0x08001184                LPUART1_Handler
-                0x08001184                FLASH_Handler
-                0x08001184                EXTI0_1_Handler
-                0x08001184                DMA_CH1_Handler
-                0x08001184                SPI2_Handler
-                0x08001184                DMA_CH2_3_Handler
-                0x08001184                I2C2_Handler
-                0x08001184                SVC_Handler
-                0x08001184                LPTIM1_Handler
-                0x08001184                USART2_Handler
-                0x08001184                SPI1_Handler
-                0x08001184                RCC_Handler
-                0x08001184                PVD_Handler
-                0x08001184                TIM6_Handler
-                0x08001184                TIM22_Handler
-                0x08001184                ADC_COMP_Handler
-                0x08001198                Hard_Fault_Handler
- .text          0x080011ac      0x29c newlib_stubs.o
-                0x080011ac                _exit
-                0x080011b6                _close
-                0x080011ca                _execve
-                0x080011ec                _fork
-                0x08001204                _fstat
-                0x08001220                _getpid
-                0x0800122c                _kill
-                0x0800124c                _link
-                0x0800126c                _lseek
-                0x08001282                _stat
-                0x0800129e                _times
-                0x080012b2                _unlink
-                0x080012d0                _wait
-                0x080012f0                _isatty
-                0x08001318                _sbrk
-                0x0800137c                _read
-                0x080013f4                _write
- .text          0x08001448        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
- .text          0x08001448      0x1d4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
-                0x08001448                __divsi3
-                0x08001448                __aeabi_idiv
-                0x08001614                __aeabi_idivmod
- .text          0x0800161c        0x4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
-                0x0800161c                __aeabi_idiv0
-                0x0800161c                __aeabi_ldiv0
+                0x080005f4                liftArm
+                0x080005fe                dropArm
+                0x08000704                detectPerimeter
+                0x08000764                detectCoin
+                0x08000798                main
+ .text          0x08000aa0      0x10c adc.o
+                0x08000aa0                initADC
+                0x08000b40                readADC
+ .text          0x08000bac      0x5b4 serial.o
+                0x08000bac                ReadCom
+                0x08000c20                WriteCom
+                0x08000cc0                initUART
+                0x08000e10                USART1_Handler
+                0x08000e3c                usart_rx
+                0x08000e6c                usart_tx
+                0x08000ed4                PutBuf
+                0x08000f36                GetBuf
+                0x08000f8c                GetBufCount
+                0x08000fa0                eputs
+                0x08000fdc                eputc
+                0x08000ffa                egetc
+                0x08001014                egets
+                0x080010a0                egetc_echo
+                0x080010c6                egets_echo
+ .text          0x08001160      0x1a8 startup.o
+                0x080011d8                initClock
+                0x080012e0                EXTI2_3_Handler
+                0x080012e0                TIM21_Handler
+                0x080012e0                SysTick_Handler
+                0x080012e0                I2C1_Handler
+                0x080012e0                PendSV_Handler
+                0x080012e0                NMI_Handler
+                0x080012e0                WWDG_Handler
+                0x080012e0                RTC_Handler
+                0x080012e0                EXTI4_15_Handler
+                0x080012e0                DMA_CH4_5_6_7_Handler
+                0x080012e0                Default_Handler
+                0x080012e0                LPUART1_Handler
+                0x080012e0                FLASH_Handler
+                0x080012e0                EXTI0_1_Handler
+                0x080012e0                DMA_CH1_Handler
+                0x080012e0                SPI2_Handler
+                0x080012e0                DMA_CH2_3_Handler
+                0x080012e0                I2C2_Handler
+                0x080012e0                SVC_Handler
+                0x080012e0                LPTIM1_Handler
+                0x080012e0                USART2_Handler
+                0x080012e0                SPI1_Handler
+                0x080012e0                RCC_Handler
+                0x080012e0                PVD_Handler
+                0x080012e0                TIM6_Handler
+                0x080012e0                TIM22_Handler
+                0x080012e0                ADC_COMP_Handler
+                0x080012f4                Hard_Fault_Handler
+ .text          0x08001308      0x29c newlib_stubs.o
+                0x08001308                _exit
+                0x08001312                _close
+                0x08001326                _execve
+                0x08001348                _fork
+                0x08001360                _fstat
+                0x0800137c                _getpid
+                0x08001388                _kill
+                0x080013a8                _link
+                0x080013c8                _lseek
+                0x080013de                _stat
+                0x080013fa                _times
+                0x0800140e                _unlink
+                0x0800142c                _wait
+                0x0800144c                _isatty
+                0x08001474                _sbrk
+                0x080014d8                _read
+                0x08001550                _write
+ .text          0x080015a4        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
+ .text          0x080015a4      0x1d4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
+                0x080015a4                __divsi3
+                0x080015a4                __aeabi_idiv
+                0x08001770                __aeabi_idivmod
+ .text          0x08001778        0x4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
+                0x08001778                __aeabi_idiv0
+                0x08001778                __aeabi_ldiv0
  *(.rodata*)
- .rodata        0x08001620      0x214 main.o
- .rodata        0x08001834       0x7c startup.o
-                0x080018b0                . = ALIGN (0x4)
-                0x080018b0                PROVIDE (__init_array_start = .)
+ .rodata        0x0800177c      0x250 main.o
+ .rodata        0x080019cc       0x7c startup.o
+                0x08001a48                . = ALIGN (0x4)
+                0x08001a48                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
-                0x080018b0                PROVIDE (__init_array_end = .)
-                0x080018b0                . = ALIGN (0x4)
-                0x080018b0                _etext = .
+                0x08001a48                PROVIDE (__init_array_end = .)
+                0x08001a48                . = ALIGN (0x4)
+                0x08001a48                _etext = .
 
-.glue_7         0x080018b0        0x0
- .glue_7        0x080018b0        0x0 linker stubs
+.glue_7         0x08001a48        0x0
+ .glue_7        0x08001a48        0x0 linker stubs
 
-.glue_7t        0x080018b0        0x0
- .glue_7t       0x080018b0        0x0 linker stubs
+.glue_7t        0x08001a48        0x0
+ .glue_7t       0x08001a48        0x0 linker stubs
 
-.vfp11_veneer   0x080018b0        0x0
- .vfp11_veneer  0x080018b0        0x0 linker stubs
+.vfp11_veneer   0x08001a48        0x0
+ .vfp11_veneer  0x08001a48        0x0 linker stubs
 
-.v4_bx          0x080018b0        0x0
- .v4_bx         0x080018b0        0x0 linker stubs
+.v4_bx          0x08001a48        0x0
+ .v4_bx         0x08001a48        0x0 linker stubs
 
-.iplt           0x080018b0        0x0
- .iplt          0x080018b0        0x0 main.o
+.iplt           0x08001a48        0x0
+ .iplt          0x08001a48        0x0 main.o
 
-.rel.dyn        0x080018b0        0x0
- .rel.iplt      0x080018b0        0x0 main.o
+.rel.dyn        0x08001a48        0x0
+ .rel.iplt      0x08001a48        0x0 main.o
 
-.data           0x20000000        0x8 load address 0x080018b0
+.data           0x20000000        0x8 load address 0x08001a48
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _data = .
  *(.data*)
@@ -170,10 +174,10 @@ END GROUP
                 0x20000008                . = ALIGN (0x4)
                 0x20000008                _edata = .
 
-.igot.plt       0x20000008        0x0 load address 0x080018b8
+.igot.plt       0x20000008        0x0 load address 0x08001a50
  .igot.plt      0x20000008        0x0 main.o
 
-.bss            0x20000008       0xb4 load address 0x080018b8
+.bss            0x20000008       0xb4 load address 0x08001a50
                 0x20000008                _bss = .
  *(.bss*)
  .bss           0x20000008        0x4 main.o
@@ -202,19 +206,19 @@ END GROUP
 OUTPUT(main.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000     0x1d64
- .debug_info    0x00000000      0x74b main.o
- .debug_info    0x0000074b      0x31b adc.o
- .debug_info    0x00000a66      0x82d serial.o
- .debug_info    0x00001293      0x3ad startup.o
- .debug_info    0x00001640      0x724 newlib_stubs.o
+.debug_info     0x00000000     0x1e26
+ .debug_info    0x00000000      0x80d main.o
+ .debug_info    0x0000080d      0x31b adc.o
+ .debug_info    0x00000b28      0x82d serial.o
+ .debug_info    0x00001355      0x3ad startup.o
+ .debug_info    0x00001702      0x724 newlib_stubs.o
 
-.debug_abbrev   0x00000000      0x7d0
- .debug_abbrev  0x00000000      0x1e0 main.o
- .debug_abbrev  0x000001e0      0x10c adc.o
- .debug_abbrev  0x000002ec      0x1f5 serial.o
- .debug_abbrev  0x000004e1      0x174 startup.o
- .debug_abbrev  0x00000655      0x17b newlib_stubs.o
+.debug_abbrev   0x00000000      0x86f
+ .debug_abbrev  0x00000000      0x27f main.o
+ .debug_abbrev  0x0000027f      0x10c adc.o
+ .debug_abbrev  0x0000038b      0x1f5 serial.o
+ .debug_abbrev  0x00000580      0x174 startup.o
+ .debug_abbrev  0x000006f4      0x17b newlib_stubs.o
 
 .debug_aranges  0x00000000       0xa8
  .debug_aranges
@@ -228,23 +232,23 @@ LOAD linker stubs
  .debug_aranges
                 0x00000088       0x20 newlib_stubs.o
 
-.debug_line     0x00000000      0xf29
- .debug_line    0x00000000      0x412 main.o
- .debug_line    0x00000412      0x195 adc.o
- .debug_line    0x000005a7      0x49c serial.o
- .debug_line    0x00000a43      0x25e startup.o
- .debug_line    0x00000ca1      0x288 newlib_stubs.o
+.debug_line     0x00000000      0xfb5
+ .debug_line    0x00000000      0x49e main.o
+ .debug_line    0x0000049e      0x195 adc.o
+ .debug_line    0x00000633      0x49c serial.o
+ .debug_line    0x00000acf      0x25e startup.o
+ .debug_line    0x00000d2d      0x288 newlib_stubs.o
 
-.debug_str      0x00000000      0x82a
- .debug_str     0x00000000      0x378 main.o
-                                0x3c7 (size before relaxing)
- .debug_str     0x00000378       0x71 adc.o
+.debug_str      0x00000000      0x87a
+ .debug_str     0x00000000      0x3c8 main.o
+                                0x421 (size before relaxing)
+ .debug_str     0x000003c8       0x71 adc.o
                                 0x280 (size before relaxing)
- .debug_str     0x000003e9      0x129 serial.o
+ .debug_str     0x00000439      0x129 serial.o
                                 0x3c4 (size before relaxing)
- .debug_str     0x00000512       0xee startup.o
+ .debug_str     0x00000562       0xee startup.o
                                 0x2ec (size before relaxing)
- .debug_str     0x00000600      0x22a newlib_stubs.o
+ .debug_str     0x00000650      0x22a newlib_stubs.o
                                 0x3ea (size before relaxing)
 
 .comment        0x00000000       0x49
@@ -274,13 +278,13 @@ LOAD linker stubs
  .ARM.attributes
                 0x00000126       0x1e C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
 
-.debug_frame    0x00000000      0x614
- .debug_frame   0x00000000      0x104 main.o
- .debug_frame   0x00000104       0x4c adc.o
- .debug_frame   0x00000150      0x1e8 serial.o
- .debug_frame   0x00000338       0x94 startup.o
- .debug_frame   0x000003cc      0x228 newlib_stubs.o
- .debug_frame   0x000005f4       0x20 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
+.debug_frame    0x00000000      0x68c
+ .debug_frame   0x00000000      0x17c main.o
+ .debug_frame   0x0000017c       0x4c adc.o
+ .debug_frame   0x000001c8      0x1e8 serial.o
+ .debug_frame   0x000003b0       0x94 startup.o
+ .debug_frame   0x00000444      0x228 newlib_stubs.o
+ .debug_frame   0x0000066c       0x20 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
 
 .debug_ranges   0x00000000       0x18
  .debug_ranges  0x00000000       0x18 startup.o
@@ -372,6 +376,9 @@ _times                                            newlib_stubs.o
 _unlink                                           newlib_stubs.o
 _wait                                             newlib_stubs.o
 _write                                            newlib_stubs.o
+detectCoin                                        main.o
+detectPerimeter                                   main.o
+dropArm                                           main.o
 egetc                                             serial.o
                                                   newlib_stubs.o
 egetc_echo                                        serial.o
@@ -391,6 +398,7 @@ initADC                                           adc.o
 initClock                                         startup.o
 initUART                                          serial.o
                                                   startup.o
+liftArm                                           main.o
 main                                              main.o
                                                   startup.o
 readADC                                           adc.o

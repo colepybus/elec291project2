@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "../Common/Include/serial.h"
 #include "adc.h"
+#include <math.h>
 
 #define F_CPU 32000000L
 #define DEF_F 100000L // 10us tick
@@ -303,14 +304,14 @@ void pickCoin() {
 // DETECT PERIMETER
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 	if ((v1%1000) > 1000 || (v2%1000) > 1000) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
-		eputs("PERIMETER DETECTED!");
+		eputs("PERIMETER DETECTED!\r\n");
 		// move backward
 		// turn left
 		// move forward
 	}
 
 	else {
-		eputs("NO PERIMETER DETECTED!");
+		eputs("NO PERIMETER DETECTED!\r\n");
 	}
 }
 
@@ -329,6 +330,9 @@ void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 
 
 #define METAL_THRESHOLD 0.8 // 0.05% change from baseline
+float freqBuffer[10] = {0};
+uint8_t sampleIndex = 0; // boolean as flag
+uint8_t coinDetected = 0; // boolean as flag
 
 void detectCoin() {
 	long long int count;
@@ -344,6 +348,10 @@ void detectCoin() {
 	if (count > 0) {
 		f = (float)(F_CPU*100.0) / (float)count;
 
+		eputs("DEBUG: Current Frequency:");
+		PrintNumber(f, 10, 7);
+		eputs(" Hz \r\n");
+
 		// store in moving avg buffer
 		freqBuffer[sampleIndex] = f;
 		sampleIndex = (sampleIndex + 1) % 10; // moving average sample
@@ -354,22 +362,37 @@ void detectCoin() {
 		}
 
 		avg_f = avg_f / 10;
+		eputs("DEBUG: Moving Average Calculation: ");
+		PrintNumber(avg_f, 10, 7);
+		eputs(" Hz \r\n");
 
 		// initilize baseline freq 
 		if (baseline_f == 0) { // 1st time reading freq
 			baseline_f = avg_f; 
+			eputs("DEBUG: Baseline Frequency Initialized:");
+			PrintNumber(baseline_f, 10, 7);
+			eputs(" Hz \r\n");
 		}
 
 		// calculate percentage change 
 		f_change = ((avg_f - baseline_f) / baseline_f) * 100;
+		eputs("DEBUG: Frequency Change: ");
+		PrintNumber(f_change, 10, 7);
+		eputs(" Hz \r\n");
+		
 
 		// check if significant change
-		if (!coinDetected && fabs(f_change > METAL_THRESHOLD)) {
+		if (!coinDetected && fabs(f_change) > METAL_THRESHOLD) {
 			coinDetected = 1;
-			eputs("COIN DETECTED!");
+			eputs("COIN DETECTED!\r\n");
 			// do pickCoin();
-			baseline_f = avg_f// update baseline frequency
+			baseline_f = avg_f; // update baseline frequency
 			
+		}
+
+		// if coin has already been detected, make sure not detected twice
+		else if (coinDetected && fabs(f_change) < 0.02) {
+			coinDetected = 0; // reset detection flag 
 		}
 
 	}
@@ -439,6 +462,7 @@ int main(void)
 			eputs("0 ");
 		}
 
+		// OLD GET PERIOD CODE
 		// Not very good for high frequencies because of all the interrupts in the background
 		// but decent for low frequencies around 10kHz.
 		// count=GetPeriod(100);
@@ -497,35 +521,8 @@ int main(void)
 		
 		//pickCoin();
 		//toggleMagnet(1);
+		detectCoin();
 
-
-		
-		
-		
-		
-
-
-
-		//ISR_pwm2=200;
-		// Change the servo PWM signals
-		// if (ISR_pwm1<200)
-		// {
-		// 	ISR_pwm1+= 10;
-		// }
-		// else
-		// {
-		// 	ISR_pwm1=100;	
-		// }
-
-		// if (ISR_pwm2>100)
-		// {
-		// 	ISR_pwm2-= 10;
-		// }
-		// else
-		// {
-		// 	ISR_pwm2=200;	
-		// }
-		
 		waitms(500);	
 	}
 }

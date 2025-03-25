@@ -6,16 +6,48 @@ C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6
                               main.o (__aeabi_idiv)
 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
                               C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o) (__aeabi_idiv0)
-C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
-                              main.o (__aeabi_ddiv)
-C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixdfsi.o)
-                              main.o (__aeabi_d2iz)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+                              main.o (__aeabi_dcmplt)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+                              main.o (__aeabi_fcmpeq)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+                              main.o (__aeabi_l2f)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o)
+                              main.o (__aeabi_fadd)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+                              main.o (__aeabi_fdiv)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqsf2.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o) (__eqsf2)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gesf2.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o) (__gesf2)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(lesf2.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o) (__lesf2)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+                              main.o (__aeabi_fmul)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(subsf3.o)
+                              main.o (__aeabi_fsub)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixsfsi.o)
+                              main.o (__aeabi_f2iz)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(adddf3.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o) (__aeabi_dadd)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqdf2.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o) (__eqdf2)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gedf2.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o) (__gedf2)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(ledf2.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o) (__ledf2)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o) (__aeabi_dmul)
 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
-                              main.o (__aeabi_i2d)
-C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
-                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o) (__aeabi_uidivmod)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o) (__aeabi_i2d)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatunsidf.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o) (__aeabi_ui2d)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(extendsfdf2.o)
+                              main.o (__aeabi_f2d)
+C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(truncdfsf2.o)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o) (__aeabi_d2f)
 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
-                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o) (__clzsi2)
+                              C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o) (__clzsi2)
 
 Memory Configuration
 
@@ -39,7 +71,7 @@ LOAD C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nof
 LOAD C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libm.a
 END GROUP
 
-.text           0x08000000     0x239c
+.text           0x08000000     0x3be8
  *(.vectors)
  .vectors       0x08000000       0xb8 startup.o
                 0x08000000                Vectors
@@ -48,7 +80,7 @@ END GROUP
                 0x080000b8       0x28 startup.o
                 0x080000b8                ResetInit
  *(.text*)
- .text          0x080000e0      0xacc main.o
+ .text          0x080000e0      0xc08 main.o
                 0x080000e0                wait_1ms
                 0x08000118                waitms
                 0x0800013a                TIM2_Handler
@@ -56,129 +88,182 @@ END GROUP
                 0x0800041c                GetPeriod
                 0x08000608                PrintNumber
                 0x080006a8                toggleMagnet
-                0x080006e4                liftArm
-                0x080006ee                dropArm
-                0x080007f4                detectPerimeter
-                0x08000854                detectCoin
-                0x08000888                main
- .text          0x08000bac      0x10c adc.o
-                0x08000bac                initADC
-                0x08000c4c                readADC
- .text          0x08000cb8      0x5b4 serial.o
-                0x08000cb8                ReadCom
-                0x08000d2c                WriteCom
-                0x08000dcc                initUART
-                0x08000f1c                USART1_Handler
-                0x08000f48                usart_rx
-                0x08000f78                usart_tx
-                0x08000fe0                PutBuf
-                0x08001042                GetBuf
-                0x08001098                GetBufCount
-                0x080010ac                eputs
-                0x080010e8                eputc
-                0x08001106                egetc
-                0x08001120                egets
-                0x080011ac                egetc_echo
-                0x080011d2                egets_echo
- .text          0x0800126c      0x1a8 startup.o
-                0x080012e4                initClock
-                0x080013ec                EXTI2_3_Handler
-                0x080013ec                TIM21_Handler
-                0x080013ec                SysTick_Handler
-                0x080013ec                I2C1_Handler
-                0x080013ec                PendSV_Handler
-                0x080013ec                NMI_Handler
-                0x080013ec                WWDG_Handler
-                0x080013ec                RTC_Handler
-                0x080013ec                EXTI4_15_Handler
-                0x080013ec                DMA_CH4_5_6_7_Handler
-                0x080013ec                Default_Handler
-                0x080013ec                LPUART1_Handler
-                0x080013ec                FLASH_Handler
-                0x080013ec                EXTI0_1_Handler
-                0x080013ec                DMA_CH1_Handler
-                0x080013ec                SPI2_Handler
-                0x080013ec                DMA_CH2_3_Handler
-                0x080013ec                I2C2_Handler
-                0x080013ec                SVC_Handler
-                0x080013ec                LPTIM1_Handler
-                0x080013ec                USART2_Handler
-                0x080013ec                SPI1_Handler
-                0x080013ec                RCC_Handler
-                0x080013ec                PVD_Handler
-                0x080013ec                TIM6_Handler
-                0x080013ec                TIM22_Handler
-                0x080013ec                ADC_COMP_Handler
-                0x08001400                Hard_Fault_Handler
- .text          0x08001414      0x29c newlib_stubs.o
-                0x08001414                _exit
-                0x0800141e                _close
-                0x08001432                _execve
-                0x08001454                _fork
-                0x0800146c                _fstat
-                0x08001488                _getpid
-                0x08001494                _kill
-                0x080014b4                _link
-                0x080014d4                _lseek
-                0x080014ea                _stat
-                0x08001506                _times
-                0x0800151a                _unlink
-                0x08001538                _wait
-                0x08001558                _isatty
-                0x08001580                _sbrk
-                0x080015e4                _read
-                0x0800165c                _write
- .text          0x080016b0        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
- .text          0x080016b0      0x1d4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
-                0x080016b0                __divsi3
-                0x080016b0                __aeabi_idiv
-                0x0800187c                __aeabi_idivmod
- .text          0x08001884        0x4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
-                0x08001884                __aeabi_idiv0
-                0x08001884                __aeabi_ldiv0
- .text          0x08001888      0x5ec C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
-                0x08001888                __aeabi_ddiv
- .text          0x08001e74       0x6c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixdfsi.o)
-                0x08001e74                __aeabi_d2iz
- .text          0x08001ee0       0x60 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
-                0x08001ee0                __aeabi_i2d
- .text          0x08001f40      0x114 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
-                0x08001f40                __aeabi_uidiv
-                0x08001f40                __udivsi3
-                0x0800204c                __aeabi_uidivmod
- .text          0x08002054       0x3c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
-                0x08002054                __clzsi2
+                0x080006e4                pickCoin
+                0x080007ec                detectPerimeter
+                0x0800084c                detectCoin
+                0x08000a44                main
+ .text          0x08000ce8      0x10c adc.o
+                0x08000ce8                initADC
+                0x08000d88                readADC
+ .text          0x08000df4      0x5b4 serial.o
+                0x08000df4                ReadCom
+                0x08000e68                WriteCom
+                0x08000f08                initUART
+                0x08001058                USART1_Handler
+                0x08001084                usart_rx
+                0x080010b4                usart_tx
+                0x0800111c                PutBuf
+                0x0800117e                GetBuf
+                0x080011d4                GetBufCount
+                0x080011e8                eputs
+                0x08001224                eputc
+                0x08001242                egetc
+                0x0800125c                egets
+                0x080012e8                egetc_echo
+                0x0800130e                egets_echo
+ .text          0x080013a8      0x1a8 startup.o
+                0x08001420                initClock
+                0x08001528                EXTI2_3_Handler
+                0x08001528                TIM21_Handler
+                0x08001528                SysTick_Handler
+                0x08001528                I2C1_Handler
+                0x08001528                PendSV_Handler
+                0x08001528                NMI_Handler
+                0x08001528                WWDG_Handler
+                0x08001528                RTC_Handler
+                0x08001528                EXTI4_15_Handler
+                0x08001528                DMA_CH4_5_6_7_Handler
+                0x08001528                Default_Handler
+                0x08001528                LPUART1_Handler
+                0x08001528                FLASH_Handler
+                0x08001528                EXTI0_1_Handler
+                0x08001528                DMA_CH1_Handler
+                0x08001528                SPI2_Handler
+                0x08001528                DMA_CH2_3_Handler
+                0x08001528                I2C2_Handler
+                0x08001528                SVC_Handler
+                0x08001528                LPTIM1_Handler
+                0x08001528                USART2_Handler
+                0x08001528                SPI1_Handler
+                0x08001528                RCC_Handler
+                0x08001528                PVD_Handler
+                0x08001528                TIM6_Handler
+                0x08001528                TIM22_Handler
+                0x08001528                ADC_COMP_Handler
+                0x0800153c                Hard_Fault_Handler
+ .text          0x08001550      0x29c newlib_stubs.o
+                0x08001550                _exit
+                0x0800155a                _close
+                0x0800156e                _execve
+                0x08001590                _fork
+                0x080015a8                _fstat
+                0x080015c4                _getpid
+                0x080015d0                _kill
+                0x080015f0                _link
+                0x08001610                _lseek
+                0x08001626                _stat
+                0x08001642                _times
+                0x08001656                _unlink
+                0x08001674                _wait
+                0x08001694                _isatty
+                0x080016bc                _sbrk
+                0x08001720                _read
+                0x08001798                _write
+ .text          0x080017ec        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
+ .text          0x080017ec      0x1d4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
+                0x080017ec                __divsi3
+                0x080017ec                __aeabi_idiv
+                0x080019b8                __aeabi_idivmod
+ .text          0x080019c0        0x4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
+                0x080019c0                __aeabi_idiv0
+                0x080019c0                __aeabi_ldiv0
+ .text          0x080019c4       0x7c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+                0x080019c4                __aeabi_cdrcmple
+                0x080019d4                __aeabi_cdcmple
+                0x080019d4                __aeabi_cdcmpeq
+                0x080019e4                __aeabi_dcmpeq
+                0x080019f0                __aeabi_dcmplt
+                0x08001a04                __aeabi_dcmple
+                0x08001a18                __aeabi_dcmpgt
+                0x08001a2c                __aeabi_dcmpge
+ .text          0x08001a40       0x74 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+                0x08001a40                __aeabi_cfrcmple
+                0x08001a48                __aeabi_cfcmpeq
+                0x08001a48                __aeabi_cfcmple
+                0x08001a58                __aeabi_fcmpeq
+                0x08001a64                __aeabi_fcmplt
+                0x08001a78                __aeabi_fcmple
+                0x08001a8c                __aeabi_fcmpgt
+                0x08001aa0                __aeabi_fcmpge
+ .text          0x08001ab4       0x68 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+                0x08001ab4                __aeabi_l2f
+                0x08001ab4                __floatdisf
+ .text          0x08001b1c      0x33c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o)
+                0x08001b1c                __aeabi_fadd
+ .text          0x08001e58      0x230 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+                0x08001e58                __aeabi_fdiv
+ .text          0x08002088       0x4c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqsf2.o)
+                0x08002088                __eqsf2
+                0x08002088                __nesf2
+ .text          0x080020d4       0x8c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gesf2.o)
+                0x080020d4                __gesf2
+                0x080020d4                __gtsf2
+ .text          0x08002160       0x88 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(lesf2.o)
+                0x08002160                __ltsf2
+                0x08002160                __lesf2
+ .text          0x080021e8      0x24c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+                0x080021e8                __aeabi_fmul
+ .text          0x08002434      0x35c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(subsf3.o)
+                0x08002434                __aeabi_fsub
+ .text          0x08002790       0x40 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixsfsi.o)
+                0x08002790                __aeabi_f2iz
+ .text          0x080027d0      0x678 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(adddf3.o)
+                0x080027d0                __aeabi_dadd
+ .text          0x08002e48       0x84 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqdf2.o)
+                0x08002e48                __nedf2
+                0x08002e48                __eqdf2
+ .text          0x08002ecc       0xcc C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gedf2.o)
+                0x08002ecc                __gedf2
+                0x08002ecc                __gtdf2
+ .text          0x08002f98       0xc8 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(ledf2.o)
+                0x08002f98                __ledf2
+                0x08002f98                __ltdf2
+ .text          0x08003060      0x4d8 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
+                0x08003060                __aeabi_dmul
+ .text          0x08003538       0x60 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
+                0x08003538                __aeabi_i2d
+ .text          0x08003598       0x4c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatunsidf.o)
+                0x08003598                __aeabi_ui2d
+ .text          0x080035e4       0x90 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(extendsfdf2.o)
+                0x080035e4                __aeabi_f2d
+ .text          0x08003674      0x110 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(truncdfsf2.o)
+                0x08003674                __aeabi_d2f
+ .text          0x08003784       0x3c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
+                0x08003784                __clzsi2
  *(.rodata*)
- .rodata        0x08002090      0x250 main.o
- .rodata        0x080022e0       0x7c startup.o
- .rodata        0x0800235c       0x40 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
-                0x0800239c                . = ALIGN (0x4)
-                0x0800239c                PROVIDE (__init_array_start = .)
+ .rodata        0x080037c0      0x2ab main.o
+ *fill*         0x08003a6b        0x1 
+ .rodata        0x08003a6c       0x7c startup.o
+ .rodata        0x08003ae8       0x80 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+ .rodata        0x08003b68       0x40 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+ .rodata        0x08003ba8       0x40 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
+                0x08003be8                . = ALIGN (0x4)
+                0x08003be8                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
-                0x0800239c                PROVIDE (__init_array_end = .)
-                0x0800239c                . = ALIGN (0x4)
-                0x0800239c                _etext = .
+                0x08003be8                PROVIDE (__init_array_end = .)
+                0x08003be8                . = ALIGN (0x4)
+                0x08003be8                _etext = .
 
-.glue_7         0x0800239c        0x0
- .glue_7        0x0800239c        0x0 linker stubs
+.glue_7         0x08003be8        0x0
+ .glue_7        0x08003be8        0x0 linker stubs
 
-.glue_7t        0x0800239c        0x0
- .glue_7t       0x0800239c        0x0 linker stubs
+.glue_7t        0x08003be8        0x0
+ .glue_7t       0x08003be8        0x0 linker stubs
 
-.vfp11_veneer   0x0800239c        0x0
- .vfp11_veneer  0x0800239c        0x0 linker stubs
+.vfp11_veneer   0x08003be8        0x0
+ .vfp11_veneer  0x08003be8        0x0 linker stubs
 
-.v4_bx          0x0800239c        0x0
- .v4_bx         0x0800239c        0x0 linker stubs
+.v4_bx          0x08003be8        0x0
+ .v4_bx         0x08003be8        0x0 linker stubs
 
-.iplt           0x0800239c        0x0
- .iplt          0x0800239c        0x0 main.o
+.iplt           0x08003be8        0x0
+ .iplt          0x08003be8        0x0 main.o
 
-.rel.dyn        0x0800239c        0x0
- .rel.iplt      0x0800239c        0x0 main.o
+.rel.dyn        0x08003be8        0x0
+ .rel.iplt      0x08003be8        0x0 main.o
 
-.data           0x20000000        0x8 load address 0x0800239c
+.data           0x20000000        0x8 load address 0x08003be8
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _data = .
  *(.data*)
@@ -194,64 +279,100 @@ END GROUP
  .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
  .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
  .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
- .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
- .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixdfsi.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqsf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gesf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(lesf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(subsf3.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixsfsi.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(adddf3.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqdf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gedf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(ledf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
  .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
- .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatunsidf.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(extendsfdf2.o)
+ .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(truncdfsf2.o)
  .data          0x20000008        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
                 0x20000008                . = ALIGN (0x4)
                 0x20000008                _edata = .
 
-.igot.plt       0x20000008        0x0 load address 0x080023a4
+.igot.plt       0x20000008        0x0 load address 0x08003bf0
  .igot.plt      0x20000008        0x0 main.o
 
-.bss            0x20000008       0xb4 load address 0x080023a4
+.bss            0x20000008       0xe0 load address 0x08003bf0
                 0x20000008                _bss = .
  *(.bss*)
- .bss           0x20000008        0x4 main.o
+ .bss           0x20000008       0x2e main.o
                 0x20000008                PWM_Counter
- .bss           0x2000000c        0x0 adc.o
- .bss           0x2000000c       0xa4 serial.o
-                0x2000000c                ComRXBuffer
-                0x20000058                ComTXBuffer
-                0x200000a4                ComOpen
-                0x200000a8                ComError
-                0x200000ac                ComBusy
- .bss           0x200000b0        0x0 startup.o
- .bss           0x200000b0        0x8 newlib_stubs.o
-                0x200000b0                __env
- .bss           0x200000b8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
- .bss.errno     0x200000b8        0x4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
-                0x200000b8                errno
- .bss           0x200000bc        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
- .bss           0x200000bc        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
- .bss           0x200000bc        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
- .bss           0x200000bc        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixdfsi.o)
- .bss           0x200000bc        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
- .bss           0x200000bc        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
- .bss           0x200000bc        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
+                0x2000000c                freqBuffer
+                0x20000034                sampleIndex
+                0x20000035                coinDetected
+ .bss           0x20000036        0x0 adc.o
+ *fill*         0x20000036        0x2 
+ .bss           0x20000038       0xa4 serial.o
+                0x20000038                ComRXBuffer
+                0x20000084                ComTXBuffer
+                0x200000d0                ComOpen
+                0x200000d4                ComError
+                0x200000d8                ComBusy
+ .bss           0x200000dc        0x0 startup.o
+ .bss           0x200000dc        0x8 newlib_stubs.o
+                0x200000dc                __env
+ .bss           0x200000e4        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
+ .bss.errno     0x200000e4        0x4 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
+                0x200000e4                errno
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqsf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gesf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(lesf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(subsf3.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixsfsi.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(adddf3.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqdf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gedf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(ledf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatunsidf.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(extendsfdf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(truncdfsf2.o)
+ .bss           0x200000e8        0x0 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
  *(COMMON)
-                0x200000bc                . = ALIGN (0x4)
-                0x200000bc                _ebss = .
+                0x200000e8                . = ALIGN (0x4)
+                0x200000e8                _ebss = .
                 [!provide]                PROVIDE (end = .)
-                0x200000bc                PROVIDE (_HeapStart = .)
+                0x200000e8                PROVIDE (_HeapStart = .)
                 0x20002000                PROVIDE (_StackTop = (ORIGIN (ram) + LENGTH (ram)))
 OUTPUT(main.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000     0x1e1e
- .debug_info    0x00000000      0x805 main.o
- .debug_info    0x00000805      0x31b adc.o
- .debug_info    0x00000b20      0x82d serial.o
- .debug_info    0x0000134d      0x3ad startup.o
- .debug_info    0x000016fa      0x724 newlib_stubs.o
+.debug_info     0x00000000     0x1e95
+ .debug_info    0x00000000      0x87c main.o
+ .debug_info    0x0000087c      0x31b adc.o
+ .debug_info    0x00000b97      0x82d serial.o
+ .debug_info    0x000013c4      0x3ad startup.o
+ .debug_info    0x00001771      0x724 newlib_stubs.o
 
-.debug_abbrev   0x00000000      0x860
- .debug_abbrev  0x00000000      0x270 main.o
- .debug_abbrev  0x00000270      0x10c adc.o
- .debug_abbrev  0x0000037c      0x1f5 serial.o
- .debug_abbrev  0x00000571      0x174 startup.o
- .debug_abbrev  0x000006e5      0x17b newlib_stubs.o
+.debug_abbrev   0x00000000      0x88d
+ .debug_abbrev  0x00000000      0x29d main.o
+ .debug_abbrev  0x0000029d      0x10c adc.o
+ .debug_abbrev  0x000003a9      0x1f5 serial.o
+ .debug_abbrev  0x0000059e      0x174 startup.o
+ .debug_abbrev  0x00000712      0x17b newlib_stubs.o
 
 .debug_aranges  0x00000000       0xa8
  .debug_aranges
@@ -265,23 +386,23 @@ LOAD linker stubs
  .debug_aranges
                 0x00000088       0x20 newlib_stubs.o
 
-.debug_line     0x00000000     0x100a
- .debug_line    0x00000000      0x4f3 main.o
- .debug_line    0x000004f3      0x195 adc.o
- .debug_line    0x00000688      0x49c serial.o
- .debug_line    0x00000b24      0x25e startup.o
- .debug_line    0x00000d82      0x288 newlib_stubs.o
+.debug_line     0x00000000     0x1096
+ .debug_line    0x00000000      0x57f main.o
+ .debug_line    0x0000057f      0x195 adc.o
+ .debug_line    0x00000714      0x49c serial.o
+ .debug_line    0x00000bb0      0x25e startup.o
+ .debug_line    0x00000e0e      0x288 newlib_stubs.o
 
-.debug_str      0x00000000      0x86a
- .debug_str     0x00000000      0x3b8 main.o
-                                0x411 (size before relaxing)
- .debug_str     0x000003b8       0x71 adc.o
+.debug_str      0x00000000      0x8a0
+ .debug_str     0x00000000      0x3ee main.o
+                                0x444 (size before relaxing)
+ .debug_str     0x000003ee       0x71 adc.o
                                 0x280 (size before relaxing)
- .debug_str     0x00000429      0x129 serial.o
+ .debug_str     0x0000045f      0x129 serial.o
                                 0x3c4 (size before relaxing)
- .debug_str     0x00000552       0xee startup.o
+ .debug_str     0x00000588       0xee startup.o
                                 0x2ec (size before relaxing)
- .debug_str     0x00000640      0x22a newlib_stubs.o
+ .debug_str     0x00000676      0x22a newlib_stubs.o
                                 0x3ea (size before relaxing)
 
 .comment        0x00000000       0x49
@@ -311,27 +432,73 @@ LOAD linker stubs
  .ARM.attributes
                 0x00000126       0x1e C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
  .ARM.attributes
-                0x00000144       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
+                0x00000144       0x1e C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
  .ARM.attributes
-                0x00000170       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixdfsi.o)
+                0x00000162       0x1e C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
  .ARM.attributes
-                0x0000019c       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
+                0x00000180       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
  .ARM.attributes
-                0x000001c8       0x1e C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
+                0x000001ac       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o)
  .ARM.attributes
-                0x000001e6       0x1e C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
+                0x000001d8       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+ .ARM.attributes
+                0x00000204       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqsf2.o)
+ .ARM.attributes
+                0x00000230       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gesf2.o)
+ .ARM.attributes
+                0x0000025c       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(lesf2.o)
+ .ARM.attributes
+                0x00000288       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+ .ARM.attributes
+                0x000002b4       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(subsf3.o)
+ .ARM.attributes
+                0x000002e0       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixsfsi.o)
+ .ARM.attributes
+                0x0000030c       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(adddf3.o)
+ .ARM.attributes
+                0x00000338       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqdf2.o)
+ .ARM.attributes
+                0x00000364       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gedf2.o)
+ .ARM.attributes
+                0x00000390       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(ledf2.o)
+ .ARM.attributes
+                0x000003bc       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
+ .ARM.attributes
+                0x000003e8       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
+ .ARM.attributes
+                0x00000414       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatunsidf.o)
+ .ARM.attributes
+                0x00000440       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(extendsfdf2.o)
+ .ARM.attributes
+                0x0000046c       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(truncdfsf2.o)
+ .ARM.attributes
+                0x00000498       0x1e C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
 
-.debug_frame    0x00000000      0x744
- .debug_frame   0x00000000      0x180 main.o
- .debug_frame   0x00000180       0x4c adc.o
- .debug_frame   0x000001cc      0x1e8 serial.o
- .debug_frame   0x000003b4       0x94 startup.o
- .debug_frame   0x00000448      0x228 newlib_stubs.o
- .debug_frame   0x00000670       0x20 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
- .debug_frame   0x00000690       0x3c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
- .debug_frame   0x000006cc       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixdfsi.o)
- .debug_frame   0x000006f8       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
- .debug_frame   0x00000724       0x20 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
+.debug_frame    0x00000000      0x9e4
+ .debug_frame   0x00000000      0x164 main.o
+ .debug_frame   0x00000164       0x4c adc.o
+ .debug_frame   0x000001b0      0x1e8 serial.o
+ .debug_frame   0x00000398       0x94 startup.o
+ .debug_frame   0x0000042c      0x228 newlib_stubs.o
+ .debug_frame   0x00000654       0x20 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
+ .debug_frame   0x00000674       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+ .debug_frame   0x000006a0       0x34 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o)
+ .debug_frame   0x000006d4       0x38 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+ .debug_frame   0x0000070c       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqsf2.o)
+ .debug_frame   0x00000738       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gesf2.o)
+ .debug_frame   0x00000764       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(lesf2.o)
+ .debug_frame   0x00000790       0x38 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+ .debug_frame   0x000007c8       0x38 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(subsf3.o)
+ .debug_frame   0x00000800       0x20 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixsfsi.o)
+ .debug_frame   0x00000820       0x38 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(adddf3.o)
+ .debug_frame   0x00000858       0x38 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqdf2.o)
+ .debug_frame   0x00000890       0x34 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gedf2.o)
+ .debug_frame   0x000008c4       0x34 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(ledf2.o)
+ .debug_frame   0x000008f8       0x3c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
+ .debug_frame   0x00000934       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
+ .debug_frame   0x00000960       0x28 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatunsidf.o)
+ .debug_frame   0x00000988       0x2c C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(extendsfdf2.o)
+ .debug_frame   0x000009b4       0x30 C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(truncdfsf2.o)
 
 .debug_ranges   0x00000000       0x18
  .debug_ranges  0x00000000       0x18 startup.o
@@ -390,32 +557,90 @@ WriteCom                                          serial.o
 _HeapStart                                        newlib_stubs.o
 _StackTop                                         newlib_stubs.o
                                                   startup.o
-__aeabi_d2iz                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixdfsi.o)
+__aeabi_cdcmpeq                                   C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__aeabi_cdcmple                                   C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__aeabi_cdrcmple                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__aeabi_cfcmpeq                                   C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__aeabi_cfcmple                                   C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__aeabi_cfrcmple                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__aeabi_d2f                                       C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(truncdfsf2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+__aeabi_dadd                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(adddf3.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+__aeabi_dcmpeq                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__aeabi_dcmpge                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__aeabi_dcmpgt                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
                                                   main.o
-__aeabi_ddiv                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
+__aeabi_dcmple                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__aeabi_dcmplt                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+                                                  main.o
+__aeabi_dmul                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+__aeabi_f2d                                       C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(extendsfdf2.o)
+                                                  main.o
+__aeabi_f2iz                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(fixsfsi.o)
+                                                  main.o
+__aeabi_fadd                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o)
+                                                  main.o
+__aeabi_fcmpeq                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+                                                  main.o
+__aeabi_fcmpge                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__aeabi_fcmpgt                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__aeabi_fcmple                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__aeabi_fcmplt                                    C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__aeabi_fdiv                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+                                                  main.o
+__aeabi_fmul                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+                                                  main.o
+__aeabi_fsub                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(subsf3.o)
                                                   main.o
 __aeabi_i2d                                       C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
-                                                  main.o
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
 __aeabi_idiv                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
                                                   serial.o
                                                   main.o
 __aeabi_idiv0                                     C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
-                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
                                                   C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
 __aeabi_idivmod                                   C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
                                                   main.o
+__aeabi_l2f                                       C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+                                                  main.o
 __aeabi_ldiv0                                     C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_dvmd_tls.o)
-__aeabi_uidiv                                     C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
-__aeabi_uidivmod                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
-                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
+__aeabi_ui2d                                      C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatunsidf.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
 __clzsi2                                          C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_clzsi2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(extendsfdf2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatunsidf.o)
                                                   C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(floatsidf.o)
-                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divdf3.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(muldf3.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(adddf3.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(subsf3.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(mulsf3.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(divsf3.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(addsf3.o)
 __divsi3                                          C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_divsi3.o)
 __env                                             newlib_stubs.o
+__eqdf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqdf2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__eqsf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqsf2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__floatdisf                                       C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_floatdisf.o)
+__gedf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gedf2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__gesf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gesf2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__gtdf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gedf2.o)
+__gtsf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(gesf2.o)
 __init_array_end                                  startup.o
 __init_array_start                                startup.o
-__udivsi3                                         C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_udivsi3.o)
+__ledf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(ledf2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpdf2.o)
+__lesf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(lesf2.o)
+                                                  C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(_arm_cmpsf2.o)
+__ltdf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(ledf2.o)
+__ltsf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(lesf2.o)
+__nedf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqdf2.o)
+__nesf2                                           C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\lib\gcc\arm-none-eabi\10.3.1\thumb\v6-m\nofp\libgcc.a(eqsf2.o)
 _close                                            newlib_stubs.o
 _data                                             startup.o
 _ebss                                             startup.o
@@ -437,9 +662,9 @@ _times                                            newlib_stubs.o
 _unlink                                           newlib_stubs.o
 _wait                                             newlib_stubs.o
 _write                                            newlib_stubs.o
+coinDetected                                      main.o
 detectCoin                                        main.o
 detectPerimeter                                   main.o
-dropArm                                           main.o
 egetc                                             serial.o
                                                   newlib_stubs.o
 egetc_echo                                        serial.o
@@ -454,16 +679,18 @@ eputs                                             serial.o
                                                   main.o
 errno                                             C:\CrossIDE\gcc-arm-none-eabi-10.3-2021.10\arm-none-eabi\lib\thumb\v6-m\nofp\libnosys.a(errno.o)
                                                   newlib_stubs.o
+freqBuffer                                        main.o
 initADC                                           adc.o
                                                   main.o
 initClock                                         startup.o
 initUART                                          serial.o
                                                   startup.o
-liftArm                                           main.o
 main                                              main.o
                                                   startup.o
+pickCoin                                          main.o
 readADC                                           adc.o
                                                   main.o
+sampleIndex                                       main.o
 toggleMagnet                                      main.o
 usart_rx                                          serial.o
 usart_tx                                          serial.o

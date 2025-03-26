@@ -1,4 +1,4 @@
-/* Manual Functions with Main Function 
+/* Manual Functions for DC Motor with Main Function 
  * RUN AS MAIN IN Servo_PWM.mk
  * Function: Moves the wheels of the robot in every direction for 1 
  *     second each to test manual functions.

@@ -1,17 +1,8 @@
-/* Updated Servo_PWM to test DC motor 
+/* Manual Functions for DC Motor
  * RUN AS MAIN IN Servo_PWM.mk
- * Function: Asks for user input and sends that input as a PWM signal
- *     to a DC motor to control power and speed of two motors.         
  * ELEC 291 Project 2
  * Group B01
- * Created March 21st, 2024 by Madison Howitt
- *
- * A DC motor only needs a PWM signal to control speed. Unlike a servo, it doesn’t need a specific pulse width for positioning.
- * Changes: 
- *  Remove the fixed 20ms period (used for servos).
- *  Use only one output pin (e.g., PA11) for PWM.
- *  Set the PWM frequency to something higher (~1kHz-10kHz) for smooth motor control.
- *  User input should control duty cycle (0-100%) instead of servo position.
+ * Created March 25th, 2024 by Madison Howitt and Ria Dangi
  */
 
 #include "../Common/Include/stm32l051xx.h"
@@ -81,24 +72,8 @@ void delayms(int len)
 	while(len--) wait_1ms(); // call waitms len times 
 }
 
-// Interrupt service routines are the same as normal
-// subroutines (or C funtions) in Cortex-M microcontrollers.
-// The following should happen at a rate of 1kHz.
-// The following function is associated with the TIM2 interrupt 
-// via the interrupt vector table defined in startup.c
 void TIM2_Handler(void) 
 {
-	/* 
-	Timer Interrupt Handler
-
-	What this function does: 
-		Clears the interrupt flag (TIM2->SR &= ~BIT0)
-		Controls the PWM duty cycle:
-			PA11 (PWM1) and PA12 (PWM2) are set HIGH if PWM_Counter is less than pwm1 or pwm2
-			Otherwise, they are set LOW
-		Resets PWM_Counter after 20ms to ensure 50 Hz PWM signal 
-	*/
-
 	TIM2->SR &= ~BIT0; // clear the update interrupt flag
 	PWM_Counter++;     // increment the PWM counter
     
@@ -127,57 +102,22 @@ void TIM2_Handler(void)
     if(++PWM_Counter >= PWM_MAX) PWM_Counter = 0;
 }
 
-
-// STM32L051 pinout
-//             ----------
-//       VDD -|1       32|- VSS
-//      PC14 -|2       31|- BOOT0
-//      PC15 -|3       30|- PB7
-//      NRST -|4       29|- PB6
-//      VDDA -|5       28|- PB5
-//       PA0 -|6       27|- PB4
-//       PA1 -|7       26|- PB3
-//       PA2 -|8       25|- PA15
-//       PA3 -|9       24|- PA14
-//       PA4 -|10      23|- PA13
-//       PA5 -|11      22|- PA12
-//       PA6 -|12      21|- PA11 (pwm1)
-//       PA7 -|13      20|- PA10 (Reserved for RXD)
-//       PB0 -|14      19|- PA9  (Reserved for TXD)
-//       PB1 -|15      18|- PA8
-//       VSS -|16      17|- VDD
-//             ----------
-
 void Hardware_Init(void)
 {
-	/* 
-	Hardware Initialization
-	
- 	What this function does: 
-		Enables GPIOA clock.
-		Configures PA11 and PA12 as outputs in push-pull mode
-		Configures TIM2:
-			Enables clock
-			Sets reload value to generate 10µs timer ticks
-			Enables interrupts
-			Starts counting                             
-	*/
-	
 	RCC->IOPENR |= BIT0; // peripheral clock enable for port A (GPIOA)
 	RCC->APB1ENR |= BIT0; // Enable TIM2 clock
-
-
+	
 	// Motor pin configurations
 	
-    // Configure all motor control pins as outputs
-    GPIOA->MODER &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
-    GPIOA->MODER |= (BIT0 | BIT2 | BIT4 | BIT6);
-    
-    // Set push-pull mode
-    GPIOA->OTYPER &= ~(BIT0 | BIT1 | BIT2 | BIT3);
-    
-    // Initialize all pins to LOW
-    GPIOA->ODR &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+	// Configure all motor control pins as outputs
+	GPIOA->MODER &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
+	GPIOA->MODER |= (BIT0 | BIT2 | BIT4 | BIT6);
+	
+	// Set push-pull mode
+	GPIOA->OTYPER &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+	
+	// Initialize all pins to LOW
+	GPIOA->ODR &= ~(BIT0 | BIT1 | BIT2 | BIT3);
     	
 	// Set up timer
 	RCC->APB1ENR |= BIT0;      // enable clock for timer2 (UM: page 177)
@@ -189,41 +129,4 @@ void Hardware_Init(void)
 	TIM2->CR1 |= BIT0;         // enable counting    
 	
 	__enable_irq(); // enable global interupts
-}
-
-int main(void)
-{
-	/*
-	Calls Hardware_Init() to set up the GPIOs and timer
-	Waits 500ms for terminal initialization
-	Prints program description
-	*/
-
-	Hardware_Init();
-	delayms(500); // wait for putty to start
-
-	while (1)
-	{
-		// Alternate forward and backward motion in a loop
-
-        // Forward for 1 second
-		move_forward(100);
-		delayms(1000);
-
-        // Backward for 1 second
-		move_backward(100);
-		delayms(1000); 
-
-        // Turn right for 1 second
-		move_right(100);
-		delayms(1000);
-
-        // Turn left for 1 second
-		move_left(100);
-		delayms(1000);
-
-        // Stop + delay
-		move_stop();
-		delayms(1000);
-    }
 }

@@ -5,7 +5,11 @@
  * Created March 26th, 2024 by Madison Howitt
  */
 
-#include "motor_control.h"
+#include "motor_control.h" // include motor conrtol header
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "../Common/Include/serial.h" // serial communication
 
 volatile int PWM_Counter = 0;
 volatile unsigned char pwm1 = 0, pwm2 = 0;

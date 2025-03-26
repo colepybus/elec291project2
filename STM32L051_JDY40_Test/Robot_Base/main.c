@@ -1,70 +1,15 @@
 #include "../Common/Include/stm32l051xx.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include "UART2.h"
 #include "../Common/Include/serial.h"
 #include "adc.h"
 #include <math.h>
 
-// LQFP32 pinout
-//                 ----------
-//           VDD -|1       32|- VSS
-//          PC14 -|2       31|- BOOT0
-//          PC15 -|3       30|- PB7 (OUT 5)
-//          NRST -|4       29|- PB6 (OUT 4)
-//          VDDA -|5       28|- PB5 (OUT 3)
-//           PA0 -|6       27|- PB4 (OUT 2)
-//           PA1 -|7       26|- PB3 (OUT 1)
-//           PA2 -|8       25|- PA15
-//           PA3 -|9       24|- PA14 (push button)
-//           PA4 -|10      23|- PA13
-//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
-//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
-//           PA7 -|13      20|- PA10 (Reserved for RXD)
-// (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
-// (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
-//           VSS -|16      17|- VDD
-//                 ----------
-
-
-//This is our main file for the robot base, it is responsible for the following:
-// 1. Receive signal from EFM8 using the JDY40 module
-// 2. Pick which mode (manual/automatic) to operate in based off a signal from JDY40
-// MANUAL MODE: Take input from joystick, joystick press, turn that into wheel movement, arm/magnet trigger, 180 spin
-// AUTOMATIC MODE: Set algorithm for robot to follow, operate wheels and arm based off algorithm and coin detection
-// (detect coin --> execute arm thing --> turn 180 --> keep going)
-
-// JDY40 NECESSARY INFORMATION TO BE RECEIEVED: 
-// Operating mode (0,1,2), Joystick (float x_norm, float y_norm, bit press), leapmotion eventually 
-
-// STILL NEED: JDY40 stuff, 
-
-// leapmotion possible bonus, arm 3d operation with joysticks, play song and dance after challenge complete, take in path data and optimize with ML
-
-//sets the cpu frequency to 32MHz, and makes DEF_F a 10us tick
-
-#define SYSCLK 32000000L
 #define F_CPU 32000000L
 #define DEF_F 100000L // 10us tick
 
-// Uses SysTick to delay <us> micro-seconds. 
-void Delay_us(unsigned char us)
-{
-	// For SysTick info check the STM32L0xxx Cortex-M0 programming manual page 85.
-	SysTick->LOAD = (F_CPU/(1000000L/us)) - 1;  // set reload register, counter rolls over from zero, hence -1
-	SysTick->VAL = 0; // load the SysTick counter
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	while((SysTick->CTRL & BIT16)==0); // Bit 16 is the COUNTFLAG.  True when counter rolls over from zero.
-	SysTick->CTRL = 0x00; // Disable Systick counter
-}
-
-// sets a pwm counter and timer pwms to 100 initially
-
 volatile int PWM_Counter = 0;
 volatile unsigned char ISR_pwm1=100, ISR_pwm2=100;
-
-//functions that makes it wait 1 ms
 
 void wait_1ms(void)
 {
@@ -76,8 +21,6 @@ void wait_1ms(void)
 	SysTick->CTRL = 0x00; // Disable Systick counter
 }
 
-//makes it wait "len" amount of ms
-
 void waitms(int len)
 {
 	while(len--) wait_1ms();
@@ -88,31 +31,6 @@ void waitms(int len)
 // The following should happen at a rate of 1kHz.
 // The following function is associated with the TIM2 interrupt 
 // via the interrupt vector table defined in startup.c
-
-void SendATCommand (char * s)
-{
-	char buff[40];
-	printf("Command: %s", s);
-	GPIOA->ODR &= ~(BIT13); // 'set' pin to 0 is 'AT' mode.
-	waitms(10);
-	eputs2(s);
-	egets2(buff, sizeof(buff)-1);
-	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
-	waitms(10);
-	printf("Response: %s", buff);
-}
-
-void ReceptionOff (void)
-{
-	GPIOA->ODR &= ~(BIT13); // 'set' pin to 0 is 'AT' mode.
-	waitms(10);
-	eputs2("AT+DVID0000\r\n"); // Some unused id, so that we get nothing in RXD1.
-	waitms(10);
-	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
-	while (ReceivedBytes2()>0) egetc2(); // Clear FIFO
-}
-
-
 void TIM2_Handler(void) 
 {
 	TIM2->SR &= ~BIT0; // clear update interrupt flag
@@ -143,13 +61,28 @@ void TIM2_Handler(void)
 	}   
 }
 
-//initializes hardware
+// LQFP32 pinout
+//                 ----------
+//           VDD -|1       32|- VSS
+//          PC14 -|2       31|- BOOT0
+//          PC15 -|3       30|- PB7 (OUT 5)
+//          NRST -|4       29|- PB6 (OUT 4)
+//          VDDA -|5       28|- PB5 (OUT 3)
+//           PA0 -|6       27|- PB4 (OUT 2)
+//           PA1 -|7       26|- PB3 (OUT 1)
+//           PA2 -|8       25|- PA15
+//           PA3 -|9       24|- PA14 (push button)
+//           PA4 -|10      23|- PA13
+//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
+//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
+//           PA7 -|13      20|- PA10 (Reserved for RXD)
+// (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
+// (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
+//           VSS -|16      17|- VDD
+//                 ----------
 
 void Hardware_Init(void)
 {
-
-	GPIOA->OSPEEDR = 0xFFFFFFFF; // Page 201 of RM0451
-
 	RCC->IOPENR  |= (BIT1|BIT0);         // peripheral clock enable for ports A and B
 
 	// Configure the pin used for analog input: PB0 and PB1 (pins 14 and 15)
@@ -189,10 +122,6 @@ void Hardware_Init(void)
     GPIOA->MODER = (GPIOA->MODER & ~(BIT24|BIT25)) | BIT24; // Make pin PA12 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0)
 	GPIOA->OTYPER &= ~BIT12; // Push-pull
 
-	// Configure PA13 as output and set it high (normal JDY40 operation mode)
-    GPIOA->MODER = (GPIOA->MODER & ~(BIT27|BIT26)) | BIT26; // Make pin PA13 output
-    GPIOA->ODR   |= BIT13;                                  // Set pin to 1
-
 	// Set up timer
 	RCC->APB1ENR |= BIT0;  // turn on clock for timer2 (UM: page 177)
 	TIM2->ARR = F_CPU/DEF_F-1;
@@ -208,80 +137,79 @@ void Hardware_Init(void)
 // A define to easily read PA8 (PA8 must be configured as input first)
 #define PA8 (GPIOA->IDR & BIT8)
 
-// gets the period of n based on the timer from the microcontroller
-
-long long int GetPeriod(int n) //  return type changed from 'long int' to 'long long int' to account for overflow
+long long int GetPeriod(int n)
 {
-	int i;
-	long long int overflows = 0; //  tracks systick overflow in a variable
-	
-	// Wait for square wave to be 0
-	SysTick->LOAD = 0xffffff;
-	SysTick->VAL  = 0xffffff;
-	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
-	while(PA8 != 0)
-	{
-		// Instead of returning immediately on overflow, count it:
-		if(SysTick->CTRL & BIT16) overflows++; // adds overflow counting when the period isnt 0
-		// Optional timeout to avoid infinite loop:
-		if(overflows > 100000) // gets adjusted as needed
-		{
-			SysTick->CTRL = 0;
-			return 0;
-		}
-	}
-	SysTick->CTRL = 0x00;
+    int i;
+    long long int overflows = 0;
+    __disable_irq(); // Critical section start
 
-	// Wait for square wave to be 1
-	SysTick->LOAD = 0xffffff;
-	SysTick->VAL  = 0xffffff;
-	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
-	overflows = 0; // reseweft overflow counterrr before next wait
-	while(PA8 == 0)
-	{
-		if(SysTick->CTRL & BIT16) overflows++;
-		if(overflows > 100000)
-		{
-			SysTick->CTRL = 0;
-			return 0;
-		}
-	}
-	SysTick->CTRL = 0x00;
-	
-	// Measure n cycles
-	SysTick->LOAD = 0xffffff;
-	SysTick->VAL  = 0xffffff;
-	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
-	overflows = 0; //  reset before counting nnn cycles
-	for(i=0; i<n; i++)
-	{
-		while (PA8 != 0)
-		{
-			if(SysTick->CTRL & BIT16) overflows++;
-			if(overflows > 100000)
-			{
-				SysTick->CTRL = 0;
-				return 0;
-			}
-		}
-		while (PA8 == 0)
-		{
-			if(SysTick->CTRL & BIT16) overflows++;
-			if(overflows > 100000)
-			{
-				SysTick->CTRL = 0;
-				return 0;
-			}
-		}
-	}
-	SysTick->CTRL = 0x00;
+    // Wait for signal to be 0
+    SysTick->LOAD = 0xffffff;
+    SysTick->VAL = 0xffffff;
+    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+    while (PA8 != 0)
+    {
+        if (SysTick->CTRL & BIT16) overflows++;
+        if (overflows > 100000)
+        {
+            SysTick->CTRL = 0;
+            __enable_irq();
+            return 0;
+        }
+    }
+    SysTick->CTRL = 0x00;
 
-	// Combine leftover SysTick counts with how many times it overflowed.
-	// Each overflow is 0xffffff (24-bit) ccounts withi ni t.
-	return ((long long int)overflows << 24) + (0xffffff - SysTick->VAL); // adjusts overflows with the system tick for val
+    // Wait for signal to be 1
+    SysTick->LOAD = 0xffffff;
+    SysTick->VAL = 0xffffff;
+    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+    overflows = 0;
+    while (PA8 == 0)
+    {
+        if (SysTick->CTRL & BIT16) overflows++;
+        if (overflows > 100000)
+        {
+            SysTick->CTRL = 0;
+            __enable_irq();
+            return 0;
+        }
+    }
+    SysTick->CTRL = 0x00;
+
+    // Measure n cycles
+    SysTick->LOAD = 0xffffff;
+    SysTick->VAL = 0xffffff;
+    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+    overflows = 0;
+    for (i = 0; i < n; i++)
+    {
+        while (PA8 != 0)
+        {
+            if (SysTick->CTRL & BIT16) overflows++;
+            if (overflows > 100000)
+            {
+                SysTick->CTRL = 0;
+                __enable_irq();
+                return 0;
+            }
+        }
+        while (PA8 == 0)
+        {
+            if (SysTick->CTRL & BIT16) overflows++;
+            if (overflows > 100000)
+            {
+                SysTick->CTRL = 0;
+                __enable_irq();
+                return 0;
+            }
+        }
+    }
+    SysTick->CTRL = 0x00;
+    __enable_irq(); // Critical section end
+
+    return ((long long int)overflows << 24) + (0xffffff - SysTick->VAL);
 }
 
-// prints the number given the value, the base and the number of digits
 
 void PrintNumber(long int val, int Base, int digits)
 { 
@@ -325,8 +253,13 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
+// LIFT ARM
+void liftArm() {
+	
+}
+
 // DROP ARM (opposites of liftArm)
-void pickCoin() {
+void dropArm() {
 	ISR_pwm1=75; ISR_pwm2=75;// starts default (1 - 75) (2 - 240)
 	waitms(500);
 
@@ -375,130 +308,107 @@ void pickCoin() {
 	waitms(500);
 }
 
-// DETECT PERIMETER, once crosses certain voltage the perimeter has been detected
+// DETECT PERIMETER
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 	if ((v1%1000) > 1000 || (v2%1000) > 1000) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
-		eputs("PERIMETER DETECTED!\r\n");
+		eputs("PERIMETER DETECTED!");
 		// move backward
 		// turn left
 		// move forward
 	}
 
 	else {
-		eputs("NO PERIMETER DETECTED!\r\n");
+		eputs("NO PERIMETER DETECTED!");
 	}
 }
-
 // DETECT COIN
-// void detectCoin (int long period, int threshold) {
-// 	if (period > threshold) { // checking with every reading of period
-// 		eputs("COIN DETECTED!");
-// 		toggleMagnet(1); // turn on emagnet
-// 		// lift arm
-// 		// move servo 1 full rotation
-// 		// move servo 2 full rotation
-// 		toggleMagnet(0); // turn off emagnet
-// 		// drop arm
-// 	}
-// }
-
-
-#define METAL_THRESHOLD 0.8 // 0.05% change from baseline
-float freqBuffer[10] = {0};
-uint8_t sampleIndex = 0; // boolean as flag
-uint8_t coinDetected = 0; // boolean as flag
-
-//main function used to detect the coin
+#define METAL_THRESHOLD 0.005 // 0.05% change from baseline
+#define SAMPLE_SIZE 3 // number of samples for moving average
+float freqBuffer[SAMPLE_SIZE] = {0};
+uint8_t sampleIndex = 0; 
+//uint8_t coinDetected = 0; // boolean as flag
+float baseline_f=0;
 
 void detectCoin() {
 	long long int count;
-	float f;
-	float avg_f;
-
-	float baseline_f = 0;
+	float f, avg_f=0;
 	float f_change;
+	
 
 	count=GetPeriod(100);
+		if(count>0)
+		{
+			f=(float)(F_CPU*100.0) / (float)count;
 
-
-	if (count > 0) {
-		f = (float)(F_CPU*100.0) / (float)count;
-
-		eputs("DEBUG: Current Frequency:");
-		PrintNumber(f, 10, 7);
-		eputs(" Hz \r\n");
-
-		// store in moving avg buffer
-		freqBuffer[sampleIndex] = f;
-		sampleIndex = (sampleIndex + 1) % 10; // moving average sample
-
-		// compute moving average
-		for (int i = 0; i < 10; i++) {
-			avg_f += freqBuffer[i];
-		}
-
-		avg_f = avg_f / 10;
-		eputs("DEBUG: Moving Average Calculation: ");
-		PrintNumber(avg_f, 10, 7);
-		eputs(" Hz \r\n");
-
-		// initilize baseline freq 
-		if (baseline_f == 0) { // 1st time reading freq
-			baseline_f = avg_f; 
-			eputs("DEBUG: Baseline Frequency Initialized:");
-			PrintNumber(baseline_f, 10, 7);
+			eputs("DEBUG: Current Frequency:");
+			PrintNumber(f, 10, 7);
 			eputs(" Hz \r\n");
+			eputs("count=\r\n");
+			PrintNumber(count, 10, 6);
+			eputs("          \r");
+
+
+			// Store in moving average buffer
+			freqBuffer[sampleIndex] = f;
+			sampleIndex = (sampleIndex + 1) % SAMPLE_SIZE;
+	 
+			// Compute moving average
+			for (int i = 0; i < SAMPLE_SIZE; i++) {
+				avg_f += freqBuffer[i];
+			}
+
+			avg_f /= SAMPLE_SIZE;
+
+			eputs("DEBUG: Moving Average Calculation: ");
+			PrintNumber(avg_f, 10, 7);
+			eputs(" Hz \r\n");
+
+			// initialize baseline if needed
+			if (baseline_f == 0) {
+				baseline_f = f; // if first reading, make baseline the first reading
+			}
+
+			// calculate percentage change
+			f_change = (avg_f - baseline_f) / baseline_f;
+			eputs("DEBUG: Frequency Change:");
+			PrintNumber(f_change, 10, 7);
+			eputs(" Hz \r\n");
+
+			// check
+			if (fabs(f_change) > METAL_THRESHOLD) {
+				eputs("COIN DETECTED!");
+				waitms(3000);
+			}
+			else {
+				eputs("NO COIN DETECTED!");
+			}
+
+			//waitms(50); // Delay to slow down sampling rate
+
 		}
 
-		// calculate percentage change 
-		f_change = ((avg_f - baseline_f) / baseline_f) * 100;
-		eputs("DEBUG: Frequency Change: ");
-		PrintNumber(f_change, 10, 7);
-		eputs(" Hz \r\n");
-		
-
-		// check if significant change
-		if (!coinDetected && fabs(f_change) > METAL_THRESHOLD) {
-			coinDetected = 1;
-			eputs("COIN DETECTED!\r\n");
-			// do pickCoin();
-			baseline_f = avg_f; // update baseline frequency
-			
+		else
+		{
+			eputs("NO SIGNAL                     \r");
 		}
-
-		// if coin has already been detected, make sure not detected twice
-		else if (coinDetected && fabs(f_change) < 0.02) {
-			coinDetected = 0; // reset detection flag 
-		}
-
-	}
 
 }
+
 
 
 int main(void)
 {
-
-	char buff[80];
-	int cnt=0;
-	char c;
-    int timeout_cnt=0;
-    int cont1=0, cont2=100;
-
-
     int j, v;
-	// long long int count;
-	float f;
+	//long long int count;
+	//float f;
 	unsigned char LED_toggle=0; // Used to test the outputs
 
 	int p1_v, p2_v; // perimeter sensor values
 
 
 	Hardware_Init();
-	initUART2(9600);
 	
 	waitms(500); // Give putty a chance to start before we send characters with printf()
-	printf("\r\nJDY-40 Slave test for the STM32L051\r\n");
 	eputs("\x1b[2J\x1b[1;1H"); // Clear screen using ANSI escape sequence.
 	eputs("\r\nSTM32L051 multi I/O example.\r\n");
 	eputs("Measures the voltage from ADC channels 8 and 9 (pins 14 and 15 of LQFP32 package)\r\n");
@@ -507,27 +417,13 @@ int main(void)
 	eputs("Generates servo PWMs on PA11, PA12 (pins 21, 22 of LQFP32 package)\r\n");
 	eputs("Reads the push-button on pin PA14 (pin 24 of LQFP32 package)\r\n\r\n");
 
-	ReceptionOff();
-
-	SendATCommand("AT+VER\r\n");
-	SendATCommand("AT+BAUD\r\n");
-	SendATCommand("AT+RFID\r\n");
-	SendATCommand("AT+DVID\r\n");
-	SendATCommand("AT+RFC\r\n");
-	SendATCommand("AT+POWE\r\n");
-	SendATCommand("AT+CLSS\r\n");
-
     LED_toggle=0;
 	PB3_0;
 	PB4_0;
 	PB5_0;
 	PB6_0;
 	PB7_0;
-
-	SendATCommand("AT+DVIDFDFD\r\n"); 
-	SendATCommand("AT+RFC113\r\n"); 
-
-	cnt=0;			
+					
 	while (1)
 	{
 		//PB3_1;
@@ -561,25 +457,6 @@ int main(void)
 		{
 			eputs("0 ");
 		}
-
-		// OLD GET PERIOD CODE
-		// Not very good for high frequencies because of all the interrupts in the background
-		// but decent for low frequencies around 10kHz.
-		// count=GetPeriod(100);
-		// if(count>0)
-		// {
-		// 	f=(float)(F_CPU*100.0) / (float)count;
-		// 	eputs("f=");
-		// 	PrintNumber(f, 10, 7);
-		// 	eputs("Hz, count=");
-		// 	PrintNumber(count, 10, 6);
-		// 	eputs("          \r");
-		// }
-		// else
-		// {
-		// 	eputs("NO SIGNAL                     \r");
-		// }
-
 
 
 		// Now turn on one of outputs per cycle to check
@@ -616,36 +493,13 @@ int main(void)
 				break;
 		}
 
-		// find default positions for servo
+		// find default positions
 		//ISR_pwm1=75; ISR_pwm2=75;
-		if(ReceivedBytes2()>0) // Something has arrived
-		{
-			c=egetc2();
-			
-			if(c=='!') // Master is sending message
-			{
-				egets2(buff, sizeof(buff)-1);
-				if(strlen(buff)==8)
-				{
-					printf("Master says: %s\r", buff);
-				}
-				else
-				{
-					printf("*** BAD MESSAGE ***: %s\r", buff);
-				}				
-			}
-			else if(c=='@') // Master wants slave data
-			{
-				sprintf(buff, "%05u\n", cnt);
-				cnt++;
-				waitms(5); // The radio seems to need this delay...
-				eputs2(buff);
-			}
-		}
-		//pickCoin();
-		//toggleMagnet(1);
+		
 		detectCoin();
-
-		waitms(500);	
+		//dropArm();
+		//toggleMagnet(1);
+		
+		waitms(250);	
 	}
 }

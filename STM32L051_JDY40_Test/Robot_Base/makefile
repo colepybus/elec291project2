@@ -1,17 +1,17 @@
-CC=arm-none-eabi-gcc
-AS=arm-none-eabi-as
-LD=arm-none-eabi-ld
+CC= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-gcc
+AS= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-as
+LD= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-ld
 CCFLAGS=-mcpu=cortex-m0 -mthumb -g 
 PORTN=/dev/$(shell ls /dev | grep "cu.usbserial")
 
 # Search for the path of libraries.
-LIBPATH1=$(shell find /opt -name libgcc.a | grep "v6-m" | sed -e "s/libgcc.a//g")
-LIBPATH2=$(shell find /opt -name libc_nano.a | grep "v6-m" | sed -e "s/libc_nano.a//g")
+LIBPATH1= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp
+LIBPATH2= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/lib/thumb/v6-m/nofp
 LIBSPEC=-L"$(LIBPATH1)" -L"$(LIBPATH2)"
 
-OBJS=main.o adc.o startup.o serial.o newlib_stubs.o
-
+OBJS=main.o UART2.o startup.o serial.o newlib_stubs.o adc.o
 # For smaller hex file remove '-u _printf_float' below
+
 main.hex: $(OBJS)
 #	$(LD) $(OBJS) $(LIBSPEC) -Os -u _printf_float -nostdlib -lnosys -lgcc -T ../Common/LDscripts/stm32l051xx.ld --cref -Map main.map -o main.elf
 	$(LD) $(OBJS) $(LIBSPEC) -Os -nostdlib -lnosys -lgcc -T ../Common/LDscripts/stm32l051xx.ld --cref -Map main.map -o main.elf

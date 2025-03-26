@@ -31,7 +31,7 @@
 //This is our main file for the robot base, it is responsible for the following:
 // 1. Receive signal from EFM8 using the JDY40 module
 // 2. Pick which mode (manual/automatic) to operate in based off a signal from JDY40
-// MANUAL MODE: Take input from joystick, joystick press, turn that into wheel movement, arm/magnet trigger
+// MANUAL MODE: Take input from joystick, joystick press, turn that into wheel movement, arm/magnet trigger, 180 spin
 // AUTOMATIC MODE: Set algorithm for robot to follow, operate wheels and arm based off algorithm and coin detection
 // (detect coin --> execute arm thing --> turn 180 --> keep going)
 
@@ -147,6 +147,9 @@ void TIM2_Handler(void)
 
 void Hardware_Init(void)
 {
+
+	GPIOA->OSPEEDR = 0xFFFFFFFF; // Page 201 of RM0451
+
 	RCC->IOPENR  |= (BIT1|BIT0);         // peripheral clock enable for ports A and B
 
 	// Configure the pin used for analog input: PB0 and PB1 (pins 14 and 15)
@@ -185,6 +188,10 @@ void Hardware_Init(void)
 	GPIOA->OTYPER &= ~BIT11; // Push-pull
     GPIOA->MODER = (GPIOA->MODER & ~(BIT24|BIT25)) | BIT24; // Make pin PA12 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0)
 	GPIOA->OTYPER &= ~BIT12; // Push-pull
+
+	// Configure PA13 as output and set it high (normal JDY40 operation mode)
+    GPIOA->MODER = (GPIOA->MODER & ~(BIT27|BIT26)) | BIT26; // Make pin PA13 output
+    GPIOA->ODR   |= BIT13;                                  // Set pin to 1
 
 	// Set up timer
 	RCC->APB1ENR |= BIT0;  // turn on clock for timer2 (UM: page 177)
@@ -471,6 +478,14 @@ void detectCoin() {
 
 int main(void)
 {
+
+	char buff[80];
+	int cnt=0;
+	char c;
+    int timeout_cnt=0;
+    int cont1=0, cont2=100;
+
+
     int j, v;
 	// long long int count;
 	float f;
@@ -480,8 +495,10 @@ int main(void)
 
 
 	Hardware_Init();
+	initUART2(9600);
 	
 	waitms(500); // Give putty a chance to start before we send characters with printf()
+	printf("\r\nJDY-40 Slave test for the STM32L051\r\n");
 	eputs("\x1b[2J\x1b[1;1H"); // Clear screen using ANSI escape sequence.
 	eputs("\r\nSTM32L051 multi I/O example.\r\n");
 	eputs("Measures the voltage from ADC channels 8 and 9 (pins 14 and 15 of LQFP32 package)\r\n");
@@ -490,13 +507,27 @@ int main(void)
 	eputs("Generates servo PWMs on PA11, PA12 (pins 21, 22 of LQFP32 package)\r\n");
 	eputs("Reads the push-button on pin PA14 (pin 24 of LQFP32 package)\r\n\r\n");
 
+	ReceptionOff();
+
+	SendATCommand("AT+VER\r\n");
+	SendATCommand("AT+BAUD\r\n");
+	SendATCommand("AT+RFID\r\n");
+	SendATCommand("AT+DVID\r\n");
+	SendATCommand("AT+RFC\r\n");
+	SendATCommand("AT+POWE\r\n");
+	SendATCommand("AT+CLSS\r\n");
+
     LED_toggle=0;
 	PB3_0;
 	PB4_0;
 	PB5_0;
 	PB6_0;
 	PB7_0;
-					
+
+	SendATCommand("AT+DVIDFDFD\r\n"); 
+	SendATCommand("AT+RFC113\r\n"); 
+
+	cnt=0;			
 	while (1)
 	{
 		//PB3_1;
@@ -587,7 +618,30 @@ int main(void)
 
 		// find default positions for servo
 		//ISR_pwm1=75; ISR_pwm2=75;
-		
+		if(ReceivedBytes2()>0) // Something has arrived
+		{
+			c=egetc2();
+			
+			if(c=='!') // Master is sending message
+			{
+				egets2(buff, sizeof(buff)-1);
+				if(strlen(buff)==8)
+				{
+					printf("Master says: %s\r", buff);
+				}
+				else
+				{
+					printf("*** BAD MESSAGE ***: %s\r", buff);
+				}				
+			}
+			else if(c=='@') // Master wants slave data
+			{
+				sprintf(buff, "%05u\n", cnt);
+				cnt++;
+				waitms(5); // The radio seems to need this delay...
+				eputs2(buff);
+			}
+		}
 		//pickCoin();
 		//toggleMagnet(1);
 		detectCoin();

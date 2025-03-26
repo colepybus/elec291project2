@@ -1,4 +1,7 @@
-/* Functions for auto mode motor control 
+/* Auto Functions for DC Motor with Main
+ * RUN AS MAIN IN Servo_PWM.mk
+ * Function: Moves forward for 1 second and then turns at a random
+ * 		angle and resumes forward motion to test auto functions.
  * ELEC 291 Project 2
  * Group B01
  * Created March 26th, 2024 by Madison Howitt
@@ -171,8 +174,8 @@ int main(void)
 	while (1)
 	{
 		// Move forward and turn at a random angle in a loop
-        move_forward(100); 
-        delayms(1000); 
-        turn_random(); 
+		move_forward(100); 
+		delayms(1000); 
+		turn_random(); 
     }
 }

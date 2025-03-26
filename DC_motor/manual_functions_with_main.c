@@ -81,17 +81,6 @@ void delayms(int len)
 // via the interrupt vector table defined in startup.c
 void TIM2_Handler(void) 
 {
-	/* 
-	Timer Interrupt Handler
-
-	What this function does: 
-		Clears the interrupt flag (TIM2->SR &= ~BIT0)
-		Controls the PWM duty cycle:
-			PA11 (PWM1) and PA12 (PWM2) are set HIGH if PWM_Counter is less than pwm1 or pwm2
-			Otherwise, they are set LOW
-		Resets PWM_Counter after 20ms to ensure 50 Hz PWM signal 
-	*/
-
 	TIM2->SR &= ~BIT0; // clear the update interrupt flag
 	PWM_Counter++;     // increment the PWM counter
     
@@ -143,19 +132,6 @@ void TIM2_Handler(void)
 
 void Hardware_Init(void)
 {
-	/* 
-	Hardware Initialization
-	
- 	What this function does: 
-		Enables GPIOA clock.
-		Configures PA11 and PA12 as outputs in push-pull mode
-		Configures TIM2:
-			Enables clock
-			Sets reload value to generate 10µs timer ticks
-			Enables interrupts
-			Starts counting                             
-	*/
-	
 	RCC->IOPENR |= BIT0; // peripheral clock enable for port A (GPIOA)
 	RCC->APB1ENR |= BIT0; // Enable TIM2 clock
 

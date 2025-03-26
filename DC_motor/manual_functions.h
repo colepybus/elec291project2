@@ -17,6 +17,13 @@
 volatile int PWM_Counter = 0;
 volatile unsigned char pwm1 = 0, pwm2 = 0;
 
+void move_backward(int speed);
+void move_forward(int speed);
+void move_left(int speed);
+void move_right(int speed);
+void move_stop(void);
+void Hardware_Init(void);
+
 void move_backward(int speed) {
     // Set direction pins for backward movement
     GPIOA->ODR &= ~(BIT1 | BIT3); // Set PA1 & PA3 LOW

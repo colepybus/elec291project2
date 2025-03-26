@@ -44,20 +44,8 @@
 
 //sets the cpu frequency to 32MHz, and makes DEF_F a 10us tick
 
-#define SYSCLK 32000000L
 #define F_CPU 32000000L
 #define DEF_F 100000L // 10us tick
-
-// Uses SysTick to delay <us> micro-seconds. 
-void Delay_us(unsigned char us)
-{
-	// For SysTick info check the STM32L0xxx Cortex-M0 programming manual page 85.
-	SysTick->LOAD = (F_CPU/(1000000L/us)) - 1;  // set reload register, counter rolls over from zero, hence -1
-	SysTick->VAL = 0; // load the SysTick counter
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	while((SysTick->CTRL & BIT16)==0); // Bit 16 is the COUNTFLAG.  True when counter rolls over from zero.
-	SysTick->CTRL = 0x00; // Disable Systick counter
-}
 
 // sets a pwm counter and timer pwms to 100 initially
 
@@ -88,30 +76,6 @@ void waitms(int len)
 // The following should happen at a rate of 1kHz.
 // The following function is associated with the TIM2 interrupt 
 // via the interrupt vector table defined in startup.c
-
-void SendATCommand (char * s)
-{
-	char buff[40];
-	printf("Command: %s", s);
-	GPIOA->ODR &= ~(BIT13); // 'set' pin to 0 is 'AT' mode.
-	waitms(10);
-	eputs2(s);
-	egets2(buff, sizeof(buff)-1);
-	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
-	waitms(10);
-	printf("Response: %s", buff);
-}
-
-void ReceptionOff (void)
-{
-	GPIOA->ODR &= ~(BIT13); // 'set' pin to 0 is 'AT' mode.
-	waitms(10);
-	eputs2("AT+DVID0000\r\n"); // Some unused id, so that we get nothing in RXD1.
-	waitms(10);
-	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
-	while (ReceivedBytes2()>0) egetc2(); // Clear FIFO
-}
-
 
 void TIM2_Handler(void) 
 {

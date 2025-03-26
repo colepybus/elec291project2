@@ -1,20 +1,22 @@
-/* Manual Functions for DC Motor with Main Function 
+/* Auto Functions for DC Motor with Main
  * RUN AS MAIN IN Servo_PWM.mk
- * Function: Moves the wheels of the robot in every direction for 1 
- *     second each to test manual functions.
+ * Function: Moves forward for 1 second and then turns at a random
+ * 		angle and resumes forward motion to test auto functions.
  * ELEC 291 Project 2
  * Group B01
- * Created March 25th, 2024 by Madison Howitt and Ria Dangi
+ * Created March 26th, 2024 by Madison Howitt
  */
 
 #include "../Common/Include/stm32l051xx.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "../Common/Include/serial.h"
+#include <time.h>
 
 #define F_CPU 32000000L // 32MHz operating frequency 
 #define DEF_F 100000L   // 10µs tick for timer
-#define PWM_MAX 100     // max PWM speed
+#define PWM_MAX 100     // maximum PWM for speed 
+#define LOWER_ANGLE 90  // minimum turn angle, can be changed based on how much of a turn / range we want 
 
 volatile int PWM_Counter = 0;
 volatile unsigned char pwm1 = 0, pwm2 = 0;
@@ -37,26 +39,27 @@ void move_forward(int speed) {
     pwm2 = speed;
 }
 
-void move_left(int speed) {
-    GPIOA->ODR &= ~(BIT0 | BIT2); 
-    GPIOA->ODR |= (BIT1 | BIT3);
-	
-    pwm1 = speed;
-    pwm2 = 0;
-}
-
-void move_right(int speed) {
-    GPIOA->ODR &= ~(BIT0 | BIT2);
-    GPIOA->ODR |= (BIT1 | BIT3);
-
-	
-    pwm1 = 0;
-    pwm2 = speed;
-}
-
 void move_stop(void) {
     pwm1 = 0;
     pwm2 = 0;
+}
+
+void turn_CW(int speed) {
+	// right wheel forward, left wheel backward (minimum turning radius)
+	GPIOA->ODR &= ~(BIT1 | BIT2); // set PA1 & PA2 LOW
+    GPIOA->ODR |= (BIT0 | BIT3);  // set PA0 & PA3 HIGH
+    
+    pwm1 = speed; 
+    pwm2 = speed; 
+}
+
+void turn_CCW(int speed) { 
+	// left wheel forward, right wheel backward (minimum turning radius)
+	GPIOA->ODR &= ~(BIT0 | BIT3); // set PA0 & PA3 LOW
+    GPIOA->ODR |= (BIT1 | BIT2);  // set PA1 & PA2 HIGH
+    
+    pwm1 = speed; 
+    pwm2 = speed; 
 }
 
 void wait_1ms(void)
@@ -74,11 +77,6 @@ void delayms(int len)
 	while(len--) wait_1ms(); // call waitms len times 
 }
 
-// Interrupt service routines are the same as normal
-// subroutines (or C funtions) in Cortex-M microcontrollers.
-// The following should happen at a rate of 1kHz.
-// The following function is associated with the TIM2 interrupt 
-// via the interrupt vector table defined in startup.c
 void TIM2_Handler(void) 
 {
 	TIM2->SR &= ~BIT0; // clear the update interrupt flag
@@ -109,44 +107,22 @@ void TIM2_Handler(void)
     if(++PWM_Counter >= PWM_MAX) PWM_Counter = 0;
 }
 
-
-// STM32L051 pinout
-//             ----------
-//       VDD -|1       32|- VSS
-//      PC14 -|2       31|- BOOT0
-//      PC15 -|3       30|- PB7
-//      NRST -|4       29|- PB6
-//      VDDA -|5       28|- PB5
-//       PA0 -|6       27|- PB4
-//       PA1 -|7       26|- PB3
-//       PA2 -|8       25|- PA15
-//       PA3 -|9       24|- PA14
-//       PA4 -|10      23|- PA13
-//       PA5 -|11      22|- PA12
-//       PA6 -|12      21|- PA11 (pwm1)
-//       PA7 -|13      20|- PA10 (Reserved for RXD)
-//       PB0 -|14      19|- PA9  (Reserved for TXD)
-//       PB1 -|15      18|- PA8
-//       VSS -|16      17|- VDD
-//             ----------
-
 void Hardware_Init(void)
 {
 	RCC->IOPENR |= BIT0; // peripheral clock enable for port A (GPIOA)
 	RCC->APB1ENR |= BIT0; // Enable TIM2 clock
-
-
+	
 	// Motor pin configurations
 	
-    // Configure all motor control pins as outputs
-    GPIOA->MODER &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
-    GPIOA->MODER |= (BIT0 | BIT2 | BIT4 | BIT6);
-    
-    // Set push-pull mode
-    GPIOA->OTYPER &= ~(BIT0 | BIT1 | BIT2 | BIT3);
-    
-    // Initialize all pins to LOW
-    GPIOA->ODR &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+	// Configure all motor control pins as outputs
+	GPIOA->MODER &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
+	GPIOA->MODER |= (BIT0 | BIT2 | BIT4 | BIT6);
+	
+	// Set push-pull mode
+	GPIOA->OTYPER &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+	
+	// Initialize all pins to LOW
+	GPIOA->ODR &= ~(BIT0 | BIT1 | BIT2 | BIT3);
     	
 	// Set up timer
 	RCC->APB1ENR |= BIT0;      // enable clock for timer2 (UM: page 177)
@@ -160,39 +136,46 @@ void Hardware_Init(void)
 	__enable_irq(); // enable global interupts
 }
 
+void turn_random() { 
+    
+    /* Function: Turns on both motors at full speed in different directions and keeps
+     *     them on for a length of time determined by a random angle.
+     * Testing: Need to know how long it takes for a full 180 degree turn. This will
+     *     be the maximum time set for a turning angle of +/- 180 with a linear
+     *     relationship between time delay and random angle. Uses the sharpest 
+     *     possible turning radius.
+     */
+
+    int turn_angle = (rand() % (180 - LOWER_ANGLE + 1)) + LOWER_ANGLE; // generate random angle
+    int direction = rand() % 2;                  // generate random turn direction (0 or 1)
+    float turn_time = 0.88 * turn_angle / 180.0; // time to turn 180 degrees is 0.88 seconds                      
+
+    if (direction == 1) { 
+        // turn right (CW)
+        turn_CW(PWM_MAX); 
+    } 
+    else { 
+        // turn left (CCW)
+        turn_CCW(PWM_MAX); 
+    }
+    
+    // keep motors on for amount of timer determined by random angle 
+    delayms((int)(turn_time * 1000)); // convert turn time to ms
+
+    // transition back to moving forward
+    move_forward(PWM_MAX);
+}
+
 int main(void)
 {
-	/*
-	Calls Hardware_Init() to set up the GPIOs and timer
-	Waits 500ms for terminal initialization
-	Prints program description
-	*/
-
 	Hardware_Init();
 	delayms(500); // wait for putty to start
 
 	while (1)
 	{
-		// Alternate forward and backward motion in a loop
-
-        // Forward for 1 second
-		move_forward(100);
-		delayms(1000);
-
-        // Backward for 1 second
-		move_backward(100);
+		// Move forward and turn at a random angle in a loop
+		move_forward(100); 
 		delayms(1000); 
-
-        // Turn right for 1 second
-		move_right(100);
-		delayms(1000);
-
-        // Turn left for 1 second
-		move_left(100);
-		delayms(1000);
-
-        // Stop + delay
-		move_stop();
-		delayms(1000);
+		turn_random(); 
     }
 }

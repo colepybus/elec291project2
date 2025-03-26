@@ -1,5 +1,5 @@
 /* Manual Functions for DC Motor
- * RUN AS MAIN IN Servo_PWM.mk
+ * Use to make complete header file.
  * ELEC 291 Project 2
  * Group B01
  * Created March 25th, 2024 by Madison Howitt and Ria Dangi

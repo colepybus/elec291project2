@@ -1,7 +1,7 @@
 CC= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-gcc
 AS= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-as
 LD= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/arm-none-eabi-ld
-CCFLAGS=-mcpu=cortex-m0 -mthumb -g 
+CCFLAGS=-mcpu=cortex-m0 -mthumb 
 PORTN=/dev/$(shell ls /dev | grep "cu.usbserial")
 
 # Search for the path of libraries.
@@ -9,7 +9,7 @@ LIBPATH1= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/lib/gcc/arm-none
 LIBPATH2= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/lib/thumb/v6-m/nofp
 LIBSPEC=-L"$(LIBPATH1)" -L"$(LIBPATH2)"
 
-OBJS=main.o UART2.o startup.o serial.o newlib_stubs.o adc.o
+OBJS=main.o UART2.o startup.o serial.o newlib_stubs.o adc.o motor_control.o
 # For smaller hex file remove '-u _printf_float' below
 
 main.hex: $(OBJS)
@@ -33,8 +33,12 @@ serial.o: ../Common/Source/serial.c
 newlib_stubs.o: ../Common/Source/newlib_stubs.c
 	$(CC) -c $(CCFLAGS) ../Common/Source/newlib_stubs.c -o newlib_stubs.o
 
-clean: 
-	rm -f $(OBJS) main.elf main.hex main.map
+motor_control.o: motor_control.c
+	$(CC) $(CCFLAGS) -c motor_control.c -o motor_control.o
+
+
+#clean: 
+#	rm -f $(OBJS) main.elf main.hex main.map
 
 Load_Flash: main.hex
 	../stm32flash/stm32flash -w main.hex -v -g 0x0 $(PORTN)

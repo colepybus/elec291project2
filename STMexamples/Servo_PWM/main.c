@@ -1,16 +1,10 @@
-/* Updated Servo_PWM to test DC motor 
- * Function: Asks for user input and sends that input as a PWM signal
- *     to a DC motor to control power and speed.         
+/* Manual Functions for DC Motor with Main Function 
+ * RUN AS MAIN IN Servo_PWM.mk
+ * Function: Moves the wheels of the robot in every direction for 1 
+ *     second each to test manual functions.
  * ELEC 291 Project 2
  * Group B01
- * Created March 21st, 2024 by Madison Howitt
- *
- * A DC motor only needs a PWM signal to control speed. Unlike a servo, it doesn’t need a specific pulse width for positioning.
- * Changes: 
- *  Remove the fixed 20ms period (used for servos).
- *  Use only one output pin (e.g., PA11) for PWM.
- *  Set the PWM frequency to something higher (~1kHz-10kHz) for smooth motor control.
- *  User input should control duty cycle (0-100%) instead of servo position.
+ * Created March 25th, 2024 by Madison Howitt and Ria Dangi
  */
 
 #include "../Common/Include/stm32l051xx.h"
@@ -20,9 +14,50 @@
 
 #define F_CPU 32000000L // 32MHz operating frequency 
 #define DEF_F 100000L   // 10µs tick for timer
+#define PWM_MAX 100     // max PWM speed
 
 volatile int PWM_Counter = 0;
-volatile unsigned char pwm1 = 100, pwm2 = 100;
+volatile unsigned char pwm1 = 0, pwm2 = 0;
+
+void move_backward(int speed) {
+    // Set direction pins for backward movement
+    GPIOA->ODR &= ~(BIT1 | BIT3); // Set PA1 & PA3 LOW
+	GPIOA->ODR |= (BIT0 | BIT2);  // Set PA0 and PA2 HIGH (forward direction)
+	
+    pwm1 = speed;
+    pwm2 = speed;
+}
+
+void move_forward(int speed) {
+    // Set direction pins for forward movement
+    GPIOA->ODR &= ~(BIT0 | BIT2); // Set PA1 & PA3 LOW
+    GPIOA->ODR |= (BIT1 | BIT3);  // Set PA1 and PA3 HIGH (backward direction)
+
+    pwm1 = speed;
+    pwm2 = speed;
+}
+
+void move_left(int speed) {
+    GPIOA->ODR &= ~(BIT0 | BIT2); 
+    GPIOA->ODR |= (BIT1 | BIT3);
+	
+    pwm1 = speed;
+    pwm2 = 0;
+}
+
+void move_right(int speed) {
+    GPIOA->ODR &= ~(BIT0 | BIT2);
+    GPIOA->ODR |= (BIT1 | BIT3);
+
+	
+    pwm1 = 0;
+    pwm2 = speed;
+}
+
+void move_stop(void) {
+    pwm1 = 0;
+    pwm2 = 0;
+}
 
 void wait_1ms(void)
 {
@@ -46,39 +81,36 @@ void delayms(int len)
 // via the interrupt vector table defined in startup.c
 void TIM2_Handler(void) 
 {
-	/* 
-	Timer Interrupt Handler
-
-	What this function does: 
-		Clears the interrupt flag (TIM2->SR &= ~BIT0)
-		Controls the PWM duty cycle:
-			PA11 (PWM1) and PA12 (PWM2) are set HIGH if PWM_Counter is less than pwm1 or pwm2
-			Otherwise, they are set LOW
-		Resets PWM_Counter after 20ms to ensure 50 Hz PWM signal 
-	*/
-
 	TIM2->SR &= ~BIT0; // clear the update interrupt flag
 	PWM_Counter++;     // increment the PWM counter
-	
-	if(pwm1 > PWM_Counter) // pwm1 controls duty cycle (0-100%) instead of position
-	{
-		GPIOA->ODR |= BIT11; // set PA11 HIGH 
+    
+    // Motor 1 PWM (PA0 for forward, PA1 for backward)
+	if (PWM_Counter < pwm1) {
+	    if ((GPIOA->ODR & BIT1) != 0) { // If PA1 is HIGH, move backward
+	        GPIOA->ODR |= BIT1;  // Set PA1 HIGH
+	    } else { // Forward
+	        GPIOA->ODR |= BIT0;  // Set PA0 HIGH
+	    }
+	} else {
+	    GPIOA->ODR &= ~(BIT0 | BIT1); // Clear both forward and backward pins
 	}
-	else
-	{
-		GPIOA->ODR &= ~BIT11; // set PA11 LOW
+	
+	// Motor 2 PWM (PA2 for forward, PA3 for backward)
+	if (PWM_Counter < pwm2) {
+	    if ((GPIOA->ODR & BIT3) != 0) { // If PA3 is HIGH, move backward
+	        GPIOA->ODR |= BIT3;  // Set PA3 HIGH
+	    } else { // Forward
+	        GPIOA->ODR |= BIT2;  // Set PA2 HIGH
+	    }
+	} else {
+	    GPIOA->ODR &= ~(BIT2 | BIT3); // Clear both forward and backward pins
 	}
 	
-    // removed PA12 / pwm2
-
-	if (PWM_Counter >= 1000) // 1ms PWM cycle (period = 1ms)
-	{
-		PWM_Counter=0;
-		GPIOA->ODR |= (BIT11); // reset PWM cycle
-	}   
+    if(++PWM_Counter >= PWM_MAX) PWM_Counter = 0;
 }
 
-// LQFP32 pinout
+
+// STM32L051 pinout
 //             ----------
 //       VDD -|1       32|- VSS
 //      PC14 -|2       31|- BOOT0
@@ -90,7 +122,7 @@ void TIM2_Handler(void)
 //       PA2 -|8       25|- PA15
 //       PA3 -|9       24|- PA14
 //       PA4 -|10      23|- PA13
-//       PA5 -|11      22|- PA12 (pwm2)
+//       PA5 -|11      22|- PA12
 //       PA6 -|12      21|- PA11 (pwm1)
 //       PA7 -|13      20|- PA10 (Reserved for RXD)
 //       PB0 -|14      19|- PA9  (Reserved for TXD)
@@ -100,27 +132,22 @@ void TIM2_Handler(void)
 
 void Hardware_Init(void)
 {
-	/* 
-	Hardware Initialization
-	
-	What this function does: 
-		Enables GPIOA clock.
-		Configures PA11 and PA12 as outputs in push-pull mode
-		Configures TIM2:
-			Enables clock
-			Sets reload value to generate 10µs timer ticks
-			Enables interrupts
-			Starts counting
-	*/
-	
 	RCC->IOPENR |= BIT0; // peripheral clock enable for port A (GPIOA)
+	RCC->APB1ENR |= BIT0; // Enable TIM2 clock
 
-	// Set up output pins
-    GPIOA->MODER = (GPIOA->MODER & ~(BIT22|BIT23)) | BIT22; // PA11 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0)
-	GPIOA->OTYPER &= ~BIT11; // push-pull mode
-    GPIOA->MODER = (GPIOA->MODER & ~(BIT24|BIT25)) | BIT24; // PA12 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0)
-	GPIOA->OTYPER &= ~BIT12; // push-pull mode
 
+	// Motor pin configurations
+	
+    // Configure all motor control pins as outputs
+    GPIOA->MODER &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
+    GPIOA->MODER |= (BIT0 | BIT2 | BIT4 | BIT6);
+    
+    // Set push-pull mode
+    GPIOA->OTYPER &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+    
+    // Initialize all pins to LOW
+    GPIOA->ODR &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+    	
 	// Set up timer
 	RCC->APB1ENR |= BIT0;      // enable clock for timer2 (UM: page 177)
 	TIM2->ARR = F_CPU/DEF_F-1; // set auto-reload register for 10µs tick
@@ -141,35 +168,31 @@ int main(void)
 	Prints program description
 	*/
 
-    char buf[32];
-    int speed;
-
 	Hardware_Init();
-	
 	delayms(500); // wait for putty to start
-	
-    printf("Servo signal generation using the STM32L051 using TIM2\r\n");
-    printf("(output is PA11, pin 21).\r\n");
-	
+
 	while (1)
 	{
-		/*
-		Continuously asks the user for PWM values
-		Ensures values are between 0 and 100
-		Updates pwm1, which controls the PWM signal
-		*/
+		// Alternate forward and backward motion in a loop
 
-    	printf("Enter speed (0 to 100): ");
-    	fflush(stdout);
-    	egets_echo(buf, 31); // wait here until data is received from user input
-  		printf("\r\n");
+        // Forward for 1 second
+		move_forward(100);
+		delayms(1000);
 
-	    speed= atoi(buf); // convert input string to integer
-                          // changed npwm to speed
-        
-        // removed ignore zero condition
-        if(speed > 100) speed = 100; // if user input is too large, set to max value
-        if(speed < 0) speed = 0;     // if user input is too small, set to min value
-        pwm1 = speed * 10;           // convert percentage to PWM range (0-1000) and update duty cycle
+        // Backward for 1 second
+		move_backward(100);
+		delayms(1000); 
+
+        // Turn right for 1 second
+		move_right(100);
+		delayms(1000);
+
+        // Turn left for 1 second
+		move_left(100);
+		delayms(1000);
+
+        // Stop + delay
+		move_stop();
+		delayms(1000);
     }
 }

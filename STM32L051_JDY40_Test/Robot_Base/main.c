@@ -1,25 +1,76 @@
 #include "../Common/Include/stm32l051xx.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "UART2.h"
 #include "../Common/Include/serial.h"
 #include "adc.h"
 #include <math.h>
+//#include "manual_functions.h"
+//#include "auto_functions.h"
+#include "motor_control.h"
 
-#define F_CPU 32000000L
-#define DEF_F 100000L // 10us tick
+//THIS IS THE FULL FUNCTIONING STM32 CODE EVERYTHING MUST BE ADDED TO
+
+// LQFP32 pinout
+//                 ----------
+//           VDD -|1       32|- VSS
+//          PC14 -|2       31|- BOOT0
+//          PC15 -|3       30|- PB7 
+//          NRST -|4       29|- PB6 
+//          VDDA -|5       28|- PB5 
+//    out2   PA0 -|6       27|- PB4 
+//    out3   PA1 -|7       26|- PB3 (OUT 1)
+//    out4   PA2 -|8       25|- PA15
+//    out5   PA3 -|9       24|- PA14 
+//           PA4 -|10      23|- PA13
+//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
+//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
+//(jdy push) PA7 -|13      20|- PA10 (Reserved for RXD)
+// (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
+// (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
+//           VSS -|16      17|- VDD
+//                 ----------
+
+
+//This is our main file for the robot base, it is responsible for the following:
+// 1. Receive signal from EFM8 using the JDY40 module
+// 2. Pick which mode (manual/automatic) to operate in based off a signal from JDY40
+// MANUAL MODE: Take input from joystick, joystick press, turn that into wheel movement, arm/magnet trigger
+// AUTOMATIC MODE: Set algorithm for robot to follow, operate wheels and arm based off algorithm and coin detection
+// (detect coin --> execute arm thing --> turn 180 --> keep going)
+
+// JDY40 NECESSARY INFORMATION TO BE RECEIEVED: 
+// Operating mode (0,1,2), Joystick (float x_norm, float y_norm, bit press), leapmotion eventually 
+
+// STILL NEED: JDY40 stuff, 
+
+// leapmotion possible bonus, arm 3d operation with joysticks, play song and dance after challenge complete, take in path data and optimize with ML
+
+//sets the cpu frequency to 32MHz, and makes DEF_F a 10us tick
+
+//#define F_CPU 32000000L
+//#define DEF_F 100000L // 10us tick
+
+// sets a pwm counter and timer pwms to 100 initially
 
 volatile int PWM_Counter = 0;
 volatile unsigned char ISR_pwm1=100, ISR_pwm2=100;
 
-void wait_1ms(void)
-{
-	// For SysTick info check the STM32l0xxx Cortex-M0 programming manual.
-	SysTick->LOAD = (F_CPU/1000L) - 1;  // set reload register, counter rolls over from zero, hence -1
-	SysTick->VAL = 0; // load the SysTick counter
-	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-	while((SysTick->CTRL & BIT16)==0); // Bit 16 is the COUNTFLAG.  True when counter rolls over from zero.
-	SysTick->CTRL = 0x00; // Disable Systick counter
-}
+//functions that makes it wait 1 ms
+
+// void wait_1ms(void)
+// {
+// 	// For SysTick info check the STM32l0xxx Cortex-M0 programming manual.
+// 	SysTick->LOAD = (F_CPU/1000L) - 1;  // set reload register, counter rolls over from zero, hence -1
+// 	SysTick->VAL = 0; // load the SysTick counter
+// 	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
+// 	while((SysTick->CTRL & BIT16)==0); // Bit 16 is the COUNTFLAG.  True when counter rolls over from zero.
+// 	SysTick->CTRL = 0x00; // Disable Systick counter
+// }
+
+
+//makes it wait "len" amount of ms
 
 void waitms(int len)
 {
@@ -31,6 +82,7 @@ void waitms(int len)
 // The following should happen at a rate of 1kHz.
 // The following function is associated with the TIM2 interrupt 
 // via the interrupt vector table defined in startup.c
+
 void TIM2_Handler(void) 
 {
 	TIM2->SR &= ~BIT0; // clear update interrupt flag
@@ -61,6 +113,7 @@ void TIM2_Handler(void)
 	}   
 }
 
+<<<<<<< HEAD
 // LQFP32 pinout
 //                 ----------
 //           VDD -|1       32|- VSS
@@ -80,6 +133,9 @@ void TIM2_Handler(void)
 // (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
 //           VSS -|16      17|- VDD
 //                 ----------
+=======
+//initializes hardware
+>>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
 
 void Hardware_Init(void)
 {
@@ -97,24 +153,36 @@ void Hardware_Init(void)
 	GPIOA->PUPDR |= BIT16; 
 	GPIOA->PUPDR &= ~(BIT17);
 	
-	// Configure the pin connected to the pushbutton as input
-	GPIOA->MODER &= ~(BIT28 | BIT29); // Make pin PA14 input
+
+
 	// Activate pull up for pin PA8:
-	GPIOA->PUPDR |= BIT28; 
-	GPIOA->PUPDR &= ~(BIT29);
+	GPIOA->PUPDR |= BIT1; 
+	GPIOA->PUPDR &= ~(BIT2);
 	
 	// Configure some pins as outputs:
 	// Make pins PB3 to PB7 outputs (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0)
-    GPIOB->MODER = (GPIOB->MODER & ~(BIT6|BIT7)) | BIT6;    // PB3
-	GPIOB->OTYPER &= ~BIT3; // Push-pull
-    GPIOB->MODER = (GPIOB->MODER & ~(BIT8|BIT9)) | BIT8;    // PB4
-	GPIOB->OTYPER &= ~BIT4; // Push-pull
-    GPIOB->MODER = (GPIOB->MODER & ~(BIT10|BIT11)) | BIT10; // PB5
-	GPIOB->OTYPER &= ~BIT5; // Push-pull
-    GPIOB->MODER = (GPIOB->MODER & ~(BIT12|BIT13)) | BIT12; // PB6
-	GPIOB->OTYPER &= ~BIT6; // Push-pull
-    GPIOB->MODER = (GPIOB->MODER & ~(BIT14|BIT15)) | BIT14;  // PB7
-	GPIOB->OTYPER &= ~BIT7; // Push-pull
+     GPIOB->MODER = (GPIOB->MODER & ~(BIT6|BIT7)) | BIT6;    // PB3
+	 GPIOB->OTYPER &= ~BIT3; // Push-pull
+    // GPIOB->MODER = (GPIOB->MODER & ~(BIT8|BIT9)) | BIT8;    // PB4
+	// GPIOB->OTYPER &= ~BIT4; // Push-pull
+    // GPIOB->MODER = (GPIOB->MODER & ~(BIT10|BIT11)) | BIT10; // PB5
+	// GPIOB->OTYPER &= ~BIT5; // Push-pull
+    // GPIOB->MODER = (GPIOB->MODER & ~(BIT12|BIT13)) | BIT12; // PB6
+	// GPIOB->OTYPER &= ~BIT6; // Push-pull
+    // GPIOB->MODER = (GPIOB->MODER & ~(BIT14|BIT15)) | BIT14;  // PB7
+	// GPIOB->OTYPER &= ~BIT7; // Push-pull
+
+	// Motor pin configurations
+	
+	// Configure all motor control pins as outputs
+	GPIOA->MODER &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
+	GPIOA->MODER |= (BIT0 | BIT2 | BIT4 | BIT6);
+	
+	// Set push-pull mode
+	GPIOA->OTYPER &= ~(BIT0 | BIT1 | BIT2 | BIT3);
+	
+	// Initialize all pins to LOW
+	GPIOA->ODR &= ~(BIT0 | BIT1 | BIT2 | BIT3);
 	
 	// Set up servo PWM output pins
     GPIOA->MODER = (GPIOA->MODER & ~(BIT22|BIT23)) | BIT22; // Make pin PA11 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0)
@@ -132,6 +200,40 @@ void Hardware_Init(void)
 	TIM2->CR1 |= BIT0;      // enable counting    
 	
 	__enable_irq();
+
+	// SET UP JDY40 ----------------------------------------------------------------
+	GPIOA->MODER = (GPIOA->MODER & ~(BIT27|BIT26)) | BIT26; // Make pin PA13 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0))
+	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
+
+	// change from PA8 -> PA13
+	GPIOA->MODER &= ~(BIT26 | BIT27); // Make pin PA8 input
+	// Activate pull up for pin PA8:
+	GPIOA->PUPDR |= BIT26; 
+	GPIOA->PUPDR &= ~(BIT27);
+}
+
+// FUNCTIONS FOR JDY40 ----------------------------------------------------------------
+void SendATCommand (char * s)
+{
+	char buff[40];
+	printf("Command: %s", s);
+	GPIOA->ODR &= ~(BIT13); // 'set' pin to 0 is 'AT' mode.
+	waitms(10);
+	eputs2(s);
+	egets2(buff, sizeof(buff)-1);
+	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
+	waitms(10);
+	printf("Response: %s", buff);
+}
+
+void ReceptionOff (void)
+{
+	GPIOA->ODR &= ~(BIT13); // 'set' pin to 0 is 'AT' mode.
+	waitms(10);
+	eputs2("AT+DVID0000\r\n"); // Some unused id, so that we get nothing in RXD1.
+	waitms(10);
+	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
+	while (ReceivedBytes2()>0) egetc2(); // Clear FIFO
 }
 
 // A define to easily read PA8 (PA8 must be configured as input first)
@@ -139,77 +241,78 @@ void Hardware_Init(void)
 
 long long int GetPeriod(int n)
 {
-    int i;
+	int i;
     long long int overflows = 0;
     __disable_irq(); // Critical section start
-
+	
     // Wait for signal to be 0
-    SysTick->LOAD = 0xffffff;
+	SysTick->LOAD = 0xffffff;
     SysTick->VAL = 0xffffff;
-    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
     while (PA8 != 0)
-    {
+	{
         if (SysTick->CTRL & BIT16) overflows++;
         if (overflows > 100000)
-        {
-            SysTick->CTRL = 0;
+		{
+			SysTick->CTRL = 0;
             __enable_irq();
-            return 0;
-        }
-    }
-    SysTick->CTRL = 0x00;
+			return 0;
+		}
+	}
+	SysTick->CTRL = 0x00;
 
     // Wait for signal to be 1
-    SysTick->LOAD = 0xffffff;
+	SysTick->LOAD = 0xffffff;
     SysTick->VAL = 0xffffff;
-    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
     overflows = 0;
     while (PA8 == 0)
-    {
+	{
         if (SysTick->CTRL & BIT16) overflows++;
         if (overflows > 100000)
-        {
-            SysTick->CTRL = 0;
+		{
+			SysTick->CTRL = 0;
             __enable_irq();
-            return 0;
-        }
-    }
-    SysTick->CTRL = 0x00;
-
-    // Measure n cycles
-    SysTick->LOAD = 0xffffff;
+			return 0;
+		}
+	}
+	SysTick->CTRL = 0x00;
+	
+	// Measure n cycles
+	SysTick->LOAD = 0xffffff;
     SysTick->VAL = 0xffffff;
-    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
     overflows = 0;
     for (i = 0; i < n; i++)
-    {
-        while (PA8 != 0)
-        {
+	{
+		while (PA8 != 0)
+		{
             if (SysTick->CTRL & BIT16) overflows++;
             if (overflows > 100000)
-            {
-                SysTick->CTRL = 0;
+			{
+				SysTick->CTRL = 0;
                 __enable_irq();
-                return 0;
-            }
-        }
-        while (PA8 == 0)
-        {
+				return 0;
+			}
+		}
+		while (PA8 == 0)
+		{
             if (SysTick->CTRL & BIT16) overflows++;
             if (overflows > 100000)
-            {
-                SysTick->CTRL = 0;
+			{
+				SysTick->CTRL = 0;
                 __enable_irq();
-                return 0;
-            }
-        }
-    }
-    SysTick->CTRL = 0x00;
+				return 0;
+			}
+		}
+	}
+	SysTick->CTRL = 0x00;
     __enable_irq(); // Critical section end
 
     return ((long long int)overflows << 24) + (0xffffff - SysTick->VAL);
 }
 
+// prints the number given the value, the base and the number of digits
 
 void PrintNumber(long int val, int Base, int digits)
 { 
@@ -252,7 +355,6 @@ void toggleMagnet(uint8_t state) {
 		PB3_0;
 	}
 }
-
 
 // DROP ARM (opposites of liftArm)
 void pickCoin() {
@@ -363,8 +465,16 @@ int main(void)
 
 	int p1_v, p2_v; // perimeter sensor values
 
+	// jdy variables
+	char buff[80];
+	int cnt=0;
+	char c;
+    int timeout_cnt=0;
+    int cont1=0, cont2=100;
+
 
 	Hardware_Init();
+	initUART2(9600);
 	
 	waitms(500); // Give putty a chance to start before we send characters with printf()
 	eputs("\x1b[2J\x1b[1;1H"); // Clear screen using ANSI escape sequence.
@@ -375,15 +485,38 @@ int main(void)
 	eputs("Generates servo PWMs on PA11, PA12 (pins 21, 22 of LQFP32 package)\r\n");
 	eputs("Reads the push-button on pin PA14 (pin 24 of LQFP32 package)\r\n\r\n");
 
+	ReceptionOff();
+
+	// To check configuration
+	SendATCommand("AT+VER\r\n");
+	SendATCommand("AT+BAUD\r\n");
+	SendATCommand("AT+RFID\r\n");
+	SendATCommand("AT+DVID\r\n");
+	SendATCommand("AT+RFC\r\n");
+	SendATCommand("AT+POWE\r\n");
+	SendATCommand("AT+CLSS\r\n");
+	
+	// We should select an unique device ID.  The device ID can be a hex
+	// number from 0x0000 to 0xFFFF.  In this case is set to 0xABBA
+	SendATCommand("AT+DVIDFDFD\r\n"); 
+	SendATCommand("AT+RFC113\r\n"); 
+
+	cnt=0;
+
     LED_toggle=0;
 	PB3_0;
 	PB4_0;
 	PB5_0;
 	PB6_0;
 	PB7_0;
+
+	// JDY40 
 					
 	while (1)
 	{
+
+		//move_forward(100);
+
 		//PB3_1;
 
 		j=readADC(ADC_CHSELR_CHSEL8);
@@ -454,12 +587,65 @@ int main(void)
         ISR_pwm1=75; ISR_pwm2=75;
 
 		// find default positions
+=======
+		//stm recieving of data
+
+		if(ReceivedBytes2()>0) // Something has arrived
+		{
+			c=egetc2();
+			
+			if(c=='!') // Master is sending message
+			{
+				egets2(buff, sizeof(buff)-1);
+				if(strlen(buff)==8)
+				{
+					printf("Master says: %s\r", buff);
+
+					//move_forward(100);
+					printf(buff);
+
+					if (strstr(buff, "2")) {
+						printf("buff is equal to @test 2");
+						move_forward(100);
+
+
+						// manual mode
+						// pickCoin();
+						// toggleMagnet(1);
+						// detectCoin();
+					}
+
+					else
+					{
+						move_forward(50);
+						printf("stopping robot");
+						
+					}
+					
+				}
+				else
+				{
+					printf("*** BAD MESSAGE ***: %s\r", buff);
+				}				
+			}
+			else if(c=='@') // Master wants slave data
+			{
+				sprintf(buff, "%05u\n", cnt);
+				cnt++;
+				waitms(5); // The radio seems to need this delay...
+				eputs2(buff);
+			}
+		}
+
+		// find default positions for servo
+>>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
 		//ISR_pwm1=75; ISR_pwm2=75;
 		//toggleMagnet(1);
         //pickCoin();
         detectCoin();
         
 		
+<<<<<<< HEAD
         
 		//dropArm();
 		//toggleMagnet(1);
@@ -467,5 +653,12 @@ int main(void)
 
 		
 		waitms(500);	
+=======
+		//pickCoin();
+		//toggleMagnet(1);
+		//detectCoin();
+
+		//waitms(500);	
+>>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
 	}
 }

@@ -129,6 +129,7 @@ int main(void)
 				if(strlen(buff)==8)
 				{
 					printf("Master says: %s\r", buff);
+					
 				}
 				else
 				{

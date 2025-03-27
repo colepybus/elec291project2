@@ -15,13 +15,13 @@
 //          NRST -|4       29|- PB6 (OUT 4)
 //          VDDA -|5       28|- PB5 (OUT 3)
 //           PA0 -|6       27|- PB4 (OUT 2)
-//           PA1 -|7       26|- PB3 (OUT 1)
+//(push)     PA1 -|7       26|- PB3 (OUT 1)
 //           PA2 -|8       25|- PA15
-//           PA3 -|9       24|- PA14 (push button)
+//           PA3 -|9       24|- PA14 
 //           PA4 -|10      23|- PA13
 //           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
 //           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
-//           PA7 -|13      20|- PA10 (Reserved for RXD)
+//(jdy push) PA7 -|13      20|- PA10 (Reserved for RXD)
 // (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
 // (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
 //           VSS -|16      17|- VDD
@@ -126,10 +126,11 @@ void Hardware_Init(void)
 	GPIOA->PUPDR &= ~(BIT17);
 	
 	// Configure the pin connected to the pushbutton as input
-	GPIOA->MODER &= ~(BIT28 | BIT29); // Make pin PA14 input
+	GPIOA->MODER &= ~(BIT1 | BIT2); // Make pin PA1 input
+
 	// Activate pull up for pin PA8:
-	GPIOA->PUPDR |= BIT28; 
-	GPIOA->PUPDR &= ~(BIT29);
+	GPIOA->PUPDR |= BIT1; 
+	GPIOA->PUPDR &= ~(BIT2);
 	
 	// Configure some pins as outputs:
 	// Make pins PB3 to PB7 outputs (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0)
@@ -160,6 +161,40 @@ void Hardware_Init(void)
 	TIM2->CR1 |= BIT0;      // enable counting    
 	
 	__enable_irq();
+
+	// SET UP JDY40 ----------------------------------------------------------------
+	GPIOA->MODER = (GPIOA->MODER & ~(BIT27|BIT26)) | BIT26; // Make pin PA13 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0))
+	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
+
+	// change from PA8 -> PA13
+	GPIOA->MODER &= ~(BIT26 | BIT27); // Make pin PA8 input
+	// Activate pull up for pin PA8:
+	GPIOA->PUPDR |= BIT26; 
+	GPIOA->PUPDR &= ~(BIT27);
+}
+
+// FUNCTIONS FOR JDY40 ----------------------------------------------------------------
+void SendATCommand (char * s)
+{
+	char buff[40];
+	printf("Command: %s", s);
+	GPIOA->ODR &= ~(BIT13); // 'set' pin to 0 is 'AT' mode.
+	waitms(10);
+	eputs2(s);
+	egets2(buff, sizeof(buff)-1);
+	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
+	waitms(10);
+	printf("Response: %s", buff);
+}
+
+void ReceptionOff (void)
+{
+	GPIOA->ODR &= ~(BIT13); // 'set' pin to 0 is 'AT' mode.
+	waitms(10);
+	eputs2("AT+DVID0000\r\n"); // Some unused id, so that we get nothing in RXD1.
+	waitms(10);
+	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
+	while (ReceivedBytes2()>0) egetc2(); // Clear FIFO
 }
 
 // A define to easily read PA8 (PA8 must be configured as input first)
@@ -442,8 +477,16 @@ int main(void)
 
 	int p1_v, p2_v; // perimeter sensor values
 
+	// jdy variables
+	char buff[80];
+	int cnt=0;
+	char c;
+    int timeout_cnt=0;
+    int cont1=0, cont2=100;
+
 
 	Hardware_Init();
+	initUART2(9600);
 	
 	waitms(500); // Give putty a chance to start before we send characters with printf()
 	eputs("\x1b[2J\x1b[1;1H"); // Clear screen using ANSI escape sequence.
@@ -454,12 +497,32 @@ int main(void)
 	eputs("Generates servo PWMs on PA11, PA12 (pins 21, 22 of LQFP32 package)\r\n");
 	eputs("Reads the push-button on pin PA14 (pin 24 of LQFP32 package)\r\n\r\n");
 
+	ReceptionOff();
+
+	// To check configuration
+	SendATCommand("AT+VER\r\n");
+	SendATCommand("AT+BAUD\r\n");
+	SendATCommand("AT+RFID\r\n");
+	SendATCommand("AT+DVID\r\n");
+	SendATCommand("AT+RFC\r\n");
+	SendATCommand("AT+POWE\r\n");
+	SendATCommand("AT+CLSS\r\n");
+	
+	// We should select an unique device ID.  The device ID can be a hex
+	// number from 0x0000 to 0xFFFF.  In this case is set to 0xABBA
+	SendATCommand("AT+DVIDFDFD\r\n"); 
+	SendATCommand("AT+RFC113\r\n"); 
+
+	cnt=0;
+
     LED_toggle=0;
 	PB3_0;
 	PB4_0;
 	PB5_0;
 	PB6_0;
 	PB7_0;
+
+	// JDY40 
 					
 	while (1)
 	{
@@ -549,13 +612,41 @@ int main(void)
 				break;
 		}
 
+		//stm recieving of data
+
+		if(ReceivedBytes2()>0) // Something has arrived
+		{
+			c=egetc2();
+			
+			if(c=='!') // Master is sending message
+			{
+				egets2(buff, sizeof(buff)-1);
+				if(strlen(buff)==8)
+				{
+					printf("Master says: %s\r", buff);
+					
+				}
+				else
+				{
+					printf("*** BAD MESSAGE ***: %s\r", buff);
+				}				
+			}
+			else if(c=='@') // Master wants slave data
+			{
+				sprintf(buff, "%05u\n", cnt);
+				cnt++;
+				waitms(5); // The radio seems to need this delay...
+				eputs2(buff);
+			}
+		}
+
 		// find default positions for servo
 		//ISR_pwm1=75; ISR_pwm2=75;
 		
 		//pickCoin();
 		//toggleMagnet(1);
-		detectCoin();
+		//detectCoin();
 
-		waitms(500);	
+		//waitms(500);	
 	}
 }

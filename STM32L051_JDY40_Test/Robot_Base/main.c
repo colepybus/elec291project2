@@ -113,29 +113,7 @@ void TIM2_Handler(void)
 	}   
 }
 
-<<<<<<< HEAD
-// LQFP32 pinout
-//                 ----------
-//           VDD -|1       32|- VSS
-//          PC14 -|2       31|- BOOT0
-//          PC15 -|3       30|- PB7 (OUT 5)
-//          NRST -|4       29|- PB6 (OUT 4)
-//          VDDA -|5       28|- PB5 (OUT 3)
-//           PA0 -|6       27|- PB4 (OUT 2)
-//(push)     PA1 -|7       26|- PB3 (OUT 1)
-//           PA2 -|8       25|- PA15
-//           PA3 -|9       24|- PA14 
-//           PA4 -|10      23|- PA13
-//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (ARM - yellow -> green (mC))
-//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (ROBOT - green -> yellow (mC))
-//           PA7 -|13      20|- PA10 (Reserved for RXD)
-// (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
-// (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
-//           VSS -|16      17|- VDD
-//                 ----------
-=======
 //initializes hardware
->>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
 
 void Hardware_Init(void)
 {
@@ -539,55 +517,55 @@ int main(void)
 		PrintNumber(p2_v%10000, 10, 4);
 		eputs("V ");
 		
-		eputs("PA14=");
-		if(PA14)
-		{
-			eputs("1 ");
-		}
-		else
-		{
-			eputs("0 ");
-		}
+		// eputs("PA14=");
+		// if(PA14)
+		// {
+		// 	eputs("1 ");
+		// }
+		// else
+		// {
+		// 	eputs("0 ");
+		// }
 
 
-		// Now turn on one of outputs per cycle to check
-		switch (LED_toggle++)
-		{
-			// case 0
-				// eputs("CASE ZERO: turn magnet on");
-				//PB3_1;
-				// // toggleMagnet(1);
-				// waitms(5000);
-				// PB3_0;
-				// // toggleMagnet(0);
-				// waitms(5000);
-				break;
-			case 1:
-				PB4_1;
-				break;
-			case 2:
-				PB5_1;
-				break;
-			case 3:
-				PB6_1;
-				break;
-			case 4:
-				PB7_1;
-				break;
-			default:
-			    LED_toggle=0;
-				PB3_0;
-				PB4_0;
-				PB5_0;
-				PB6_0;
-				PB7_0;
-				break;
-		}
+		// // Now turn on one of outputs per cycle to check
+		// switch (LED_toggle++)
+		// {
+		// 	// case 0
+		// 		// eputs("CASE ZERO: turn magnet on");
+		// 		//PB3_1;
+		// 		// // toggleMagnet(1);
+		// 		// waitms(5000);
+		// 		// PB3_0;
+		// 		// // toggleMagnet(0);
+		// 		// waitms(5000);
+		// 		break;
+		// 	case 1:
+		// 		PB4_1;
+		// 		break;
+		// 	case 2:
+		// 		PB5_1;
+		// 		break;
+		// 	case 3:
+		// 		PB6_1;
+		// 		break;
+		// 	case 4:
+		// 		PB7_1;
+		// 		break;
+		// 	default:
+		// 	    LED_toggle=0;
+		// 		PB3_0;
+		// 		PB4_0;
+		// 		PB5_0;
+		// 		PB6_0;
+		// 		PB7_0;
+		// 		break;
+		// }
 
         ISR_pwm1=75; ISR_pwm2=75;
 
 		// find default positions
-=======
+
 		//stm recieving of data
 
 		if(ReceivedBytes2()>0) // Something has arrived
@@ -603,6 +581,7 @@ int main(void)
 
 					//move_forward(100);
 					printf(buff);
+					//move_stop();
 
 					if (strstr(buff, "2")) {
 						printf("buff is equal to @test 2");
@@ -617,7 +596,7 @@ int main(void)
 
 					else
 					{
-						move_forward(50);
+						move_forward(0);
 						printf("stopping robot");
 						
 					}
@@ -638,27 +617,17 @@ int main(void)
 		}
 
 		// find default positions for servo
->>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
+
 		//ISR_pwm1=75; ISR_pwm2=75;
 		//toggleMagnet(1);
         //pickCoin();
         detectCoin();
         
 		
-<<<<<<< HEAD
-        
-		//dropArm();
-		//toggleMagnet(1);
-        //detectPerimeter(p1_v, p2_v, 5000);
-
-		
-		waitms(500);	
-=======
 		//pickCoin();
 		//toggleMagnet(1);
 		//detectCoin();
 
 		//waitms(500);	
->>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
 	}
 }

@@ -21,9 +21,7 @@
 #define BIT6  (1 << 6)
 #define BIT7  (1 << 7)
 
-#define F_CPU 16000000L
-#define DEF_F 1000
-#define PWM_MAX 255
+#define PWM_MAX 100 
 #define LOWER_ANGLE 30
 
 extern volatile int PWM_Counter;

@@ -4,6 +4,7 @@
 #include "../Common/Include/serial.h"
 #include "adc.h"
 #include <math.h>
+#include "motor_control.h"
 
 #define F_CPU 32000000L
 #define DEF_F 100000L // 10us tick

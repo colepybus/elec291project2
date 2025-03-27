@@ -79,6 +79,45 @@ char _c51_external_startup (void)
 	return 0;
 }
 
+void InitADC (void)
+{
+	SFRPAGE = 0x00;
+	ADEN=0; // Disable ADC
+	
+	ADC0CN1=
+		(0x2 << 6) | // 0x0: 10-bit, 0x1: 12-bit, 0x2: 14-bit
+        (0x0 << 3) | // 0x0: No shift. 0x1: Shift right 1 bit. 0x2: Shift right 2 bits. 0x3: Shift right 3 bits.		
+		(0x0 << 0) ; // Accumulate n conversions: 0x0: 1, 0x1:4, 0x2:8, 0x3:16, 0x4:32
+	
+	ADC0CF0=
+	    ((SYSCLK/SARCLK) << 3) | // SAR Clock Divider. Max is 18MHz. Fsarclk = (Fadcclk) / (ADSC + 1)
+		(0x0 << 2); // 0:SYSCLK ADCCLK = SYSCLK. 1:HFOSC0 ADCCLK = HFOSC0.
+	
+	ADC0CF1=
+		(0 << 7)   | // 0: Disable low power mode. 1: Enable low power mode.
+		(0x1E << 0); // Conversion Tracking Time. Tadtk = ADTK / (Fsarclk)
+	
+	ADC0CN0 =
+		(0x0 << 7) | // ADEN. 0: Disable ADC0. 1: Enable ADC0.
+		(0x0 << 6) | // IPOEN. 0: Keep ADC powered on when ADEN is 1. 1: Power down when ADC is idle.
+		(0x0 << 5) | // ADINT. Set by hardware upon completion of a data conversion. Must be cleared by firmware.
+		(0x0 << 4) | // ADBUSY. Writing 1 to this bit initiates an ADC conversion when ADCM = 000. This bit should not be polled to indicate when a conversion is complete. Instead, the ADINT bit should be used when polling for conversion completion.
+		(0x0 << 3) | // ADWINT. Set by hardware when the contents of ADC0H:ADC0L fall within the window specified by ADC0GTH:ADC0GTL and ADC0LTH:ADC0LTL. Can trigger an interrupt. Must be cleared by firmware.
+		(0x0 << 2) | // ADGN (Gain Control). 0x0: PGA gain=1. 0x1: PGA gain=0.75. 0x2: PGA gain=0.5. 0x3: PGA gain=0.25.
+		(0x0 << 0) ; // TEMPE. 0: Disable the Temperature Sensor. 1: Enable the Temperature Sensor.
+
+	ADC0CF2= 
+		(0x0 << 7) | // GNDSL. 0: reference is the GND pin. 1: reference is the AGND pin.
+		(0x1 << 5) | // REFSL. 0x0: VREF pin (external or on-chip). 0x1: VDD pin. 0x2: 1.8V. 0x3: internal voltage reference.
+		(0x1F << 0); // ADPWR. Power Up Delay Time. Tpwrtime = ((4 * (ADPWR + 1)) + 2) / (Fadcclk)
+	
+	ADC0CN2 =
+		(0x0 << 7) | // PACEN. 0x0: The ADC accumulator is over-written.  0x1: The ADC accumulator adds to results.
+		(0x0 << 0) ; // ADCM. 0x0: ADBUSY, 0x1: TIMER0, 0x2: TIMER2, 0x3: TIMER3, 0x4: CNVSTR, 0x5: CEX5, 0x6: TIMER4, 0x7: TIMER5, 0x8: CLU0, 0x9: CLU1, 0xA: CLU2, 0xB: CLU3
+
+	ADEN=1; // Enable ADC
+}
+
 // Uses Timer3 to delay <us> micro-seconds. 
 void Timer3us(unsigned char us)
 {
@@ -106,6 +145,7 @@ void waitms (unsigned int ms)
 	for(j=0; j<ms; j++)
 		for (k=0; k<4; k++) Timer3us(250);
 }
+
 
 void UART1_Init (unsigned long baudrate)
 {
@@ -252,13 +292,73 @@ void ReceptionOff (void)
 	P2_0=1; // 'set' pin to 1 is normal operation mode.
 }
 
+//joystick functions
+#define VDD 3.300 // The measured value of VDD in volts
+void InitPinADC (unsigned char portno, unsigned char pin_num)
+{
+	unsigned char mask;
+	
+	mask=1<<pin_num;
+
+	SFRPAGE = 0x20;
+	switch (portno)
+	{
+		case 0:
+			P0MDIN &= (~mask); // Set pin as analog input
+			P0SKIP |= mask; // Skip Crossbar decoding for this pin
+		break;
+		case 1:
+			P1MDIN &= (~mask); // Set pin as analog input
+			P1SKIP |= mask; // Skip Crossbar decoding for this pin
+		break;
+		case 2:
+			P2MDIN &= (~mask); // Set pin as analog input
+			P2SKIP |= mask; // Skip Crossbar decoding for this pin
+		break;
+		default:
+		break;
+	}
+	SFRPAGE = 0x00;
+}
+
+unsigned int ADC_at_Pin(unsigned char pin)
+{
+	ADC0MX = pin;   // Select input from pin
+	ADINT = 0;
+	ADBUSY = 1;     // Convert voltage at the pin
+	while (!ADINT); // Wait for conversion to complete
+	return (ADC0);
+}
+
+float Volts_at_Pin(unsigned char pin)
+{
+	 return ((ADC_at_Pin(pin)*VDD)/16383.0);
+}
+
+void InitPushButton(void)
+{
+    SFRPAGE = 0x20;  // Switch to Port Configuration Page
+    P3MDOUT &= ~(1 << 2); // Set P3.2 as open-drain (input mode)
+    P3 |= (1 << 2);  // Enable internal pull-up resistor
+    SFRPAGE = 0x00;  // Restore SFRPAGE
+}
+
+
 void main (void)
 {
     int timeout_cnt=0;
     int cont1=0, cont2=100;
 	
+	float v[4];
+	float norm_x;
+	float norm_y;
+	int mode = 0;
+
+	bit button_state;
+
 	waitms(500);
-	printf("\r\nEFM8LB12 JDY-40 Master Test.\r\n");
+	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+	//printf("\r\nEFM8LB12 JDY-40 Master Test.\r\n");
 	UART1_Init(9600);
 
 	// To configure the device (shown here using default values).
@@ -288,33 +388,87 @@ void main (void)
 	// number from 0x0000 to 0xFFFF.  In this case is set to 0xABBA
 	SendATCommand("AT+DVIDFDFD\r\n");
 	SendATCommand("AT+RFC113\r\n");
+
+	InitPinADC(2, 2); // Configure P2.2 as analog input
+	InitPinADC(2, 3); // Configure P2.3 as analog input
+	InitPinADC(2, 4); // Configure P2.4 as analog input
+	InitPinADC(2, 5); // Configure P2.5 as analog input
+    InitADC();
+	InitPushButton();
 	
 	while(1)
 	{
-		sprintf(buff, "%03d,%03d\n", cont1, cont2); // Construct a test message
+		
+		//sprintf(buff, "%03d,%03d\n", cont1, cont2); // Construct a test message
 		putchar1('!'); // Send a message to the slave. First send the 'attention' character which is '!'
 		// Wait a bit so the slave has a chance to get ready
 		waitms(5); // This may need adjustment depending on how busy is the slave
-		sendstr1(buff); // Send the test message
+		//sendstr1(buff); // Send the test message
 		
-		if(++cont1>200) cont1=0; // Increment test counters for next message
-		if(++cont2>200) cont2=0;
+		//if(++cont1>200) cont1=0; // Increment test counters for next message
+		//if(++cont2>200) cont2=0;
 		
-		waitms(5); // This may need adjustment depending on how busy is the slave
-
+		//waitms(5); // This may need adjustment depending on how busy is the slave
+		
 		putchar1('@'); // Request a message from the slave
 		
 		timeout_cnt=0;
+		
+
 		while(1)
 		{
 			if(RXU1()) break; // Something has arrived
 			if(++timeout_cnt>250) break; // Wait up to 25ms for the repply
 			Timer3us(100); // 100us*250=25ms
+			//printf("thing");
 		}
 		
 		if(RXU1()) // Something has arrived from the slave
 		{
-			getstr1(buff, sizeof(buff)-1);
+		printf("thing");
+			   // Read 14-bit value from the pins configured as analog inputs
+			v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
+			v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
+			v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
+			v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
+
+			norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
+			norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
+
+			button_state = (P3 & (1 << 2)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
+
+			if (norm_x <= 1.5 && norm_x > 0.5)
+			{
+				mode = 1;
+			}
+
+			else if (norm_x <-0.5 && norm_x>= -1.5)
+			{
+				mode = 3;
+			}
+			
+			else if (norm_y <= 1.5 && norm_y > 0.5)
+			{
+				mode = 2;
+			}
+
+			else if (norm_y <-0.5 && norm_y>= -1.5)
+			{
+				mode = 4;
+			}
+			else
+			{
+				mode = 0;
+			}
+
+			sprintf(buff, "test %d\n", mode);
+		//	sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);
+	//	sprintf(buff," %7.5f, %7.5f mode = %d\n", norm_x, norm_y, mode);
+        	sendstr1(buff);
+
+			//printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
+			waitms(50);
+			/*getstr1(buff, sizeof(buff)-1);
 			if(strlen(buff)==5) // Check for valid message size (5 characters)
 			{
 				printf("Slave says: %s\r\n", buff);
@@ -322,7 +476,7 @@ void main (void)
 			else
 			{
 				printf("*** BAD MESSAGE ***: %s\r\n", buff);
-			}
+			}*/
 		}
 		else // Timed out waiting for reply
 		{

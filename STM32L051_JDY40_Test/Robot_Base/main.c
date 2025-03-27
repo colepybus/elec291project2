@@ -113,29 +113,7 @@ void TIM2_Handler(void)
 	}   
 }
 
-<<<<<<< HEAD
-// LQFP32 pinout
-//                 ----------
-//           VDD -|1       32|- VSS
-//          PC14 -|2       31|- BOOT0
-//          PC15 -|3       30|- PB7 (OUT 5)
-//          NRST -|4       29|- PB6 (OUT 4)
-//          VDDA -|5       28|- PB5 (OUT 3)
-//           PA0 -|6       27|- PB4 (OUT 2)
-//(push)     PA1 -|7       26|- PB3 (OUT 1)
-//           PA2 -|8       25|- PA15
-//           PA3 -|9       24|- PA14 
-//           PA4 -|10      23|- PA13
-//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (ARM - yellow -> green (mC))
-//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (ROBOT - green -> yellow (mC))
-//           PA7 -|13      20|- PA10 (Reserved for RXD)
-// (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
-// (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
-//           VSS -|16      17|- VDD
-//                 ----------
-=======
 //initializes hardware
->>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
 
 void Hardware_Init(void)
 {
@@ -153,7 +131,6 @@ void Hardware_Init(void)
 	GPIOA->PUPDR |= BIT16; 
 	GPIOA->PUPDR &= ~(BIT17);
 	
-
 
 	// Activate pull up for pin PA8:
 	GPIOA->PUPDR |= BIT1; 
@@ -238,6 +215,8 @@ void ReceptionOff (void)
 
 // A define to easily read PA8 (PA8 must be configured as input first)
 #define PA8 (GPIOA->IDR & BIT8)
+
+// GET PERIOD FUNCTION ------------------------------------------------------------------------------------
 
 long long int GetPeriod(int n)
 {
@@ -347,7 +326,7 @@ void PrintNumber(long int val, int Base, int digits)
 // A define to easily read PA14 (PA14 must be configured as input first)
 #define PA14 (GPIOA->IDR & BIT14)
 
-// TOGGLE MAGNET
+// TOGGLE MAGNET -------------------------------------------------------------------------------------------
 void toggleMagnet(uint8_t state) {
 	if (state) {
 		PB3_1;
@@ -356,7 +335,7 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
-// DROP ARM (opposites of liftArm)
+// PICK COIN MOVEMENT -------------------------------------------------------------------------------------------
 void pickCoin() {
 	ISR_pwm1=75; ISR_pwm2=75;// starts default (1 - 75) (2 - 240)
 	waitms(500);
@@ -406,20 +385,22 @@ void pickCoin() {
 	waitms(500);
 }
 
-// DETECT PERIMETER
+// DETECT PERIMETER -------------------------------------------------------------------------------------------
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
-	if ((v1%10000) > 3000 || (v2%10000) > 3000) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
+	if ((v1%10000) > perimeter_threshold || (v2%10000) > perimeter_threshold) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
 		eputs("PERIMETER DETECTED!");
-		// move backward
-		// turn left
-		// move forward
+		move_backward(50); // move backward
+        // STOP MOVING BACKWARDS
+		move_left(50); // turn left by 90 degrees
+		move_forward(50); // continue moving forward
 	}
 
 	else {
 		eputs("NO PERIMETER DETECTED!");
 	}
 }
-// DETECT COIN
+
+// METAL DETECTOR TO DETECT COIN  -------------------------------------------------------------------------------------------
 #define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
 
 void detectCoin() {
@@ -443,27 +424,29 @@ void detectCoin() {
     if(abs(base_count-count) > 100)
     {
         eputs("coin detected!\r\n");
+
+        move_backward(100);
         pickCoin();
 
         base_count=GetPeriod(100); // recalibrate base_count after coin is picked
         eputs("got coin!");
+
+        move_forward(100);
     }
 
     // else { // no coin detected
        
     // }
 
-    
 }
 
 int main(void)
 {
     int j, v;
-	//long long int count;
-	//float f;
-	unsigned char LED_toggle=0; // Used to test the outputs
 
-	int p1_v, p2_v; // perimeter sensor values
+	// unsigned char LED_toggle=0; // Used to test the outputs
+
+	int p1_v, p2_v; // perimeter sensor ADC values read by MC
 
 	// jdy variables
 	char buff[80];
@@ -471,6 +454,10 @@ int main(void)
 	char c;
     int timeout_cnt=0;
     int cont1=0, cont2=100;
+
+    // to know whether in automatic or manual mode
+
+    static mode = 1; // 1 = manual mode. 2 = automatic mode
 
 
 	Hardware_Init();
@@ -481,13 +468,11 @@ int main(void)
 	eputs("\r\nSTM32L051 multi I/O example.\r\n");
 	eputs("Measures the voltage from ADC channels 8 and 9 (pins 14 and 15 of LQFP32 package)\r\n");
 	eputs("Measures period on PA8 (pin 18 of LQFP32 package)\r\n");
-	eputs("Toggles PB3, PB4, PB5, PB6, PB7 (pins 26, 27, 28, 29, 30 of LQFP32 package)\r\n");
 	eputs("Generates servo PWMs on PA11, PA12 (pins 21, 22 of LQFP32 package)\r\n");
-	eputs("Reads the push-button on pin PA14 (pin 24 of LQFP32 package)\r\n\r\n");
 
-	ReceptionOff();
+	ReceptionOff(); // for JDY
 
-	// To check configuration
+	// To check configuration of JDY
 	SendATCommand("AT+VER\r\n");
 	SendATCommand("AT+BAUD\r\n");
 	SendATCommand("AT+RFID\r\n");
@@ -503,12 +488,12 @@ int main(void)
 
 	cnt=0;
 
-    LED_toggle=0;
-	PB3_0;
-	PB4_0;
-	PB5_0;
-	PB6_0;
-	PB7_0;
+    // LED_toggle=0;
+	// PB3_0;
+	// PB4_0;
+	// PB5_0;
+	// PB6_0;
+	// PB7_0;
 
 	// JDY40 
 					
@@ -539,55 +524,19 @@ int main(void)
 		PrintNumber(p2_v%10000, 10, 4);
 		eputs("V ");
 		
-		eputs("PA14=");
-		if(PA14)
-		{
-			eputs("1 ");
-		}
-		else
-		{
-			eputs("0 ");
-		}
+		// eputs("PA14=");
+		// if(PA14)
+		// {
+		// 	eputs("1 ");
+		// }
+		// else
+		// {
+		// 	eputs("0 ");
+		// }
 
-
-		// Now turn on one of outputs per cycle to check
-		switch (LED_toggle++)
-		{
-			// case 0
-				// eputs("CASE ZERO: turn magnet on");
-				//PB3_1;
-				// // toggleMagnet(1);
-				// waitms(5000);
-				// PB3_0;
-				// // toggleMagnet(0);
-				// waitms(5000);
-				break;
-			case 1:
-				PB4_1;
-				break;
-			case 2:
-				PB5_1;
-				break;
-			case 3:
-				PB6_1;
-				break;
-			case 4:
-				PB7_1;
-				break;
-			default:
-			    LED_toggle=0;
-				PB3_0;
-				PB4_0;
-				PB5_0;
-				PB6_0;
-				PB7_0;
-				break;
-		}
-
+        // reset arm to default position
         ISR_pwm1=75; ISR_pwm2=75;
 
-		// find default positions
-=======
 		//stm recieving of data
 
 		if(ReceivedBytes2()>0) // Something has arrived
@@ -607,7 +556,6 @@ int main(void)
 					if (strstr(buff, "2")) {
 						printf("buff is equal to @test 2");
 						move_forward(100);
-
 
 						// manual mode
 						// pickCoin();
@@ -638,27 +586,51 @@ int main(void)
 		}
 
 		// find default positions for servo
->>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
-		//ISR_pwm1=75; ISR_pwm2=75;
-		//toggleMagnet(1);
-        //pickCoin();
-        detectCoin();
-        
-		
-<<<<<<< HEAD
-        
-		//dropArm();
-		//toggleMagnet(1);
-        //detectPerimeter(p1_v, p2_v, 5000);
+		// ISR_pwm1=75; ISR_pwm2=75;
 
-		
-		waitms(500);	
-=======
-		//pickCoin();
-		//toggleMagnet(1);
-		//detectCoin();
+        // AUTOMATIC MODE
+        if (mode == 0) {
+            detectPerimeter(p1_v, p2_v, 3000);
+            detectCoin();
+        }
+	
+      
+
 
 		//waitms(500);	
->>>>>>> dc695d83f84aab00af442c98036bf5e72d5fe4ba
+
+        		// // Now turn on one of outputs per cycle to check
+		// switch (LED_toggle++)
+		// {
+		// 	// case 0
+		// 		// eputs("CASE ZERO: turn magnet on");
+		// 		//PB3_1;
+		// 		// // toggleMagnet(1);
+		// 		// waitms(5000);
+		// 		// PB3_0;
+		// 		// // toggleMagnet(0);
+		// 		// waitms(5000);
+		// 		break;
+		// 	case 1:
+		// 		PB4_1;
+		// 		break;
+		// 	case 2:
+		// 		PB5_1;
+		// 		break;
+		// 	case 3:
+		// 		PB6_1;
+		// 		break;
+		// 	case 4:
+		// 		PB7_1;
+		// 		break;
+		// 	default:
+		// 	    LED_toggle=0;
+		// 		PB3_0;
+		// 		PB4_0;
+		// 		PB5_0;
+		// 		PB6_0;
+		// 		PB7_0;
+		// 		break;
+		// }
 	}
 }

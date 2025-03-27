@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "stm32l051xx.h": "c"
+        "stm32l051xx.h": "c",
+        "manual_functions.h": "c"
     },
     "code-runner.executorMap": {
         "c": "gcc -o ${fileDirname}/output ${file} -I../include -L../lib -lLeapC -arch arm64 && ${fileDirname}/output"

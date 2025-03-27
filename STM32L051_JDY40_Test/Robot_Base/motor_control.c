@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include "../Common/Include/serial.h" // serial communication
 
-int PWM_Counter = 0;
+int pwm_counter_header = 0;
 volatile unsigned char pwm1 = 0, pwm2 = 0;
 
 void move_backward(int speed) {
@@ -46,24 +46,24 @@ void move_stop(void) {
     pwm1 = 0;
     pwm2 = 0;
 }
-/*
+
 void wait_1ms(void) {
     SysTick->LOAD = (F_CPU/1000L) - 1;
     SysTick->VAL = 0;
     SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
     while ((SysTick->CTRL & BIT16) == 0);
     SysTick->CTRL = 0x00;
-}*/
+}
 
-// void delayms(int len) {
-//     while (len--) wait_1ms();
-// }
+void delayms(int len) {
+    while (len--) wait_1ms();
+}
 
-void TIM2_Handler(void) {
+void TIM2_Handler_header(void) {
     TIM2->SR &= ~BIT0;
-    PWM_Counter++;
+    pwm_counter_header++;
     
-    if (PWM_Counter < pwm1) {
+    if (pwm_counter_header < pwm1) {
         if (GPIOA->ODR & BIT1) {
             GPIOA->ODR |= BIT1;
         } else {
@@ -73,7 +73,7 @@ void TIM2_Handler(void) {
         GPIOA->ODR &= ~(BIT0 | BIT1);
     }
     
-    if (PWM_Counter < pwm2) {
+    if (pwm_counter_header < pwm2) {
         if (GPIOA->ODR & BIT3) {
             GPIOA->ODR |= BIT3;
         } else {
@@ -83,7 +83,7 @@ void TIM2_Handler(void) {
         GPIOA->ODR &= ~(BIT2 | BIT3);
     }
     
-    if (++PWM_Counter >= PWM_MAX) PWM_Counter = 0;
+    if (++pwm_counter_header >= PWM_MAX) pwm_counter_header = 0;
 }
 /*
 void Hardware_Init(void) {

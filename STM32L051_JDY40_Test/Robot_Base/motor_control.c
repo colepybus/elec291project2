@@ -43,6 +43,8 @@ void move_right(int speed) {
 }
 
 void move_stop(void) {
+    GPIOA->ODR &= ~(BIT0 | BIT2);
+    GPIOA->ODR |= (BIT1 | BIT3);
     pwm1 = 0;
     pwm2 = 0;
 }

@@ -544,7 +544,7 @@ int main(void)
 	while (1)
 	{
 
-		move_forward(100);
+		//move_forward(100);
 
 		//PB3_1;
 
@@ -645,8 +645,14 @@ int main(void)
 				{
 					printf("Master says: %s\r", buff);
 
-					if (strcmp(buff, "2") == 0) {
+					//move_forward(100);
+					printf(buff);
+
+					if (strstr(buff, "2")) {
+						printf("buff is equal to @test 2");
 						move_forward(100);
+
+
 						// manual mode
 						// pickCoin();
 						// toggleMagnet(1);
@@ -655,7 +661,9 @@ int main(void)
 
 					else
 					{
-						move_stop();
+						move_forward(50);
+						printf("stopping robot");
+						
 					}
 					
 				}

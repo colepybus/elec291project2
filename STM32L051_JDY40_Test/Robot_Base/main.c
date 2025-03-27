@@ -69,9 +69,9 @@ void TIM2_Handler(void)
 //          NRST -|4       29|- PB6 (OUT 4)
 //          VDDA -|5       28|- PB5 (OUT 3)
 //           PA0 -|6       27|- PB4 (OUT 2)
-//           PA1 -|7       26|- PB3 (OUT 1)
+//(push)     PA1 -|7       26|- PB3 (OUT 1)
 //           PA2 -|8       25|- PA15
-//           PA3 -|9       24|- PA14 (push button)
+//           PA3 -|9       24|- PA14 
 //           PA4 -|10      23|- PA13
 //           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
 //           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
@@ -253,13 +253,9 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
-// LIFT ARM
-void liftArm() {
-	
-}
 
 // DROP ARM (opposites of liftArm)
-void dropArm() {
+void pickCoin() {
 	ISR_pwm1=75; ISR_pwm2=75;// starts default (1 - 75) (2 - 240)
 	waitms(500);
 
@@ -322,11 +318,11 @@ void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 	}
 }
 // DETECT COIN
-#define METAL_THRESHOLD 0.005 // 0.05% change from baseline
+#define METAL_THRESHOLD 0.002 // 0.05% change from baseline
 #define SAMPLE_SIZE 3 // number of samples for moving average
 float freqBuffer[SAMPLE_SIZE] = {0};
 uint8_t sampleIndex = 0; 
-//uint8_t coinDetected = 0; // boolean as flag
+uint8_t coinDetected = 0; // boolean as flag
 float baseline_f=0;
 
 void detectCoin() {
@@ -365,22 +361,26 @@ void detectCoin() {
 
 			// initialize baseline if needed
 			if (baseline_f == 0) {
-				baseline_f = f; // if first reading, make baseline the first reading
+				baseline_f = avg_f; // if first reading, make baseline the first reading
 			}
 
 			// calculate percentage change
-			f_change = (avg_f - baseline_f) / baseline_f;
+			f_change = fabs(avg_f - baseline_f) / baseline_f;
 			eputs("DEBUG: Frequency Change:");
-			PrintNumber(f_change, 10, 7);
-			eputs(" Hz \r\n");
+			PrintNumber(f_change * 1000000, 10, 7);
+			eputs(" x10^(-6) \r\n");
 
-			// check
-			if (fabs(f_change) > METAL_THRESHOLD) {
+			// check if a coin was detected
+			if (!coinDetected && fabs(f_change) > METAL_THRESHOLD) {
 				eputs("COIN DETECTED!");
+				coinDetected = 1;
+				// pickCoin();
 				waitms(3000);
 			}
 			else {
 				eputs("NO COIN DETECTED!");
+				coinDetected = 0;
+				baseline_f = avg_f; // update baseline only when no coin is detected
 			}
 
 			//waitms(50); // Delay to slow down sampling rate
@@ -500,6 +500,6 @@ int main(void)
 		//dropArm();
 		//toggleMagnet(1);
 		
-		waitms(250);	
+		waitms(100);	
 	}
 }

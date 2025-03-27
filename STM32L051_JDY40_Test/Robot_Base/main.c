@@ -73,8 +73,8 @@ void TIM2_Handler(void)
 //           PA2 -|8       25|- PA15
 //           PA3 -|9       24|- PA14 
 //           PA4 -|10      23|- PA13
-//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
-//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
+//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (ARM - yellow -> green (mC))
+//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (ROBOT - green -> yellow (mC))
 //           PA7 -|13      20|- PA10 (Reserved for RXD)
 // (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
 // (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
@@ -306,7 +306,7 @@ void pickCoin() {
 
 // DETECT PERIMETER
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
-	if ((v1%1000) > 1000 || (v2%1000) > 1000) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
+	if ((v1%10000) > 3000 || (v2%10000) > 3000) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
 		eputs("PERIMETER DETECTED!");
 		// move backward
 		// turn left
@@ -318,83 +318,41 @@ void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 	}
 }
 // DETECT COIN
-#define METAL_THRESHOLD 0.002 // 0.05% change from baseline
-#define SAMPLE_SIZE 3 // number of samples for moving average
-float freqBuffer[SAMPLE_SIZE] = {0};
-uint8_t sampleIndex = 0; 
-uint8_t coinDetected = 0; // boolean as flag
-float baseline_f=0;
+#define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
 
 void detectCoin() {
 	long long int count;
-	float f, avg_f=0;
-	float f_change;
+	float f;
+    static int first_time=1;
+    static int base_count=0;
 	
+    if (first_time) // first reading, calibrate metal detector
+    {
+        base_count=GetPeriod(100); // set base_count 
+        first_time=0;
+    }
 
-	count=GetPeriod(100);
-		if(count>0)
-		{
-			f=(float)(F_CPU*100.0) / (float)count;
-
-			eputs("DEBUG: Current Frequency:");
-			PrintNumber(f, 10, 7);
-			eputs(" Hz \r\n");
-			eputs("count=\r\n");
-			PrintNumber(count, 10, 6);
-			eputs("          \r");
+	count=GetPeriod(100); // count reading (instead of freq reading)
+    eputs("count=");
+    PrintNumber(count, 10, 6);
+    eputs("\r\n");
 
 
-			// Store in moving average buffer
-			freqBuffer[sampleIndex] = f;
-			sampleIndex = (sampleIndex + 1) % SAMPLE_SIZE;
-	 
-			// Compute moving average
-			for (int i = 0; i < SAMPLE_SIZE; i++) {
-				avg_f += freqBuffer[i];
-			}
+    if(abs(base_count-count) > 100)
+    {
+        eputs("coin detected!\r\n");
+        pickCoin();
 
-			avg_f /= SAMPLE_SIZE;
+        base_count=GetPeriod(100); // recalibrate base_count after coin is picked
+        eputs("got coin!");
+    }
 
-			eputs("DEBUG: Moving Average Calculation: ");
-			PrintNumber(avg_f, 10, 7);
-			eputs(" Hz \r\n");
+    // else { // no coin detected
+       
+    // }
 
-			// initialize baseline if needed
-			if (baseline_f == 0) {
-				baseline_f = avg_f; // if first reading, make baseline the first reading
-			}
-
-			// calculate percentage change
-			f_change = fabs(avg_f - baseline_f) / baseline_f;
-			eputs("DEBUG: Frequency Change:");
-			PrintNumber(f_change * 1000000, 10, 7);
-			eputs(" x10^(-6) \r\n");
-
-			// check if a coin was detected
-			if (!coinDetected && fabs(f_change) > METAL_THRESHOLD) {
-				eputs("COIN DETECTED!");
-				coinDetected = 1;
-				// pickCoin();
-				waitms(3000);
-			}
-			else {
-				eputs("NO COIN DETECTED!");
-				coinDetected = 0;
-				baseline_f = avg_f; // update baseline only when no coin is detected
-			}
-
-			//waitms(50); // Delay to slow down sampling rate
-
-		}
-
-		else
-		{
-			eputs("NO SIGNAL                     \r");
-		}
-
+    
 }
-
-
 
 int main(void)
 {
@@ -429,23 +387,23 @@ int main(void)
 		//PB3_1;
 
 		j=readADC(ADC_CHSELR_CHSEL8);
-		v=(j*33000)/0xfff;
+		p1_v=(j*33000)/0xfff;
 		eputs("ADC[8]=0x");
 		PrintNumber(j, 16, 4);
 		eputs(", ");
-		PrintNumber(v/10000, 10, 1);
+		PrintNumber(p1_v/10000, 10, 1);
 		eputc('.');
-		PrintNumber(v%10000, 10, 4);
+		PrintNumber(p1_v%10000, 10, 4);
 		eputs("V ");
 
 		j=readADC(ADC_CHSELR_CHSEL9);
-		v=(j*33000)/0xfff;
+		p2_v=(j*33000)/0xfff;
 		eputs("ADC[9]=0x");
 		PrintNumber(j, 16, 4);
 		eputs(", ");
-		PrintNumber(v/10000, 10, 1);
+		PrintNumber(p2_v/10000, 10, 1);
 		eputc('.');
-		PrintNumber(v%10000, 10, 4);
+		PrintNumber(p2_v%10000, 10, 4);
 		eputs("V ");
 		
 		eputs("PA14=");
@@ -493,13 +451,21 @@ int main(void)
 				break;
 		}
 
+        ISR_pwm1=75; ISR_pwm2=75;
+
 		// find default positions
 		//ISR_pwm1=75; ISR_pwm2=75;
+		//toggleMagnet(1);
+        //pickCoin();
+        detectCoin();
+        
 		
-		detectCoin();
+        
 		//dropArm();
 		//toggleMagnet(1);
+        //detectPerimeter(p1_v, p2_v, 5000);
+
 		
-		waitms(100);	
+		waitms(500);	
 	}
 }

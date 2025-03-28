@@ -56,14 +56,14 @@ void setupEMF8Serial(const char* portName)
 }
 
 
-void sendToEFM8(long long frameID, unsigned int hands, float framerate, const char* handType, float pinch, float grab)
+void sendToEFM8(float pinch)
 {
     if(serial_fd < 0) return; // Not open
 
-    char buffer[128];
-    snprintf(buffer, sizeof(buffer),
-             "!%u,%.2f,%s,%.2f,%.2f\n",
-             hands, framerate, handType, pinch, grab);
+    char buffer[16];
+    snprintf(buffer, sizeof(buffer), "!%.2f\n", pinch);
+
+    printf("%.2s",buffer);
 
     int n = write(serial_fd, buffer, strlen(buffer));
 
@@ -84,7 +84,7 @@ int main() {
 
     printf("opened connection\n");
 
-    //setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
+    setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
 
     printf("tried setting up efm8serial with port\n");
 
@@ -142,7 +142,12 @@ int main() {
 
             //
 
-            sendToEFM8(frame->tracking_frame_id, frame->nHands, frame->framerate, handType, pinch, grab);
+            LEAP_HAND* leftHand = NULL;
+            LEAP_HAND* rightHand = NULL;
+
+            //float pinch = leftHand->pinch_strength;
+
+            sendToEFM8(pinch);
 
             //now will get the normal vector of hand palm, as well as finger vector (perpendicular to palm)
 

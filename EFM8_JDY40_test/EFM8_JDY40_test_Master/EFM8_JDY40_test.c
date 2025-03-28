@@ -7,6 +7,7 @@
 
 #define SYSCLK 72000000
 #define BAUDRATE 115200L
+#define SARCLK 18000000L
 
 idata char buff[20];
 
@@ -425,7 +426,7 @@ void main (void)
 		
 		if(RXU1()) // Something has arrived from the slave
 		{
-		printf("thing");
+		//printf("send");
 			   // Read 14-bit value from the pins configured as analog inputs
 			v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
 			v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
@@ -435,9 +436,13 @@ void main (void)
 			norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
 			norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
 
-			button_state = (P3 & (1 << 2)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
+			button_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
 
-			if (norm_x <= 1.5 && norm_x > 0.5)
+			if (button_state == 1) {
+				mode = 5;
+			}
+
+			else if (norm_x <= 1.5 && norm_x > 0.5)
 			{
 				mode = 1;
 			}
@@ -477,6 +482,11 @@ void main (void)
 			{
 				printf("*** BAD MESSAGE ***: %s\r\n", buff);
 			}*/
+			
+			
+			
+
+			
 		}
 		else // Timed out waiting for reply
 		{
@@ -487,4 +497,4 @@ void main (void)
 	}
 	
 	
-}
+}  

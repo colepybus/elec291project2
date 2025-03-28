@@ -585,20 +585,20 @@ int main(void)
 
 		//PB3_1;
 
-		j=readADC(ADC_CHSELR_CHSEL8);
-		p1_v=(j*33000)/0xfff;
-		// eputs("ADC[8]=0x");
-		// PrintNumber(j, 16, 4);
-		// eputs(", ");
-		// PrintNumber(p1_v/10000, 10, 1);
-		// eputc('.');
-		// PrintNumber(p1_v%10000, 10, 4);
-		// eputs("V ");
+		 j=readADC(ADC_CHSELR_CHSEL8);
+		 p1_v=(j*33000)/0xfff;
+		// // eputs("ADC[8]=0x");
+		// // PrintNumber(j, 16, 4);
+		// // eputs(", ");
+		// // PrintNumber(p1_v/10000, 10, 1);
+		// // eputc('.');
+		// // PrintNumber(p1_v%10000, 10, 4);
+		// // eputs("V ");
 
-		j=readADC(ADC_CHSELR_CHSEL9);
-		p2_v=(j*33000)/0xfff;
-		// eputs("ADC[9]=0x");
-		// PrintNumber(j, 16, 4);
+		 j=readADC(ADC_CHSELR_CHSEL9);
+		 p2_v=(j*33000)/0xfff;
+		 //eputs("ADC[9]=0x");
+		// // PrintNumber(j, 16, 4);
 		// eputs(", ");
 		// PrintNumber(p2_v/10000, 10, 1);
 		// eputc('.');
@@ -618,63 +618,65 @@ int main(void)
         // reset arm to default position
         //ISR_pwm1=75; ISR_pwm2=75;
 
-
+        detectCoin();
+        detectPerimeter(p1_v, p2_v, 3000);
 
 		//stm recieving of data
 
-		if(ReceivedBytes2()>0) // Something has arrived
-		{
-			//eputs("GETTING IN THE LOOP\r\n");
-			//waitms(1000);
-			c=egetc2();
+		// if(ReceivedBytes2()>0) // Something has arrived
+		// {
+		// 	//eputs("GETTING IN THE LOOP\r\n");
+		// 	//waitms(1000);
+		// 	c=egetc2();
 			
-			if(c=='!') // Master is sending message
-			{
-				egets2(buff, sizeof(buff)-1);
-				if(strlen(buff)==8)
-				{
-					printf("Master says: %s\r", buff);
+		// 	if(c=='!') // Master is sending message
+		// 	{
+		// 		egets2(buff, sizeof(buff)-1);
+		// 		if(strlen(buff)==8)
+		// 		{
+		// 			printf("Master says: %s\r", buff);
 
-					//move_forward(100);
-					printf(buff);
-					//move_stop();
+		// 			//move_forward(100);
+		// 			printf(buff);
+		// 			//move_stop();
 
-					if (strstr(buff, "2")) {
-						printf("buff is equal to @test 2");
-						move_forward(100);
+		// 			if (strstr(buff, "2")) {
+		// 				printf("buff is equal to @test 2");
+		// 				move_forward(100);
 
-						// manual mode
-						// pickCoin();
-						// toggleMagnet(1);
-						// detectCoin();
-					}
+		// 				// manual mode
+		// 				// pickCoin();
+		// 				// toggleMagnet(1);
+		// 				// detectCoin();
+		// 			}
 
-					else
-					{
-						//move_forward(0);
-						move_stop();
-						printf("stopping robot");
-						//waitms(150);
+		// 			else
+		// 			{
+		// 				//move_forward(0);
+		// 				move_stop();
+		// 				printf("stopping robot");
+		// 				//waitms(150);
 						
-					}
+		// 			}
 					
-				}
-				else
-				{
-					printf("*** BAD MESSAGE ***: %s\r", buff);
-				}				
-			}
-			else if(c=='@') // Master wants slave data
-			{
-				sprintf(buff, "%05u\n", cnt);
-				cnt++;
-				waitms(5); // The radio seems to need this delay...
-				eputs2(buff);
-			}
-		}
+		// 		}
+		// 		else
+		// 		{
+		// 			printf("*** BAD MESSAGE ***: %s\r", buff);
+		// 		}				
+		// 	}
+		// 	else if(c=='@') // Master wants slave data
+		// 	{
+		// 		sprintf(buff, "%05u\n", cnt);
+		// 		cnt++;
+		// 		waitms(5); // The radio seems to need this delay...
+		// 		eputs2(buff);
+		// 	}
+		// }
 
 		// find default positions for servo
 		// ISR_pwm1=75; ISR_pwm2=75;
+
 
         // AUTOMATIC MODE
         //if (mode == 0) {
@@ -747,7 +749,7 @@ int main(void)
 		// 		PB5_0;
 		// 		PB6_0;
 		// 		PB7_0;
-		// 		break;
+		// 		break;y
 		// }
-	}
+	} 
 }

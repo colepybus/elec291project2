@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by C51
 ; Version 1.0.0 #1170 (Feb 16 2022) (MSVC)
-; This file was generated Thu Mar 27 16:38:18 2025
+; This file was generated Thu Mar 27 20:14:45 2025
 ;--------------------------------------------------------
 $name EFM8_JDY40_test
 $optc51 --model-small
@@ -495,11 +495,11 @@ _TFRQ           BIT 0xdf
 	rseg R_DSEG
 _getstr1_PARM_2:
 	ds 1
-_main_v_1_109:
+_main_v_1_131:
 	ds 16
-_main_norm_x_1_109:
+_main_norm_x_1_131:
 	ds 4
-_main_norm_y_1_109:
+_main_norm_y_1_131:
 	ds 4
 ;--------------------------------------------------------
 ; overlayable items in internal ram 
@@ -525,7 +525,9 @@ _buff:
 ; bit data
 ;--------------------------------------------------------
 	rseg R_BSEG
-_main_button_state_1_109:
+_main_button_1_state_1_131:
+	DBIT	1
+_main_button_2_state_1_131:
 	DBIT	1
 ;--------------------------------------------------------
 ; paged external ram data
@@ -570,97 +572,97 @@ _main_button_state_1_109:
 ;Allocation info for local variables in function '_c51_external_startup'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:14: char _c51_external_startup (void)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:15: char _c51_external_startup (void)
 ;	-----------------------------------------
 ;	 function _c51_external_startup
 ;	-----------------------------------------
 __c51_external_startup:
 	using	0
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:17: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:18: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:18: WDTCN = 0xDE; //First key
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:19: WDTCN = 0xDE; //First key
 	mov	_WDTCN,#0xDE
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:19: WDTCN = 0xAD; //Second key
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:20: WDTCN = 0xAD; //Second key
 	mov	_WDTCN,#0xAD
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:21: VDM0CN=0x80;       // enable VDD monitor
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:22: VDM0CN=0x80;       // enable VDD monitor
 	mov	_VDM0CN,#0x80
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:22: RSTSRC=0x02|0x04;  // Enable reset on missing clock detector and VDD
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:23: RSTSRC=0x02|0x04;  // Enable reset on missing clock detector and VDD
 	mov	_RSTSRC,#0x06
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:29: SFRPAGE = 0x10;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:30: SFRPAGE = 0x10;
 	mov	_SFRPAGE,#0x10
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:30: PFE0CN  = 0x20; // SYSCLK < 75 MHz.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:31: PFE0CN  = 0x20; // SYSCLK < 75 MHz.
 	mov	_PFE0CN,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:31: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:32: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:52: CLKSEL = 0x00;
-	mov	_CLKSEL,#0x00
 ;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:53: CLKSEL = 0x00;
 	mov	_CLKSEL,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:54: while ((CLKSEL & 0x80) == 0);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:54: CLKSEL = 0x00;
+	mov	_CLKSEL,#0x00
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:55: while ((CLKSEL & 0x80) == 0);
 L002001?:
 	mov	a,_CLKSEL
 	jnb	acc.7,L002001?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:55: CLKSEL = 0x03;
-	mov	_CLKSEL,#0x03
 ;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:56: CLKSEL = 0x03;
 	mov	_CLKSEL,#0x03
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:57: while ((CLKSEL & 0x80) == 0);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:57: CLKSEL = 0x03;
+	mov	_CLKSEL,#0x03
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:58: while ((CLKSEL & 0x80) == 0);
 L002004?:
 	mov	a,_CLKSEL
 	jnb	acc.7,L002004?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:62: P0MDOUT |= 0x11; // Enable UART0 TX (P0.4) and UART1 TX (P0.0) as push-pull outputs
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:63: P0MDOUT |= 0x11; // Enable UART0 TX (P0.4) and UART1 TX (P0.0) as push-pull outputs
 	orl	_P0MDOUT,#0x11
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:63: P2MDOUT |= 0x01; // P2.0 in push-pull mode
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:64: P2MDOUT |= 0x01; // P2.0 in push-pull mode
 	orl	_P2MDOUT,#0x01
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:64: XBR0     = 0x01; // Enable UART0 on P0.4(TX) and P0.5(RX)                     
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:65: XBR0     = 0x01; // Enable UART0 on P0.4(TX) and P0.5(RX)                     
 	mov	_XBR0,#0x01
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:65: XBR1     = 0X00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:66: XBR1     = 0X00;
 	mov	_XBR1,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:66: XBR2     = 0x41; // Enable crossbar and uart 1
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:67: XBR2     = 0x41; // Enable crossbar and uart 1
 	mov	_XBR2,#0x41
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:72: SCON0 = 0x10;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:73: SCON0 = 0x10;
 	mov	_SCON0,#0x10
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:73: TH1 = 0x100-((SYSCLK/BAUDRATE)/(2L*12L));
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:74: TH1 = 0x100-((SYSCLK/BAUDRATE)/(2L*12L));
 	mov	_TH1,#0xE6
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:74: TL1 = TH1;      // Init Timer1
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:75: TL1 = TH1;      // Init Timer1
 	mov	_TL1,_TH1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:75: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit auto-reload
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:76: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit auto-reload
 	anl	_TMOD,#0x0F
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:76: TMOD |=  0x20;                       
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:77: TMOD |=  0x20;                       
 	orl	_TMOD,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:77: TR1 = 1; // START Timer1
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:78: TR1 = 1; // START Timer1
 	setb	_TR1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:78: TI = 1;  // Indicate TX0 ready
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:79: TI = 1;  // Indicate TX0 ready
 	setb	_TI
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:80: return 0;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:81: return 0;
 	mov	dpl,#0x00
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'InitADC'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:83: void InitADC (void)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:84: void InitADC (void)
 ;	-----------------------------------------
 ;	 function InitADC
 ;	-----------------------------------------
 _InitADC:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:85: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:86: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:86: ADEN=0; // Disable ADC
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:87: ADEN=0; // Disable ADC
 	clr	_ADEN
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:91: (0x0 << 0) ; // Accumulate n conversions: 0x0: 1, 0x1:4, 0x2:8, 0x3:16, 0x4:32
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:92: (0x0 << 0) ; // Accumulate n conversions: 0x0: 1, 0x1:4, 0x2:8, 0x3:16, 0x4:32
 	mov	_ADC0CN1,#0x80
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:95: (0x0 << 2); // 0:SYSCLK ADCCLK = SYSCLK. 1:HFOSC0 ADCCLK = HFOSC0.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:96: (0x0 << 2); // 0:SYSCLK ADCCLK = SYSCLK. 1:HFOSC0 ADCCLK = HFOSC0.
 	mov	_ADC0CF0,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:99: (0x1E << 0); // Conversion Tracking Time. Tadtk = ADTK / (Fsarclk)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:100: (0x1E << 0); // Conversion Tracking Time. Tadtk = ADTK / (Fsarclk)
 	mov	_ADC0CF1,#0x1E
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:108: (0x0 << 0) ; // TEMPE. 0: Disable the Temperature Sensor. 1: Enable the Temperature Sensor.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:109: (0x0 << 0) ; // TEMPE. 0: Disable the Temperature Sensor. 1: Enable the Temperature Sensor.
 	mov	_ADC0CN0,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:113: (0x1F << 0); // ADPWR. Power Up Delay Time. Tpwrtime = ((4 * (ADPWR + 1)) + 2) / (Fadcclk)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:114: (0x1F << 0); // ADPWR. Power Up Delay Time. Tpwrtime = ((4 * (ADPWR + 1)) + 2) / (Fadcclk)
 	mov	_ADC0CF2,#0x3F
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:117: (0x0 << 0) ; // ADCM. 0x0: ADBUSY, 0x1: TIMER0, 0x2: TIMER2, 0x3: TIMER3, 0x4: CNVSTR, 0x5: CEX5, 0x6: TIMER4, 0x7: TIMER5, 0x8: CLU0, 0x9: CLU1, 0xA: CLU2, 0xB: CLU3
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:118: (0x0 << 0) ; // ADCM. 0x0: ADBUSY, 0x1: TIMER0, 0x2: TIMER2, 0x3: TIMER3, 0x4: CNVSTR, 0x5: CEX5, 0x6: TIMER4, 0x7: TIMER5, 0x8: CLU0, 0x9: CLU1, 0xA: CLU2, 0xB: CLU3
 	mov	_ADC0CN2,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:119: ADEN=1; // Enable ADC
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:120: ADEN=1; // Enable ADC
 	setb	_ADEN
 	ret
 ;------------------------------------------------------------
@@ -669,40 +671,40 @@ _InitADC:
 ;us                        Allocated to registers r2 
 ;i                         Allocated to registers r3 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:123: void Timer3us(unsigned char us)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:124: void Timer3us(unsigned char us)
 ;	-----------------------------------------
 ;	 function Timer3us
 ;	-----------------------------------------
 _Timer3us:
 	mov	r2,dpl
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:128: CKCON0|=0b_0100_0000;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:129: CKCON0|=0b_0100_0000;
 	orl	_CKCON0,#0x40
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:130: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:131: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
 	mov	_TMR3RL,#0xB8
 	mov	(_TMR3RL >> 8),#0xFF
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:131: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:132: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
 	mov	_TMR3,_TMR3RL
 	mov	(_TMR3 >> 8),(_TMR3RL >> 8)
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:133: TMR3CN0 = 0x04;                 // Sart Timer3 and clear overflow flag
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:134: TMR3CN0 = 0x04;                 // Sart Timer3 and clear overflow flag
 	mov	_TMR3CN0,#0x04
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:134: for (i = 0; i < us; i++)       // Count <us> overflows
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:135: for (i = 0; i < us; i++)       // Count <us> overflows
 	mov	r3,#0x00
 L004004?:
 	clr	c
 	mov	a,r3
 	subb	a,r2
 	jnc	L004007?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:136: while (!(TMR3CN0 & 0x80));  // Wait for overflow
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:137: while (!(TMR3CN0 & 0x80));  // Wait for overflow
 L004001?:
 	mov	a,_TMR3CN0
 	jnb	acc.7,L004001?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:137: TMR3CN0 &= ~(0x80);         // Clear overflow indicator
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:138: TMR3CN0 &= ~(0x80);         // Clear overflow indicator
 	anl	_TMR3CN0,#0x7F
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:134: for (i = 0; i < us; i++)       // Count <us> overflows
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:135: for (i = 0; i < us; i++)       // Count <us> overflows
 	inc	r3
 	sjmp	L004004?
 L004007?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:139: TMR3CN0 = 0 ;                   // Stop Timer3 and clear overflow flag
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:140: TMR3CN0 = 0 ;                   // Stop Timer3 and clear overflow flag
 	mov	_TMR3CN0,#0x00
 	ret
 ;------------------------------------------------------------
@@ -712,14 +714,14 @@ L004007?:
 ;j                         Allocated to registers r4 r5 
 ;k                         Allocated to registers r6 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:142: void waitms (unsigned int ms)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:143: void waitms (unsigned int ms)
 ;	-----------------------------------------
 ;	 function waitms
 ;	-----------------------------------------
 _waitms:
 	mov	r2,dpl
 	mov	r3,dph
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:146: for(j=0; j<ms; j++)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:147: for(j=0; j<ms; j++)
 	mov	r4,#0x00
 	mov	r5,#0x00
 L005005?:
@@ -729,7 +731,7 @@ L005005?:
 	mov	a,r5
 	subb	a,r3
 	jnc	L005009?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:147: for (k=0; k<4; k++) Timer3us(250);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:148: for (k=0; k<4; k++) Timer3us(250);
 	mov	r6,#0x00
 L005001?:
 	cjne	r6,#0x04,L005018?
@@ -750,7 +752,7 @@ L005018?:
 	inc	r6
 	sjmp	L005001?
 L005007?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:146: for(j=0; j<ms; j++)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:147: for(j=0; j<ms; j++)
 	inc	r4
 	cjne	r4,#0x00,L005005?
 	inc	r5
@@ -762,7 +764,7 @@ L005009?:
 ;------------------------------------------------------------
 ;baudrate                  Allocated to registers r2 r3 r4 r5 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:151: void UART1_Init (unsigned long baudrate)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:152: void UART1_Init (unsigned long baudrate)
 ;	-----------------------------------------
 ;	 function UART1_Init
 ;	-----------------------------------------
@@ -771,15 +773,15 @@ _UART1_Init:
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:153: SFRPAGE = 0x20;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:154: SFRPAGE = 0x20;
 	mov	_SFRPAGE,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:154: SMOD1 = 0x0C; // no parity, 8 data bits, 1 stop bit
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:155: SMOD1 = 0x0C; // no parity, 8 data bits, 1 stop bit
 	mov	_SMOD1,#0x0C
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:155: SCON1 = 0x10;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:156: SCON1 = 0x10;
 	mov	_SCON1,#0x10
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:156: SBCON1 =0x00;   // disable baud rate generator
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:157: SBCON1 =0x00;   // disable baud rate generator
 	mov	_SBCON1,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:157: SBRL1 = 0x10000L-((SYSCLK/baudrate)/(12L*2L));
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:158: SBRL1 = 0x10000L-((SYSCLK/baudrate)/(12L*2L));
 	mov	__divulong_PARM_2,r2
 	mov	(__divulong_PARM_2 + 1),r3
 	mov	(__divulong_PARM_2 + 2),r4
@@ -819,11 +821,11 @@ _UART1_Init:
 	subb	a,r5
 	mov	_SBRL1,r2
 	mov	(_SBRL1 >> 8),r3
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:158: TI1 = 1; // indicate ready for TX
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:159: TI1 = 1; // indicate ready for TX
 	setb	_TI1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:159: SBCON1 |= 0x40;   // enable baud rate generator
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:160: SBCON1 |= 0x40;   // enable baud rate generator
 	orl	_SBCON1,#0x40
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:160: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:161: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
 	ret
 ;------------------------------------------------------------
@@ -831,23 +833,23 @@ _UART1_Init:
 ;------------------------------------------------------------
 ;c                         Allocated to registers r2 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:163: void putchar1 (char c) 
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:164: void putchar1 (char c) 
 ;	-----------------------------------------
 ;	 function putchar1
 ;	-----------------------------------------
 _putchar1:
 	mov	r2,dpl
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:165: SFRPAGE = 0x20;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:166: SFRPAGE = 0x20;
 	mov	_SFRPAGE,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:166: while (!TI1);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:167: while (!TI1);
 L007001?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:167: TI1=0;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:168: TI1=0;
 	jbc	_TI1,L007008?
 	sjmp	L007001?
 L007008?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:168: SBUF1 = c;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:169: SBUF1 = c;
 	mov	_SBUF1,r2
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:169: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:170: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
 	ret
 ;------------------------------------------------------------
@@ -855,7 +857,7 @@ L007008?:
 ;------------------------------------------------------------
 ;s                         Allocated to registers r2 r3 r4 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:172: void sendstr1 (char * s)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:173: void sendstr1 (char * s)
 ;	-----------------------------------------
 ;	 function sendstr1
 ;	-----------------------------------------
@@ -863,7 +865,7 @@ _sendstr1:
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:174: while(*s)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:175: while(*s)
 L008001?:
 	mov	dpl,r2
 	mov	dph,r3
@@ -871,7 +873,7 @@ L008001?:
 	lcall	__gptrget
 	mov	r5,a
 	jz	L008004?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:176: putchar1(*s);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:177: putchar1(*s);
 	mov	dpl,r5
 	push	ar2
 	push	ar3
@@ -880,7 +882,7 @@ L008001?:
 	pop	ar4
 	pop	ar3
 	pop	ar2
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:177: s++;	
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:178: s++;	
 	inc	r2
 	cjne	r2,#0x00,L008001?
 	inc	r3
@@ -892,26 +894,26 @@ L008004?:
 ;------------------------------------------------------------
 ;c                         Allocated to registers 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:181: char getchar1 (void)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:182: char getchar1 (void)
 ;	-----------------------------------------
 ;	 function getchar1
 ;	-----------------------------------------
 _getchar1:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:184: SFRPAGE = 0x20;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:185: SFRPAGE = 0x20;
 	mov	_SFRPAGE,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:185: while (!RI1);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:186: while (!RI1);
 L009001?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:186: RI1=0;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:187: RI1=0;
 	jbc	_RI1,L009008?
 	sjmp	L009001?
 L009008?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:188: SCON1&=0b_0011_1111;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:189: SCON1&=0b_0011_1111;
 	anl	_SCON1,#0x3F
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:189: c = SBUF1;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:190: c = SBUF1;
 	mov	dpl,_SBUF1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:190: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:191: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:191: return (c);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:192: return (c);
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'getchar1_with_timeout'
@@ -919,52 +921,52 @@ L009008?:
 ;c                         Allocated to registers 
 ;timeout                   Allocated to registers r2 r3 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:194: char getchar1_with_timeout (void)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:195: char getchar1_with_timeout (void)
 ;	-----------------------------------------
 ;	 function getchar1_with_timeout
 ;	-----------------------------------------
 _getchar1_with_timeout:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:198: SFRPAGE = 0x20;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:199: SFRPAGE = 0x20;
 	mov	_SFRPAGE,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:200: while (!RI1)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:201: while (!RI1)
 	mov	r2,#0x00
 	mov	r3,#0x00
 L010003?:
 	jb	_RI1,L010005?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:202: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:203: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:203: Timer3us(20);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:204: Timer3us(20);
 	mov	dpl,#0x14
 	push	ar2
 	push	ar3
 	lcall	_Timer3us
 	pop	ar3
 	pop	ar2
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:204: SFRPAGE = 0x20;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:205: SFRPAGE = 0x20;
 	mov	_SFRPAGE,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:205: timeout++;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:206: timeout++;
 	inc	r2
 	cjne	r2,#0x00,L010012?
 	inc	r3
 L010012?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:206: if(timeout==25000)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:207: if(timeout==25000)
 	cjne	r2,#0xA8,L010003?
 	cjne	r3,#0x61,L010003?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:208: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:209: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:209: return ('\n'); // Timeout after half second
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:210: return ('\n'); // Timeout after half second
 	mov	dpl,#0x0A
 	ret
 L010005?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:212: RI1=0;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:213: RI1=0;
 	clr	_RI1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:214: SCON1&=0b_0011_1111;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:215: SCON1&=0b_0011_1111;
 	anl	_SCON1,#0x3F
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:215: c = SBUF1;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:216: c = SBUF1;
 	mov	dpl,_SBUF1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:216: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:217: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:217: return (c);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:218: return (c);
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'getstr1'
@@ -974,7 +976,7 @@ L010005?:
 ;c                         Allocated to registers r1 
 ;cnt                       Allocated to registers r5 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:220: void getstr1 (char * s, unsigned char n)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:221: void getstr1 (char * s, unsigned char n)
 ;	-----------------------------------------
 ;	 function getstr1
 ;	-----------------------------------------
@@ -982,13 +984,13 @@ _getstr1:
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:226: while(1)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:227: while(1)
 	mov	r5,#0x00
 	mov	ar6,r2
 	mov	ar7,r3
 	mov	ar0,r4
 L011007?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:228: c=getchar1_with_timeout();
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:229: c=getchar1_with_timeout();
 	push	ar2
 	push	ar3
 	push	ar4
@@ -1005,24 +1007,24 @@ L011007?:
 	pop	ar4
 	pop	ar3
 	pop	ar2
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:229: if(c=='\n')
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:230: if(c=='\n')
 	cjne	r1,#0x0A,L011002?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:231: *s=0;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:232: *s=0;
 	mov	dpl,r2
 	mov	dph,r3
 	mov	b,r4
 	clr	a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:232: return;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:233: return;
 	ljmp	__gptrput
 L011002?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:235: if (cnt<n)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:236: if (cnt<n)
 	clr	c
 	mov	a,r5
 	subb	a,_getstr1_PARM_2
 	jnc	L011004?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:237: cnt++;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:238: cnt++;
 	inc	r5
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:238: *s=c;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:239: *s=c;
 	mov	dpl,r6
 	mov	dph,r7
 	mov	b,r0
@@ -1031,35 +1033,35 @@ L011002?:
 	inc	dptr
 	mov	r6,dpl
 	mov	r7,dph
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:239: s++;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:240: s++;
 	mov	ar2,r6
 	mov	ar3,r7
 	mov	ar4,r0
 	sjmp	L011007?
 L011004?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:243: *s=0;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:244: *s=0;
 	mov	dpl,r2
 	mov	dph,r3
 	mov	b,r4
 	clr	a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:244: return;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:245: return;
 	ljmp	__gptrput
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'RXU1'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:250: bit RXU1 (void)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:251: bit RXU1 (void)
 ;	-----------------------------------------
 ;	 function RXU1
 ;	-----------------------------------------
 _RXU1:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:253: SFRPAGE = 0x20;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:254: SFRPAGE = 0x20;
 	mov	_SFRPAGE,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:254: mybit=RI1;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:255: mybit=RI1;
 	mov	c,_RI1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:255: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:256: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:256: return mybit;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:257: return mybit;
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'waitms_or_RI1'
@@ -1068,14 +1070,14 @@ _RXU1:
 ;j                         Allocated to registers r4 r5 
 ;k                         Allocated to registers r6 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:259: void waitms_or_RI1 (unsigned int ms)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:260: void waitms_or_RI1 (unsigned int ms)
 ;	-----------------------------------------
 ;	 function waitms_or_RI1
 ;	-----------------------------------------
 _waitms_or_RI1:
 	mov	r2,dpl
 	mov	r3,dph
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:263: for(j=0; j<ms; j++)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:264: for(j=0; j<ms; j++)
 	mov	r4,#0x00
 	mov	r5,#0x00
 L013007?:
@@ -1085,13 +1087,13 @@ L013007?:
 	mov	a,r5
 	subb	a,r3
 	jnc	L013011?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:265: for (k=0; k<4; k++)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:266: for (k=0; k<4; k++)
 	mov	r6,#0x00
 L013003?:
 	cjne	r6,#0x04,L013019?
 L013019?:
 	jnc	L013009?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:267: if(RXU1()) return;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:268: if(RXU1()) return;
 	push	ar2
 	push	ar3
 	push	ar4
@@ -1108,7 +1110,7 @@ L013019?:
 	jz	L013002?
 	ret
 L013002?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:268: Timer3us(250);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:269: Timer3us(250);
 	mov	dpl,#0xFA
 	push	ar2
 	push	ar3
@@ -1121,11 +1123,11 @@ L013002?:
 	pop	ar4
 	pop	ar3
 	pop	ar2
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:265: for (k=0; k<4; k++)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:266: for (k=0; k<4; k++)
 	inc	r6
 	sjmp	L013003?
 L013009?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:263: for(j=0; j<ms; j++)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:264: for(j=0; j<ms; j++)
 	inc	r4
 	cjne	r4,#0x00,L013007?
 	inc	r5
@@ -1137,7 +1139,7 @@ L013011?:
 ;------------------------------------------------------------
 ;s                         Allocated to registers r2 r3 r4 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:273: void SendATCommand (char * s)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:274: void SendATCommand (char * s)
 ;	-----------------------------------------
 ;	 function SendATCommand
 ;	-----------------------------------------
@@ -1145,7 +1147,7 @@ _SendATCommand:
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:275: printf("Command: %s", s);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:276: printf("Command: %s", s);
 	push	ar2
 	push	ar3
 	push	ar4
@@ -1162,30 +1164,30 @@ _SendATCommand:
 	mov	a,sp
 	add	a,#0xfa
 	mov	sp,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:276: P2_0=0; // 'set' pin to 0 is 'AT' mode.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:277: P2_0=0; // 'set' pin to 0 is 'AT' mode.
 	clr	_P2_0
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:277: waitms(5);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:278: waitms(5);
 	mov	dptr,#0x0005
 	lcall	_waitms
 	pop	ar4
 	pop	ar3
 	pop	ar2
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:278: sendstr1(s);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:279: sendstr1(s);
 	mov	dpl,r2
 	mov	dph,r3
 	mov	b,r4
 	lcall	_sendstr1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:279: getstr1(buff, sizeof(buff)-1);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:280: getstr1(buff, sizeof(buff)-1);
 	mov	_getstr1_PARM_2,#0x13
 	mov	dptr,#_buff
 	mov	b,#0x40
 	lcall	_getstr1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:280: waitms(10);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:281: waitms(10);
 	mov	dptr,#0x000A
 	lcall	_waitms
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:281: P2_0=1; // 'set' pin to 1 is normal operation mode.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:282: P2_0=1; // 'set' pin to 1 is normal operation mode.
 	setb	_P2_0
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:282: printf("Response: %s\r\n", buff);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:283: printf("Response: %s\r\n", buff);
 	mov	a,#_buff
 	push	acc
 	mov	a,#(_buff >> 8)
@@ -1207,26 +1209,26 @@ _SendATCommand:
 ;Allocation info for local variables in function 'ReceptionOff'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:285: void ReceptionOff (void)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:286: void ReceptionOff (void)
 ;	-----------------------------------------
 ;	 function ReceptionOff
 ;	-----------------------------------------
 _ReceptionOff:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:287: P2_0=0; // 'set' pin to 0 is 'AT' mode.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:288: P2_0=0; // 'set' pin to 0 is 'AT' mode.
 	clr	_P2_0
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:288: waitms(10);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:289: waitms(10);
 	mov	dptr,#0x000A
 	lcall	_waitms
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:289: sendstr1("AT+DVID0000\r\n"); // Some unused id, so that we get nothing in RXD1.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:290: sendstr1("AT+DVID0000\r\n"); // Some unused id, so that we get nothing in RXD1.
 	mov	dptr,#__str_2
 	mov	b,#0x80
 	lcall	_sendstr1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:290: waitms(10);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:291: waitms(10);
 	mov	dptr,#0x000A
 	lcall	_waitms
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:292: SCON1&=0b_0011_1111;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:293: SCON1&=0b_0011_1111;
 	anl	_SCON1,#0x3F
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:293: P2_0=1; // 'set' pin to 1 is normal operation mode.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:294: P2_0=1; // 'set' pin to 1 is normal operation mode.
 	setb	_P2_0
 	ret
 ;------------------------------------------------------------
@@ -1236,13 +1238,13 @@ _ReceptionOff:
 ;portno                    Allocated to registers r2 
 ;mask                      Allocated to registers r3 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:298: void InitPinADC (unsigned char portno, unsigned char pin_num)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:299: void InitPinADC (unsigned char portno, unsigned char pin_num)
 ;	-----------------------------------------
 ;	 function InitPinADC
 ;	-----------------------------------------
 _InitPinADC:
 	mov	r2,dpl
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:302: mask=1<<pin_num;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:303: mask=1<<pin_num;
 	mov	b,_InitPinADC_PARM_2
 	inc	b
 	mov	a,#0x01
@@ -1252,54 +1254,54 @@ L016011?:
 L016013?:
 	djnz	b,L016011?
 	mov	r3,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:304: SFRPAGE = 0x20;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:305: SFRPAGE = 0x20;
 	mov	_SFRPAGE,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:305: switch (portno)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:306: switch (portno)
 	cjne	r2,#0x00,L016014?
 	sjmp	L016001?
 L016014?:
 	cjne	r2,#0x01,L016015?
 	sjmp	L016002?
 L016015?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:307: case 0:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:308: case 0:
 	cjne	r2,#0x02,L016005?
 	sjmp	L016003?
 L016001?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:308: P0MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:309: P0MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	mov	r2,a
 	anl	_P0MDIN,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:309: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:310: P0SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P0SKIP,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:310: break;
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:311: case 1:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:311: break;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:312: case 1:
 	sjmp	L016005?
 L016002?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:312: P1MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:313: P1MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	mov	r2,a
 	anl	_P1MDIN,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:313: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:314: P1SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P1SKIP,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:314: break;
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:315: case 2:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:315: break;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:316: case 2:
 	sjmp	L016005?
 L016003?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:316: P2MDIN &= (~mask); // Set pin as analog input
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:317: P2MDIN &= (~mask); // Set pin as analog input
 	mov	a,r3
 	cpl	a
 	mov	r2,a
 	anl	_P2MDIN,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:317: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:318: P2SKIP |= mask; // Skip Crossbar decoding for this pin
 	mov	a,r3
 	orl	_P2SKIP,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:321: }
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:322: }
 L016005?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:322: SFRPAGE = 0x00;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:323: SFRPAGE = 0x00;
 	mov	_SFRPAGE,#0x00
 	ret
 ;------------------------------------------------------------
@@ -1307,20 +1309,20 @@ L016005?:
 ;------------------------------------------------------------
 ;pin                       Allocated to registers 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:325: unsigned int ADC_at_Pin(unsigned char pin)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:326: unsigned int ADC_at_Pin(unsigned char pin)
 ;	-----------------------------------------
 ;	 function ADC_at_Pin
 ;	-----------------------------------------
 _ADC_at_Pin:
 	mov	_ADC0MX,dpl
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:328: ADINT = 0;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:329: ADINT = 0;
 	clr	_ADINT
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:329: ADBUSY = 1;     // Convert voltage at the pin
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:330: ADBUSY = 1;     // Convert voltage at the pin
 	setb	_ADBUSY
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:330: while (!ADINT); // Wait for conversion to complete
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:331: while (!ADINT); // Wait for conversion to complete
 L017001?:
 	jnb	_ADINT,L017001?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:331: return (ADC0);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:332: return (ADC0);
 	mov	dpl,_ADC0
 	mov	dph,(_ADC0 >> 8)
 	ret
@@ -1329,12 +1331,12 @@ L017001?:
 ;------------------------------------------------------------
 ;pin                       Allocated to registers r2 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:334: float Volts_at_Pin(unsigned char pin)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:335: float Volts_at_Pin(unsigned char pin)
 ;	-----------------------------------------
 ;	 function Volts_at_Pin
 ;	-----------------------------------------
 _Volts_at_Pin:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:336: return ((ADC_at_Pin(pin)*VDD)/16383.0);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:337: return ((ADC_at_Pin(pin)*VDD)/16383.0);
 	lcall	_ADC_at_Pin
 	lcall	___uint2fs
 	mov	r2,dpl
@@ -1385,18 +1387,22 @@ _Volts_at_Pin:
 ;Allocation info for local variables in function 'InitPushButton'
 ;------------------------------------------------------------
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:339: void InitPushButton(void)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:340: void InitPushButton(void)
 ;	-----------------------------------------
 ;	 function InitPushButton
 ;	-----------------------------------------
 _InitPushButton:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:341: SFRPAGE = 0x20;  // Switch to Port Configuration Page
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:342: SFRPAGE = 0x20;  // Switch to Port Configuration Page
 	mov	_SFRPAGE,#0x20
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:342: P3MDOUT &= ~(1 << 2); // Set P3.2 as open-drain (input mode)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:343: P3MDOUT &= ~(1 << 2); // Set P3.2 as open-drain (input mode)
 	anl	_P3MDOUT,#0xFB
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:343: P3 |= (1 << 2);  // Enable internal pull-up resistor
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:344: P3 |= (1 << 2);  // Enable internal pull-up resistor
 	orl	_P3,#0x04
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:344: SFRPAGE = 0x00;  // Restore SFRPAGE
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:345: P3 |= (1 << 0); // P3.0
+	orl	_P3,#0x01
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:346: P3 |= (1 << 1); // P3.1
+	orl	_P3,#0x02
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:347: SFRPAGE = 0x00;  // Restore SFRPAGE
 	mov	_SFRPAGE,#0x00
 	ret
 ;------------------------------------------------------------
@@ -1405,20 +1411,20 @@ _InitPushButton:
 ;timeout_cnt               Allocated to registers r2 r3 
 ;cont1                     Allocated to registers 
 ;cont2                     Allocated to registers 
-;v                         Allocated with name '_main_v_1_109'
-;norm_x                    Allocated with name '_main_norm_x_1_109'
-;norm_y                    Allocated with name '_main_norm_y_1_109'
+;v                         Allocated with name '_main_v_1_131'
+;norm_x                    Allocated with name '_main_norm_x_1_131'
+;norm_y                    Allocated with name '_main_norm_y_1_131'
 ;mode                      Allocated to registers r6 r7 
 ;------------------------------------------------------------
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:348: void main (void)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:351: void main (void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:360: waitms(500);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:365: waitms(500);
 	mov	dptr,#0x01F4
 	lcall	_waitms
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:361: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:366: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	mov	a,#__str_3
 	push	acc
 	mov	a,#(__str_3 >> 8)
@@ -1429,96 +1435,96 @@ _main:
 	dec	sp
 	dec	sp
 	dec	sp
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:363: UART1_Init(9600);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:368: UART1_Init(9600);
 	mov	dptr,#0x2580
 	clr	a
 	mov	b,a
 	lcall	_UART1_Init
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:377: ReceptionOff();
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:382: ReceptionOff();
 	lcall	_ReceptionOff
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:380: SendATCommand("AT+VER\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:385: SendATCommand("AT+VER\r\n");
 	mov	dptr,#__str_4
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:381: SendATCommand("AT+BAUD\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:386: SendATCommand("AT+BAUD\r\n");
 	mov	dptr,#__str_5
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:382: SendATCommand("AT+RFID\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:387: SendATCommand("AT+RFID\r\n");
 	mov	dptr,#__str_6
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:383: SendATCommand("AT+DVID\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:388: SendATCommand("AT+DVID\r\n");
 	mov	dptr,#__str_7
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:384: SendATCommand("AT+RFC\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:389: SendATCommand("AT+RFC\r\n");
 	mov	dptr,#__str_8
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:385: SendATCommand("AT+POWE\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:390: SendATCommand("AT+POWE\r\n");
 	mov	dptr,#__str_9
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:386: SendATCommand("AT+CLSS\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:391: SendATCommand("AT+CLSS\r\n");
 	mov	dptr,#__str_10
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:390: SendATCommand("AT+DVIDFDFD\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:395: SendATCommand("AT+DVIDFDFD\r\n");
 	mov	dptr,#__str_11
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:391: SendATCommand("AT+RFC113\r\n");
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:396: SendATCommand("AT+RFC113\r\n");
 	mov	dptr,#__str_12
 	mov	b,#0x80
 	lcall	_SendATCommand
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:393: InitPinADC(2, 2); // Configure P2.2 as analog input
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:398: InitPinADC(2, 2); // Configure P2.2 as analog input
 	mov	_InitPinADC_PARM_2,#0x02
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:394: InitPinADC(2, 3); // Configure P2.3 as analog input
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:399: InitPinADC(2, 3); // Configure P2.3 as analog input
 	mov	_InitPinADC_PARM_2,#0x03
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:395: InitPinADC(2, 4); // Configure P2.4 as analog input
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:400: InitPinADC(2, 4); // Configure P2.4 as analog input
 	mov	_InitPinADC_PARM_2,#0x04
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:396: InitPinADC(2, 5); // Configure P2.5 as analog input
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:401: InitPinADC(2, 5); // Configure P2.5 as analog input
 	mov	_InitPinADC_PARM_2,#0x05
 	mov	dpl,#0x02
 	lcall	_InitPinADC
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:397: InitADC();
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:402: InitADC();
 	lcall	_InitADC
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:398: InitPushButton();
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:403: InitPushButton();
 	lcall	_InitPushButton
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:400: while(1)
-L020031?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:404: putchar1('!'); // Send a message to the slave. First send the 'attention' character which is '!'
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:405: while(1)
+L020034?:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:409: putchar1('!'); // Send a message to the slave. First send the 'attention' character which is '!'
 	mov	dpl,#0x21
 	lcall	_putchar1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:406: waitms(5); // This may need adjustment depending on how busy is the slave
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:411: waitms(5); // This may need adjustment depending on how busy is the slave
 	mov	dptr,#0x0005
 	lcall	_waitms
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:414: putchar1('@'); // Request a message from the slave
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:419: putchar1('@'); // Request a message from the slave
 	mov	dpl,#0x40
 	lcall	_putchar1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:419: while(1)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:424: while(1)
 	mov	r2,#0x00
 	mov	r3,#0x00
 L020006?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:421: if(RXU1()) break; // Something has arrived
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:426: if(RXU1()) break; // Something has arrived
 	push	ar2
 	push	ar3
 	lcall	_RXU1
 	pop	ar3
 	pop	ar2
 	jc	L020007?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:422: if(++timeout_cnt>250) break; // Wait up to 25ms for the repply
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:427: if(++timeout_cnt>250) break; // Wait up to 25ms for the repply
 	inc	r2
-	cjne	r2,#0x00,L020051?
+	cjne	r2,#0x00,L020055?
 	inc	r3
-L020051?:
+L020055?:
 	clr	c
 	mov	a,#0xFA
 	subb	a,r2
@@ -1528,7 +1534,7 @@ L020051?:
 	xrl	b,#0x80
 	subb	a,b
 	jc	L020007?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:423: Timer3us(100); // 100us*250=25ms
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:428: Timer3us(100); // 100us*250=25ms
 	mov	dpl,#0x64
 	push	ar2
 	push	ar3
@@ -1537,68 +1543,68 @@ L020051?:
 	pop	ar2
 	sjmp	L020006?
 L020007?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:427: if(RXU1()) // Something has arrived from the slave
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:432: if(RXU1()) // Something has arrived from the slave
 	lcall	_RXU1
-	jc	L020053?
-	ljmp	L020028?
-L020053?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:431: v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
+	jc	L020057?
+	ljmp	L020031?
+L020057?:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:436: v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
 	mov	dpl,#0x0F
 	lcall	_Volts_at_Pin
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-	mov	_main_v_1_109,r2
-	mov	(_main_v_1_109 + 1),r3
-	mov	(_main_v_1_109 + 2),r4
-	mov	(_main_v_1_109 + 3),r5
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:432: v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
+	mov	_main_v_1_131,r2
+	mov	(_main_v_1_131 + 1),r3
+	mov	(_main_v_1_131 + 2),r4
+	mov	(_main_v_1_131 + 3),r5
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:437: v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
 	mov	dpl,#0x10
 	lcall	_Volts_at_Pin
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-	mov	(_main_v_1_109 + 0x0004),r2
-	mov	((_main_v_1_109 + 0x0004) + 1),r3
-	mov	((_main_v_1_109 + 0x0004) + 2),r4
-	mov	((_main_v_1_109 + 0x0004) + 3),r5
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:433: v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
+	mov	(_main_v_1_131 + 0x0004),r2
+	mov	((_main_v_1_131 + 0x0004) + 1),r3
+	mov	((_main_v_1_131 + 0x0004) + 2),r4
+	mov	((_main_v_1_131 + 0x0004) + 3),r5
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:438: v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
 	mov	dpl,#0x11
 	lcall	_Volts_at_Pin
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-	mov	(_main_v_1_109 + 0x0008),r2
-	mov	((_main_v_1_109 + 0x0008) + 1),r3
-	mov	((_main_v_1_109 + 0x0008) + 2),r4
-	mov	((_main_v_1_109 + 0x0008) + 3),r5
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:434: v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
+	mov	(_main_v_1_131 + 0x0008),r2
+	mov	((_main_v_1_131 + 0x0008) + 1),r3
+	mov	((_main_v_1_131 + 0x0008) + 2),r4
+	mov	((_main_v_1_131 + 0x0008) + 3),r5
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:439: v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
 	mov	dpl,#0x12
 	lcall	_Volts_at_Pin
 	mov	r2,dpl
 	mov	r3,dph
 	mov	r4,b
 	mov	r5,a
-	mov	(_main_v_1_109 + 0x000c),r2
-	mov	((_main_v_1_109 + 0x000c) + 1),r3
-	mov	((_main_v_1_109 + 0x000c) + 2),r4
-	mov	((_main_v_1_109 + 0x000c) + 3),r5
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:436: norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
-	mov	a,#0x5C
+	mov	(_main_v_1_131 + 0x000c),r2
+	mov	((_main_v_1_131 + 0x000c) + 1),r3
+	mov	((_main_v_1_131 + 0x000c) + 2),r4
+	mov	((_main_v_1_131 + 0x000c) + 3),r5
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:441: norm_x = (v[1] / 3.294) * 2.0 - 1.0;  // Horizontal (P2.3)
+	mov	a,#0xE5
 	push	acc
-	mov	a,#0x8F
+	mov	a,#0xD0
 	push	acc
 	mov	a,#0x52
 	push	acc
 	mov	a,#0x40
 	push	acc
-	mov	dpl,(_main_v_1_109 + 0x0004)
-	mov	dph,((_main_v_1_109 + 0x0004) + 1)
-	mov	b,((_main_v_1_109 + 0x0004) + 2)
-	mov	a,((_main_v_1_109 + 0x0004) + 3)
+	mov	dpl,(_main_v_1_131 + 0x0004)
+	mov	dph,((_main_v_1_131 + 0x0004) + 1)
+	mov	b,((_main_v_1_131 + 0x0004) + 2)
+	mov	a,((_main_v_1_131 + 0x0004) + 3)
 	lcall	___fsdiv
 	mov	r2,dpl
 	mov	r3,dph
@@ -1635,26 +1641,26 @@ L020053?:
 	mov	b,r4
 	mov	a,r5
 	lcall	___fssub
-	mov	_main_norm_x_1_109,dpl
-	mov	(_main_norm_x_1_109 + 1),dph
-	mov	(_main_norm_x_1_109 + 2),b
-	mov	(_main_norm_x_1_109 + 3),a
+	mov	_main_norm_x_1_131,dpl
+	mov	(_main_norm_x_1_131 + 1),dph
+	mov	(_main_norm_x_1_131 + 2),b
+	mov	(_main_norm_x_1_131 + 3),a
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:437: norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
-	mov	a,#0x5C
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:442: norm_y = (v[0] / 3.294) * 2.0 - 1.0;  // Vertical   (P2.2)
+	mov	a,#0xE5
 	push	acc
-	mov	a,#0x8F
+	mov	a,#0xD0
 	push	acc
 	mov	a,#0x52
 	push	acc
 	mov	a,#0x40
 	push	acc
-	mov	dpl,_main_v_1_109
-	mov	dph,(_main_v_1_109 + 1)
-	mov	b,(_main_v_1_109 + 2)
-	mov	a,(_main_v_1_109 + 3)
+	mov	dpl,_main_v_1_131
+	mov	dph,(_main_v_1_131 + 1)
+	mov	b,(_main_v_1_131 + 2)
+	mov	a,(_main_v_1_131 + 3)
 	lcall	___fsdiv
 	mov	r6,dpl
 	mov	r7,dph
@@ -1691,28 +1697,67 @@ L020053?:
 	mov	b,r4
 	mov	a,r5
 	lcall	___fssub
-	mov	_main_norm_y_1_109,dpl
-	mov	(_main_norm_y_1_109 + 1),dph
-	mov	(_main_norm_y_1_109 + 2),b
-	mov	(_main_norm_y_1_109 + 3),a
+	mov	_main_norm_y_1_131,dpl
+	mov	(_main_norm_y_1_131 + 1),dph
+	mov	(_main_norm_y_1_131 + 2),b
+	mov	(_main_norm_y_1_131 + 3),a
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:439: button_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:444: button_state = (P3 & (1 << 2)) ? 0 : 1;
+	mov	a,_P3
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:445: button_1_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
 	mov	a,_P3
 	anl	a,#0x01
 	mov	r6,a
-	cjne	a,#0x01,L020054?
-L020054?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:441: if (button_state == 1) {
-	mov	_main_button_state_1_109,c
-	jnc	L020025?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:442: mode = 5;
+	cjne	a,#0x01,L020058?
+L020058?:
+	mov	_main_button_1_state_1_131,c
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:446: button_2_state = (P3 & (1 << 1)) ? 0 : 1; 
+	mov	a,_P3
+	rr	a
+	anl	a,#0x01
+	mov	r6,a
+	cjne	a,#0x01,L020059?
+L020059?:
+	mov	_main_button_2_state_1_131,c
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:448: if (button_1_state == 1) {
+	jnb	_main_button_1_state_1_131,L020028?
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:449: printf("button 1 pressed. switch to automatic mode");
+	mov	a,#__str_13
+	push	acc
+	mov	a,#(__str_13 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:450: mode = 5;
 	mov	r6,#0x05
 	mov	r7,#0x00
-	ljmp	L020026?
+	ljmp	L020029?
+L020028?:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:453: else if (button_2_state == 1) {
+	jnb	_main_button_2_state_1_131,L020025?
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:454: printf("button 2 pressed. switch to manual mode");
+	mov	a,#__str_14
+	push	acc
+	mov	a,#(__str_14 >> 8)
+	push	acc
+	mov	a,#0x80
+	push	acc
+	lcall	_printf
+	dec	sp
+	dec	sp
+	dec	sp
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:455: mode = 6;
+	mov	r6,#0x06
+	mov	r7,#0x00
+	ljmp	L020029?
 L020025?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:445: else if (norm_x <= 1.5 && norm_x > 0.5)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:468: else if (norm_x <= 1.5 && norm_x > 0.5) //right
 	clr	a
 	push	acc
 	push	acc
@@ -1720,10 +1765,10 @@ L020025?:
 	push	acc
 	mov	a,#0x3F
 	push	acc
-	mov	dpl,_main_norm_x_1_109
-	mov	dph,(_main_norm_x_1_109 + 1)
-	mov	b,(_main_norm_x_1_109 + 2)
-	mov	a,(_main_norm_x_1_109 + 3)
+	mov	dpl,_main_norm_x_1_131
+	mov	dph,(_main_norm_x_1_131 + 1)
+	mov	b,(_main_norm_x_1_131 + 2)
+	mov	a,(_main_norm_x_1_131 + 3)
 	lcall	___fsgt
 	mov	r2,dpl
 	mov	a,sp
@@ -1736,10 +1781,10 @@ L020025?:
 	push	acc
 	mov	a,#0x3F
 	push	acc
-	mov	dpl,_main_norm_x_1_109
-	mov	dph,(_main_norm_x_1_109 + 1)
-	mov	b,(_main_norm_x_1_109 + 2)
-	mov	a,(_main_norm_x_1_109 + 3)
+	mov	dpl,_main_norm_x_1_131
+	mov	dph,(_main_norm_x_1_131 + 1)
+	mov	b,(_main_norm_x_1_131 + 2)
+	mov	a,(_main_norm_x_1_131 + 3)
 	lcall	___fsgt
 	mov	r2,dpl
 	mov	a,sp
@@ -1747,22 +1792,22 @@ L020025?:
 	mov	sp,a
 	mov	a,r2
 	jz	L020021?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:447: mode = 1;
-	mov	r6,#0x01
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:470: mode = 3;
+	mov	r6,#0x03
 	mov	r7,#0x00
-	ljmp	L020026?
+	ljmp	L020029?
 L020021?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:450: else if (norm_x <-0.5 && norm_x>= -1.5)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:473: else if (norm_x <-0.5 && norm_x>= -1.5) //left
 	clr	a
 	push	acc
 	push	acc
 	push	acc
 	mov	a,#0xBF
 	push	acc
-	mov	dpl,_main_norm_x_1_109
-	mov	dph,(_main_norm_x_1_109 + 1)
-	mov	b,(_main_norm_x_1_109 + 2)
-	mov	a,(_main_norm_x_1_109 + 3)
+	mov	dpl,_main_norm_x_1_131
+	mov	dph,(_main_norm_x_1_131 + 1)
+	mov	b,(_main_norm_x_1_131 + 2)
+	mov	a,(_main_norm_x_1_131 + 3)
 	lcall	___fslt
 	mov	r2,dpl
 	mov	a,sp
@@ -1777,23 +1822,23 @@ L020021?:
 	push	acc
 	mov	a,#0xBF
 	push	acc
-	mov	dpl,_main_norm_x_1_109
-	mov	dph,(_main_norm_x_1_109 + 1)
-	mov	b,(_main_norm_x_1_109 + 2)
-	mov	a,(_main_norm_x_1_109 + 3)
+	mov	dpl,_main_norm_x_1_131
+	mov	dph,(_main_norm_x_1_131 + 1)
+	mov	b,(_main_norm_x_1_131 + 2)
+	mov	a,(_main_norm_x_1_131 + 3)
 	lcall	___fslt
 	mov	r2,dpl
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
 	mov	a,r2
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:452: mode = 3;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:475: mode = 4;
 	jnz	L020017?
-	mov	r6,#0x03
+	mov	r6,#0x04
 	mov	r7,a
-	ljmp	L020026?
+	ljmp	L020029?
 L020017?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:455: else if (norm_y <= 1.5 && norm_y > 0.5)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:478: else if (norm_y <= 1.5 && norm_y > 0.5) // forward
 	clr	a
 	push	acc
 	push	acc
@@ -1801,10 +1846,10 @@ L020017?:
 	push	acc
 	mov	a,#0x3F
 	push	acc
-	mov	dpl,_main_norm_y_1_109
-	mov	dph,(_main_norm_y_1_109 + 1)
-	mov	b,(_main_norm_y_1_109 + 2)
-	mov	a,(_main_norm_y_1_109 + 3)
+	mov	dpl,_main_norm_y_1_131
+	mov	dph,(_main_norm_y_1_131 + 1)
+	mov	b,(_main_norm_y_1_131 + 2)
+	mov	a,(_main_norm_y_1_131 + 3)
 	lcall	___fsgt
 	mov	r2,dpl
 	mov	a,sp
@@ -1817,10 +1862,10 @@ L020017?:
 	push	acc
 	mov	a,#0x3F
 	push	acc
-	mov	dpl,_main_norm_y_1_109
-	mov	dph,(_main_norm_y_1_109 + 1)
-	mov	b,(_main_norm_y_1_109 + 2)
-	mov	a,(_main_norm_y_1_109 + 3)
+	mov	dpl,_main_norm_y_1_131
+	mov	dph,(_main_norm_y_1_131 + 1)
+	mov	b,(_main_norm_y_1_131 + 2)
+	mov	a,(_main_norm_y_1_131 + 3)
 	lcall	___fsgt
 	mov	r2,dpl
 	mov	a,sp
@@ -1828,22 +1873,22 @@ L020017?:
 	mov	sp,a
 	mov	a,r2
 	jz	L020013?
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:457: mode = 2;
-	mov	r6,#0x02
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:480: mode = 1;
+	mov	r6,#0x01
 	mov	r7,#0x00
-	sjmp	L020026?
+	sjmp	L020029?
 L020013?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:460: else if (norm_y <-0.5 && norm_y>= -1.5)
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:483: else if (norm_y <-0.5 && norm_y>= -1.5) //backwards
 	clr	a
 	push	acc
 	push	acc
 	push	acc
 	mov	a,#0xBF
 	push	acc
-	mov	dpl,_main_norm_y_1_109
-	mov	dph,(_main_norm_y_1_109 + 1)
-	mov	b,(_main_norm_y_1_109 + 2)
-	mov	a,(_main_norm_y_1_109 + 3)
+	mov	dpl,_main_norm_y_1_131
+	mov	dph,(_main_norm_y_1_131 + 1)
+	mov	b,(_main_norm_y_1_131 + 2)
+	mov	a,(_main_norm_y_1_131 + 3)
 	lcall	___fslt
 	mov	r2,dpl
 	mov	a,sp
@@ -1858,32 +1903,32 @@ L020013?:
 	push	acc
 	mov	a,#0xBF
 	push	acc
-	mov	dpl,_main_norm_y_1_109
-	mov	dph,(_main_norm_y_1_109 + 1)
-	mov	b,(_main_norm_y_1_109 + 2)
-	mov	a,(_main_norm_y_1_109 + 3)
+	mov	dpl,_main_norm_y_1_131
+	mov	dph,(_main_norm_y_1_131 + 1)
+	mov	b,(_main_norm_y_1_131 + 2)
+	mov	a,(_main_norm_y_1_131 + 3)
 	lcall	___fslt
 	mov	r2,dpl
 	mov	a,sp
 	add	a,#0xfc
 	mov	sp,a
 	mov	a,r2
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:462: mode = 4;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:485: mode = 2;
 	jnz	L020009?
-	mov	r6,#0x04
+	mov	r6,#0x02
 	mov	r7,a
-	sjmp	L020026?
+	sjmp	L020029?
 L020009?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:466: mode = 0;
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:489: mode = 0;
 	mov	r6,#0x00
 	mov	r7,#0x00
-L020026?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:469: sprintf(buff, "test %d\n", mode);
+L020029?:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:492: sprintf(buff, "test %d\n", mode);
 	push	ar6
 	push	ar7
-	mov	a,#__str_13
+	mov	a,#__str_15
 	push	acc
-	mov	a,#(__str_13 >> 8)
+	mov	a,#(__str_15 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1897,25 +1942,25 @@ L020026?:
 	mov	a,sp
 	add	a,#0xf8
 	mov	sp,a
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:472: sendstr1(buff);
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:495: sendstr1(buff);
 	mov	dptr,#_buff
 	mov	b,#0x40
 	lcall	_sendstr1
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:475: waitms(50);
-	mov	dptr,#0x0032
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:498: waitms(100);
+	mov	dptr,#0x0064
 	lcall	_waitms
-	sjmp	L020029?
-L020028?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:493: printf("NO RESPONSE\r\n", buff);
+	sjmp	L020032?
+L020031?:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:516: printf("NO RESPONSE\r\n", buff);
 	mov	a,#_buff
 	push	acc
 	mov	a,#(_buff >> 8)
 	push	acc
 	mov	a,#0x40
 	push	acc
-	mov	a,#__str_14
+	mov	a,#__str_16
 	push	acc
-	mov	a,#(__str_14 >> 8)
+	mov	a,#(__str_16 >> 8)
 	push	acc
 	mov	a,#0x80
 	push	acc
@@ -1923,11 +1968,11 @@ L020028?:
 	mov	a,sp
 	add	a,#0xfa
 	mov	sp,a
-L020029?:
-;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:496: waitms(50);  // Set the information interchange pace: communicate about every 50ms
+L020032?:
+;	C:\Users\leigh\Elec291Project2\elec291project2\EFM8_JDY40_test\EFM8_JDY40_test_Master\EFM8_JDY40_test.c:519: waitms(50);  // Set the information interchange pace: communicate about every 50ms
 	mov	dptr,#0x0032
 	lcall	_waitms
-	ljmp	L020031?
+	ljmp	L020034?
 	rseg R_CSEG
 
 	rseg R_XINIT
@@ -1996,10 +2041,16 @@ __str_12:
 	db 0x0A
 	db 0x00
 __str_13:
+	db 'button 1 pressed. switch to automatic mode'
+	db 0x00
+__str_14:
+	db 'button 2 pressed. switch to manual mode'
+	db 0x00
+__str_15:
 	db 'test %d'
 	db 0x0A
 	db 0x00
-__str_14:
+__str_16:
 	db 'NO RESPONSE'
 	db 0x0D
 	db 0x0A

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 // comment!
 
@@ -341,6 +342,8 @@ void InitPushButton(void)
     SFRPAGE = 0x20;  // Switch to Port Configuration Page
     P3MDOUT &= ~(1 << 2); // Set P3.2 as open-drain (input mode)
     P3 |= (1 << 2);  // Enable internal pull-up resistor
+	P3 |= (1 << 0); // P3.0
+	P3 |= (1 << 1); // P3.1
     SFRPAGE = 0x00;  // Restore SFRPAGE
 }
 
@@ -356,6 +359,8 @@ void main (void)
 	int mode = 0;
 
 	bit button_state;
+	bit button_1_state;
+	bit button_2_state;
 
 	waitms(500);
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
@@ -436,45 +441,53 @@ void main (void)
 			norm_x = (v[1] / 3.294) * 2.0 - 1.0;  // Horizontal (P2.3)
 			norm_y = (v[0] / 3.294) * 2.0 - 1.0;  // Vertical   (P2.2)
 
-			button_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
+			button_state = (P3 & (1 << 2)) ? 0 : 1;
+			button_1_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
+			button_2_state = (P3 & (1 << 1)) ? 0 : 1; 
 
-			if (button_state == 1) {
+			if (button_1_state == 1) {
+				printf("button 1 pressed. switch to automatic mode");
 				mode = 5;
 			}
 
-			else if (norm_x <= 1.5 && norm_x > 0.5)
-			if (sqrt(norm_x^2 + norm_y^2) > 0.5) {
-				if (y/sqrt(norm_x^2 + norm_y^2) >= 1/sqrt(2)) mode = 2;  // forward
-				if (x/sqrt(norm_x^2 + norm_y^2) > 1/sqrt(2)) mode = 1;   // right 
-				if (y/sqrt(norm_x^2 + norm_y^2) <= -1/sqrt(2)) mode = 4; // backward
-				if (x/sqrt(norm_x^2 + norm_y^2) < -1/sqrt(2)) mode = 3;  // left
-				else mode = 0; 
+			else if (button_2_state == 1) {
+				printf("button 2 pressed. switch to manual mode");
+				mode = 6;
 			}
 
-				/*
-			if (norm_x <= 1.5 && norm_x > 0.5)
+			// else if (norm_x <= 1.5 && norm_x > 0.5)
+			// if (sqrt(norm_x^2 + norm_y^2) > 0.5) {
+			// 	if (norm_y/sqrt(norm_x^2 + norm_y^2) >= 1/sqrt(2)) mode = 2;  // forward
+			// 	if (norm_x/sqrt(norm_x^2 + norm_y^2) > 1/sqrt(2)) mode = 1;   // right 
+			// 	if (norm_y/sqrt(norm_x^2 + norm_y^2) <= -1/sqrt(2)) mode = 4; // backward
+			// 	if (norm_x/sqrt(norm_x^2 + norm_y^2) < -1/sqrt(2)) mode = 3;  // left
+			// 	else mode = 0; 
+			// }
+
+				
+			else if (norm_x <= 1.5 && norm_x > 0.5) //right
+			{
+				mode = 3;
+			}
+
+			else if (norm_x <-0.5 && norm_x>= -1.5) //left
+			{
+				mode = 4;
+			}
+			
+			else if (norm_y <= 1.5 && norm_y > 0.5) // forward
 			{
 				mode = 1;
 			}
 
-			else if (norm_x <-0.5 && norm_x>= -1.5)
-			{
-				mode = 3;
-			}
-			
-			else if (norm_y <= 1.5 && norm_y > 0.5)
+			else if (norm_y <-0.5 && norm_y>= -1.5) //backwards
 			{
 				mode = 2;
-			}
-
-			else if (norm_y <-0.5 && norm_y>= -1.5)
-			{
-				mode = 4;
 			}
 			else
 			{
 				mode = 0;
-			} */
+			} 
 
 			sprintf(buff, "test %d\n", mode);
 		//	sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);
@@ -482,7 +495,7 @@ void main (void)
         	sendstr1(buff);
 
 			//printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
-			waitms(50);
+			waitms(100);
 			/*getstr1(buff, sizeof(buff)-1);
 			if(strlen(buff)==5) // Check for valid message size (5 characters)
 			{

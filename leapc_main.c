@@ -142,7 +142,7 @@ int main() {
 
             //
 
-            //sendToEFM8(frame->tracking_frame_id, frame->nHands, frame->framerate, handType, pinch, grab);
+            sendToEFM8(frame->tracking_frame_id, frame->nHands, frame->framerate, handType, pinch, grab);
 
             //now will get the normal vector of hand palm, as well as finger vector (perpendicular to palm)
 

@@ -1,6 +1,9 @@
 #include <EFM8LB1.h>
 #include <stdio.h>
 
+#include <string.h>   // ADDED
+#include <stdlib.h>   // ADDED
+
 #define SYSCLK    72000000L // SYSCLK frequency in Hz
 #define BAUDRATE    115200L // Baud rate of UART in bps
 
@@ -199,9 +202,15 @@ int getsn (char * buff, int len)
 void main (void)
 {
 	char buff[64];
+	float pinchVal = 0.0; // ADDED: Will hold the parsed pinch value
+	char pinchStr[32];    // ADDED: Buf
+
+
 	// Configure the LCD
 	LCD_4BIT();
 	
+
+
    	// Display something in the LCD
 	LCDprint("Leap -> EFM8", 1, 1);
 	LCDprint("Waiting data...", 2, 1);
@@ -210,6 +219,24 @@ void main (void)
 
 		getsn(buff, sizeof(buff));
 
+		{
+			char *pinchPtr = strstr(buff, "pinch:");
+			if(pinchPtr != NULL)
+			{
+				// Move pointer past "pinch:"
+				pinchPtr += 6; 
+				// Convert to float
+				pinchVal = atof(pinchPtr);
+
+				// Format it for display, e.g. "Pinch=0.85"
+				sprintf(pinchStr, "Pinch=%.2f", pinchVal);
+
+				// Clear and print pinch value on second line
+				LCDprint("                ", 2, 1);
+				LCDprint(pinchStr, 2, 1);
+				continue; // Skip the default display below
+			}
+		}
 
 		LCDprint("                ", 2, 1);
 		LCDprint(buff, 2, 1);

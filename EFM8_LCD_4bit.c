@@ -66,6 +66,11 @@ void main (void)
 	char pinchbuf[16];
 	char displaybuf[CHARS_PER_LINE + 1];
 
+	char* leftPinchPos;
+	float leftPinch;
+	char* rightGrabPos;
+	float rightGrab;
+
 	LCD_4BIT();
 	LCDprint("Leap -> EFM8", 1, 1);
 	LCDprint("Waiting data...", 2, 1);
@@ -123,16 +128,16 @@ void main (void)
         // "Right Hand Grab: 0.500000 | Left Hand Pinch: 0.600000 | Right Hand Turn: 0.200000 | Right Hand Move: 0.300000"
         
         // Parse Left Hand Pinch
-        char* leftPinchPos = strstr(buff, "Left Hand Pinch:");
-        float leftPinch = 0.0f;
+        leftPinchPos = strstr(buff, "Left Hand Pinch:");
+        leftPinch = 0.0f;
         if (leftPinchPos)
         {
             leftPinch = atof(leftPinchPos + strlen("Left Hand Pinch:"));
         }
 
         // Parse Right Hand Grab
-        char* rightGrabPos = strstr(buff, "Right Hand Grab:");
-        float rightGrab = 0.0f;
+        rightGrabPos = strstr(buff, "Right Hand Grab:");
+        rightGrab = 0.0f;
         if (rightGrabPos)
         {
             rightGrab = atof(rightGrabPos + strlen("Right Hand Grab:"));

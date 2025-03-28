@@ -201,9 +201,9 @@ int getsn (char * buff, int len)
 
 void main (void)
 {
-	char buff[64];
+	char buff[32];
 	float pinchVal = 0.0; // ADDED: Will hold the parsed pinch value
-	char pinchStr[32];    // ADDED: Buf
+	char pinchStr[16];    // ADDED: Buf
 
 
 	// Configure the LCD

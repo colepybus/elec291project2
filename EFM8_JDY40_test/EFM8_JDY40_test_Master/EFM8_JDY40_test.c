@@ -468,6 +468,10 @@ void main (void)
 
 			//printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
 			waitms(50);
+
+			
+
+
 			/*getstr1(buff, sizeof(buff)-1);
 			if(strlen(buff)==5) // Check for valid message size (5 characters)
 			{

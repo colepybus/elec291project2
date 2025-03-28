@@ -54,15 +54,20 @@
 
 // sets a pwm counter and timer pwms to 100 initially
 
-volatile int PWM_Counter = 0;
-volatile unsigned char ISR_pwm1=100, ISR_pwm2=100;
+volatile int PWM_Counter_Servo = 0;
+volatile unsigned char servo_pwm1=100, servo_pwm2=100;
 
 #define F_CPU 32000000L // Set CPU frequency to 32MHz
 #define DEF_F 100000L // 10us tick for timer
 #define PWM_MAX 100
 
-volatile int PWM_counter_motor = 0;
-volatile unsigned char pwm1 = 0, pwm2 = 0;
+volatile int PWM_Counter_Motor = 0;
+volatile unsigned char motor_pwm1 = 0, motor_pwm2 = 0;
+
+// flags
+volatile int use_servo = 0; // flag to indicate if servo needs to be used
+
+int done = 0; // flag to indicate if all coins picked up - yo check the type of this variable its supposed to be
 
 // functions that makes it wait 1 ms
 
@@ -95,61 +100,61 @@ void waitms(int len)
 void TIM2_Handler(void) 
 {
 	TIM2->SR &= ~BIT0; // clear update interrupt flag
-	PWM_Counter++;
 
-	PWM_counter_motor++; 
+	// PWM FOR SERVOS
+
+	if (use_servo) { // only run the servo PWM  if use_servo flag is set
+		PWM_Counter_Servo++; // increment servo PWM counter
+
+		if (servo_pwm1 > PWM_Counter_Servo) {GPIOA->ODR |= BIT11;} // set PA11 high
+		else {GPIOA->ODR &= ~BIT11;} // set PA11 low
+
+		if (servo_pwm2 > PWM_Counter_Servo) {GPIOA->ODR |= BIT12;} // set PA12 high
+		else {GPIOA->ODR &= ~BIT12;} // set PA12 low
+
+		// reset the servo PWM counter after 20ms
+		if (PWM_Counter_Servo > 2000) // the period is 20ms
+		{
+			PWM_Counter_Servo = 0;
+			GPIOA->ODR |= (BIT11 | BIT12); // set both PA11 and PA12 high
+		}
+	}
 
 	// PWM FOR MOTOR
 
-	// Motor 1 PWM (PA0 for forward, PA1 for backward)
-    if (PWM_Counter < pwm1) {
-        if ((GPIOA->ODR & BIT1) != 0) { // If PA1 is HIGH, move backward
-            GPIOA->ODR |= BIT1;  // Set PA1 HIGH
-        } else { // Forward
-            GPIOA->ODR |= BIT0;  // Set PA0 HIGH
-        }
-    } else {
-        GPIOA->ODR &= ~(BIT0 | BIT1); // Clear both forward and backward pins
-    }
+	else // if use_servo flag is not set, run the motor PWM
+	{
+		PWM_Counter_Motor++; // increment motor PWM counter
+
+		// Motor 1 PWM (PA0 for forward, PA1 for backward)
+    	if (PWM_Counter_Motor < motor_pwm1) {
+        	if ((GPIOA->ODR & BIT1) != 0) { // If PA1 is HIGH, move backward
+            	GPIOA->ODR |= BIT1;  // Set PA1 HIGH
+        	} 
+			else { // Forward
+            	GPIOA->ODR |= BIT0;  // Set PA0 HIGH
+        	}
+    	} 
+		else {
+        	GPIOA->ODR &= ~(BIT0 | BIT1); // Clear both forward and backward pins
+    	}
 
     // Motor 2 PWM (PA2 for forward, PA3 for backward)
-    if (PWM_Counter < pwm2) {
-        if ((GPIOA->ODR & BIT3) != 0) { // If PA3 is HIGH, move backward
-            GPIOA->ODR |= BIT3;  // Set PA3 HIGH
-        } else { // Forward
-            GPIOA->ODR |= BIT2;  // Set PA2 HIGH
-        }
-    } else {
-        GPIOA->ODR &= ~(BIT2 | BIT3); // Clear both forward and backward pins
-    }
+    	if (PWM_Counter_Motor < motor_pwm2) {
+        	if ((GPIOA->ODR & BIT3) != 0) { // If PA3 is HIGH, move backward
+            	GPIOA->ODR |= BIT3;  // Set PA3 HIGH
+        	} 
+			else { // Forward
+            	GPIOA->ODR |= BIT2;  // Set PA2 HIGH
+        	}
+    	} 
+		else {
+        	GPIOA->ODR &= ~(BIT2 | BIT3); // Clear both forward and backward pins
+    	}
 
-    if(++PWM_Counter >= PWM_MAX) {PWM_Counter = 0;}
+    	if (++PWM_Counter_Motor >= PWM_MAX) {PWM_Counter_Motor = 0;}
 
-	// PWM FOR SERVOS
-	
-	if(ISR_pwm1>PWM_Counter)
-	{
-		GPIOA->ODR |= BIT11;
 	}
-	else
-	{
-		GPIOA->ODR &= ~BIT11;
-	}
-	
-	if(ISR_pwm2>PWM_Counter)
-	{
-		GPIOA->ODR |= BIT12;
-	}
-	else
-	{
-		GPIOA->ODR &= ~BIT12;
-	}
-	
-	if (PWM_Counter > 2000) // THe period is 20ms
-	{
-		PWM_Counter=0;
-		GPIOA->ODR |= (BIT11|BIT12);
-	}   
 }
 
 //initializes hardware
@@ -261,8 +266,8 @@ void move_backward(int speed) {
     GPIOA->ODR &= ~(BIT1 | BIT3); // Set PA1 & PA3 LOW
     GPIOA->ODR |= (BIT0 | BIT2);  // Set PA0 and PA2 HIGH (forward direction)
 
-    pwm1 = speed;
-    pwm2 = speed;
+    motor_pwm1 = speed;
+    motor_pwm2 = speed;
 }
 
 void move_forward(int speed) {
@@ -270,16 +275,16 @@ void move_forward(int speed) {
     GPIOA->ODR &= ~(BIT0 | BIT2); // Set PA1 & PA3 LOW
     GPIOA->ODR |= (BIT1 | BIT3);  // Set PA1 and PA3 HIGH (backward direction)
 
-    pwm1 = speed;
-    pwm2 = speed;
+    motor_pwm1 = speed;
+    motor_pwm2 = speed;
 }
 
 void move_left(int speed) {
     GPIOA->ODR &= ~(BIT0 | BIT2); 
     GPIOA->ODR |= (BIT1 | BIT3);
 
-    pwm1 = speed;
-    pwm2 = 0;
+    motor_pwm1 = speed;
+    motor_pwm2 = 0;
 }
 
 void move_right(int speed) {
@@ -287,13 +292,13 @@ void move_right(int speed) {
     GPIOA->ODR |= (BIT1 | BIT3);
 
 
-    pwm1 = 0;
-    pwm2 = speed;
+    motor_pwm1 = 0;
+    motor_pwm2 = speed;
 }
 
 void move_stop(void) {
-    pwm1 = 0;
-    pwm2 = 0;
+    motor_pwm1 = 0;
+    motor_pwm2 = 0;
 }
 
 // GET PERIOD FUNCTION ------------------------------------------------------------------------------------
@@ -417,21 +422,23 @@ void toggleMagnet(uint8_t state) {
 
 // PICK COIN MOVEMENT -------------------------------------------------------------------------------------------
 void pickCoin() {
-	ISR_pwm1=75; ISR_pwm2=75;// starts default (1 - 75) (2 - 240)
+	use_servo = 1;
+
+	servo_pwm1=75; servo_pwm2=75;// starts default (1 - 75) (2 - 240)
 	waitms(500);
 
 	// ROTATE OUT
 	//ISR_pwm2=82; // move bottom servo - 90 degrees left
-	while (ISR_pwm2 < 157) {
-		ISR_pwm2++;
+	while (servo_pwm2 < 157) {
+		servo_pwm2++;
 		waitms(10);
 	}
 
 	waitms(500);
 	// MOVE DOWN
 	// ISR_pwm1=240; // move top servo - 180 degrees down
-	while (ISR_pwm1 < 240) {
-		ISR_pwm1++;
+	while (servo_pwm1 < 240) {
+		servo_pwm1++;
 		waitms(10);
 	}
 	
@@ -440,16 +447,16 @@ void pickCoin() {
 	//SWEEP FOR COINS
 	//ISR_pwm2=240;// move bottom servo - 90 degrees left
 	toggleMagnet(1);
-	while (ISR_pwm2 < 240) {
+	while (servo_pwm2 < 240) {
 		
-		ISR_pwm2++;
+		servo_pwm2++;
 		waitms(10);
 	}
 	waitms(500);
 	// MOVE UP
 	//ISR_pwm1=75;// move top servo - 170 degrees up
-	while (ISR_pwm1 > 75) {
-		ISR_pwm1--;
+	while (servo_pwm1 > 75) {
+		servo_pwm1--;
 		waitms(10);
 	}
 
@@ -457,11 +464,18 @@ void pickCoin() {
 	// MOVE OVER BOX
 	//ISR_pwm2=100;// move bottom servo - 120 degrees right
 	
-	while (ISR_pwm2 > 100) {
-		ISR_pwm2--;
+	while (servo_pwm2 > 100) {
+		servo_pwm2--;
 		waitms(10);
 	}
 	toggleMagnet(0); // turn off magnet
+
+	// set servo position back to default
+	servo_pwm1=75;
+	servo_pwm2=75;
+
+	// turn use_servo flag off
+	use_servo = 0; 
 	waitms(500);
 }
 
@@ -488,6 +502,7 @@ void detectCoin() {
 	float f;
     static int first_time=1;
     static int base_count=0;
+	static int coin_count=0; 
 	
     if (first_time) // first reading, calibrate metal detector
     {
@@ -506,14 +521,28 @@ void detectCoin() {
         eputs("coin detected!\r\n");
 
         move_backward(100);
+		waitms(500);
+		move_stop();
 
         pickCoin();
+		eputs("got coin!");
+		eputs("coin count:");
+		coin_count++;
+		PrintNumber(coin_count, 10, 1);
+		eputs("\r\n");
 
         base_count=GetPeriod(100); // recalibrate base_count after coin is picked
-        eputs("got coin!");
 
         move_forward(100);
     }
+
+	if (coin_count == 3) {
+		eputs("3 COINS PICKED UP!!!! HOORAY!!! WE ARE DONE!!!");
+		done = 1;
+		move_stop();
+		// play song and dance
+
+	}
 
     // else { // no coin detected
        
@@ -538,7 +567,7 @@ int main(void)
 
     // to know whether in automatic or manual mode
 
-    static int mode = 0; // 1 = manual mode. 2 = automatic mode
+    static int mode = 0; // 0 = manual mode. 1 = automatic mode
 
 
 	Hardware_Init();
@@ -618,8 +647,6 @@ int main(void)
         // reset arm to default position
         //ISR_pwm1=75; ISR_pwm2=75;
 
-
-
 		//stm recieving of data
 
 		if(ReceivedBytes2()>0) // Something has arrived
@@ -631,17 +658,55 @@ int main(void)
 			if(c=='!') // Master is sending message
 			{
 				egets2(buff, sizeof(buff)-1);
+
 				if(strlen(buff)==8)
 				{
-					printf("Master says: %s\r", buff);
+					// printf("Master says: %s\r", buff);
 
-					//move_forward(100);
-					printf(buff);
-					//move_stop();
+					// //move_forward(100);
+					// printf(buff);
+					// //move_stop();
+					// eputs("mode: ");
+					// PrintNumber(mode, 10, 1);
+					// eputs("\r\n");
 
-					if (strstr(buff, "2")) {
-						printf("buff is equal to @test 2");
+					// if (strstr(buff, "5")) {
+
+					// 	eputs("MODE SWITCHED\r\n");
+
+					// 	if (mode == 0) {
+					// 		eputs("automatic mode activated\r\n");
+					// 		mode = 1; // set to automatic mode
+					// 	}
+					// 	else {
+					// 		eputs("manual mode activated\r\n");
+					// 		mode = 0; // set to manual mode
+					// 	}
+
+					// 	PrintNumber(mode, 10, 1);
+					// 	waitms(3000);
+
+					// }
+
+					if (strstr(buff, "5")) {
+						eputs("AUTOMATIC MODE ACTIVATED\r\n");
+						mode = 1; // set to automatic mode
+						waitms(1000);
+					}
+
+					else if (strstr(buff, "6")) {
+						eputs("MANUAL MODE ACTIVATED\r\n");
+						mode = 0; // set to manual mode
+						waitms(1000);
+					}
+
+				
+
+				
+					else if (mode == 0 && strstr(buff, "1")) {
+						printf("moving forward (1)\r\n");
 						move_forward(100);
+						waitms(10);
 
 						// manual mode
 						// pickCoin();
@@ -649,11 +714,30 @@ int main(void)
 						// detectCoin();
 					}
 
+					else if (mode == 0 && strstr(buff, "2")) {
+						printf("moving backward (2)\r\n");
+						move_backward(100);
+						waitms(10);
+					}
+
+					else if (mode == 0 && strstr(buff, "3")) {
+						printf("turning right (3)\r\n");
+						move_right(100);
+						waitms(10);
+					}
+
+					else if (mode == 0 && strstr(buff, "4")) {
+						printf("turning left (4)\r\n");
+						move_left(100);
+						waitms(10);
+					}
+
 					else
 					{
 						//move_forward(0);
 						move_stop();
-						printf("stopping robot");
+						printf("stopping robot\r\n");
+
 						//waitms(150);
 						
 					}
@@ -677,18 +761,29 @@ int main(void)
 		// ISR_pwm1=75; ISR_pwm2=75;
 
         // AUTOMATIC MODE
-        //if (mode == 0) {
-            // //detectPerimeter(p1_v, p2_v, 3000);
-            // //detectCoin();
+        if (mode == 1) {
+
+			if (done == 0) {
+				//pickCoin();
+				//detectCoin();
+				//waitms(1000);
+				move_forward(100);
+				// detectPerimeter(p1_v, p2_v, 3000);
+				detectCoin();
+				waitms(1000);
+			}
+		
+            //detectPerimeter(p1_v, p2_v, 3000);
+            //detectCoin();
 			// move_forward(100);
 			// eputs("moving forward");
-			// delayms(1000);
+			// waitms(1000);
 			// eputs("stopping now");
 			
-			// move_stop();
-			// //move_forward(0);
+			//move_stop();
+			//move_forward(0);
 
-			// delayms(10000);
+			//waitms(10000);
 
 			// Alternate forward and backward motion in a loop
 
@@ -711,7 +806,7 @@ int main(void)
         	// // Stop + delay
         	// move_stop();
         	// waitms(1000);
-        //}
+        }
 	
       
 		//waitms(500);	
@@ -750,4 +845,5 @@ int main(void)
 		// 		break;
 		// }
 	}
+
 }

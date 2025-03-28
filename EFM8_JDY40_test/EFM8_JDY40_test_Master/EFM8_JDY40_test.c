@@ -7,6 +7,7 @@
 
 #define SYSCLK 72000000
 #define BAUDRATE 115200L
+#define SARCLK 18000000L
 
 idata char buff[20];
 
@@ -425,18 +426,32 @@ void main (void)
 		
 		if(RXU1()) // Something has arrived from the slave
 		{
-		printf("thing");
+		//printf("send");
 			   // Read 14-bit value from the pins configured as analog inputs
 			v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
 			v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
 			v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
 			v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
 
-			norm_x = (v[1] / 3.29) * 2.0 - 1.0;  // Horizontal (P2.3)
-			norm_y = (v[0] / 3.29) * 2.0 - 1.0;  // Vertical   (P2.2)
+			norm_x = (v[1] / 3.294) * 2.0 - 1.0;  // Horizontal (P2.3)
+			norm_y = (v[0] / 3.294) * 2.0 - 1.0;  // Vertical   (P2.2)
 
-			button_state = (P3 & (1 << 2)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
+			button_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
 
+			if (button_state == 1) {
+				mode = 5;
+			}
+
+			else if (norm_x <= 1.5 && norm_x > 0.5)
+			if (sqrt(norm_x^2 + norm_y^2) > 0.5) {
+				if (y/sqrt(norm_x^2 + norm_y^2) >= 1/sqrt(2)) mode = 2;  // forward
+				if (x/sqrt(norm_x^2 + norm_y^2) > 1/sqrt(2)) mode = 1;   // right 
+				if (y/sqrt(norm_x^2 + norm_y^2) <= -1/sqrt(2)) mode = 4; // backward
+				if (x/sqrt(norm_x^2 + norm_y^2) < -1/sqrt(2)) mode = 3;  // left
+				else mode = 0; 
+			}
+
+				/*
 			if (norm_x <= 1.5 && norm_x > 0.5)
 			{
 				mode = 1;
@@ -459,7 +474,7 @@ void main (void)
 			else
 			{
 				mode = 0;
-			}
+			} */
 
 			sprintf(buff, "test %d\n", mode);
 		//	sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);
@@ -477,6 +492,11 @@ void main (void)
 			{
 				printf("*** BAD MESSAGE ***: %s\r\n", buff);
 			}*/
+			
+			
+			
+
+			
 		}
 		else // Timed out waiting for reply
 		{

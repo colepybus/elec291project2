@@ -464,7 +464,7 @@ void main (void)
 			// 	else mode = 0; 
 			// }
 
-				
+			// test with diagonal joystick control 
 			else if (norm_x <= 1.5 && norm_x > 0.5) //right
 			{
 				mode = 3;

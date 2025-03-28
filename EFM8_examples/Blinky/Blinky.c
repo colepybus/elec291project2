@@ -22,8 +22,8 @@ char _c51_external_startup (void)
 	CLKSEL = 0x03;
 	while ((CLKSEL & 0x80) == 0);
 	
-	// Configure the pin used for LED output: P2.1 (pin 16 of LQFP32 package)
-	P2MDOUT = 0b_0000_0010;
+	P0MDOUT |= 0b_0001_1100; //  bit4=1, bit3=1, bit2=1 => push-pull
+                             //  bits 7..5 and 1..0 unchanged
 
 	XBR0 = 0X00;
 	XBR1 = 0X00;
@@ -45,7 +45,48 @@ void main (void)
 {
 	while(1)
 	{
-		P2_1=!P2_1;
 		delay(50000);
+		switch(mode)
+		{
+			case 0:
+				P0_2 = 0;
+				P0_3 = 0;
+				P0_4 = 0;
+				break;
+			case 1:
+				P0_2 = 1;
+				P0_3 = 0;
+				P0_4 = 0;
+				break;
+			case 2:
+				P0_2 = 0;
+				P0_3 = 1;
+				P0_4 = 0;
+				break;
+			case 3:
+				P0_2 = 0;
+				P0_3 = 0;
+				P0_4 = 1;
+				break;
+			case 4:
+				P0_2 = 1;
+				P0_3 = 1;
+				P0_4 = 0;
+				break;
+			case 5:
+				P0_2 = 0;
+				P0_3 = 1;
+				P0_4 = 1;
+				break;
+			default:
+				P0_2 = 0;
+				P0_3 = 0;
+				P0_4 = 0;
+				break;
+		}
+
+		mode++;
+		if(mode > 5) mode =0;
+
 	}
 }

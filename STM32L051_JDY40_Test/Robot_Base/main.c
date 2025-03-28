@@ -57,9 +57,11 @@
 volatile int PWM_Counter_Servo = 0;
 volatile unsigned char servo_pwm1=100, servo_pwm2=100;
 
-#define F_CPU 32000000L // Set CPU frequency to 32MHz
-#define DEF_F 100000L // 10us tick for timer
+#define F_CPU 32000000L     // Set CPU frequency to 32MHz
+#define DEF_F 100000L       // 10us tick for timer
 #define PWM_MAX 100
+#define LOWER 90            // lower limit for random angle turn
+#define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
 
 volatile int PWM_Counter_Motor = 0;
 volatile unsigned char motor_pwm1 = 0, motor_pwm2 = 0;
@@ -81,9 +83,7 @@ void wait_1ms(void)
 	SysTick->CTRL = 0x00; // Disable Systick counter
 }
 
-
-//makes it wait "len" amount of ms
-
+// wait len milliseconds
 void waitms(int len)
 {
 	while(len--) wait_1ms();
@@ -126,7 +126,7 @@ void TIM2_Handler(void)
 	{
 		PWM_Counter_Motor++; // increment motor PWM counter
 
-		// Motor 1 PWM (PA0 for forward, PA1 for backward)
+	// Motor 1 PWM (PA0 for forward, PA1 for backward)
     	if (PWM_Counter_Motor < motor_pwm1) {
         	if ((GPIOA->ODR & BIT1) != 0) { // If PA1 is HIGH, move backward
             	GPIOA->ODR |= BIT1;  // Set PA1 HIGH
@@ -139,7 +139,7 @@ void TIM2_Handler(void)
         	GPIOA->ODR &= ~(BIT0 | BIT1); // Clear both forward and backward pins
     	}
 
-    // Motor 2 PWM (PA2 for forward, PA3 for backward)
+        // Motor 2 PWM (PA2 for forward, PA3 for backward)
     	if (PWM_Counter_Motor < motor_pwm2) {
         	if ((GPIOA->ODR & BIT3) != 0) { // If PA3 is HIGH, move backward
             	GPIOA->ODR |= BIT3;  // Set PA3 HIGH
@@ -157,11 +157,10 @@ void TIM2_Handler(void)
 	}
 }
 
-//initializes hardware
-
+// hardware initialization
 void Hardware_Init(void)
 {
-	RCC->IOPENR  |= (BIT1|BIT0);         // peripheral clock enable for ports A and B
+	RCC->IOPENR  |= (BIT1|BIT0);  // peripheral clock enable for ports A and B
 
 	// Configure the pin used for analog input: PB0 and PB1 (pins 14 and 15)
 	GPIOB->MODER |= (BIT0|BIT1);  // Select analog mode for PB0 (pin 14 of LQFP32 package)
@@ -174,7 +173,6 @@ void Hardware_Init(void)
 	// Activate pull up for pin PA8:
 	GPIOA->PUPDR |= BIT16; 
 	GPIOA->PUPDR &= ~(BIT17);
-	
 
 	// Activate pull up for pin PA8:
 	GPIOA->PUPDR |= BIT1; 
@@ -195,7 +193,7 @@ void Hardware_Init(void)
 
 	// MOTOR PIN CONFIGURATIONS
 	
-	// Configure all motor control pins as outputs
+	// Configure all motor control pins (PA0 - PA3) as outputs
 	GPIOA->MODER &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
 	GPIOA->MODER |= (BIT0 | BIT2 | BIT4 | BIT6);
 	
@@ -222,7 +220,7 @@ void Hardware_Init(void)
 	
 	__enable_irq();
 
-	// SET UP JDY40 ----------------------------------------------------------------
+// SET UP JDY40 ----------------------------------------------------------------
 	GPIOA->MODER = (GPIOA->MODER & ~(BIT27|BIT26)) | BIT26; // Make pin PA13 output (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0))
 	GPIOA->ODR |= BIT13; // 'set' pin to 1 is normal operation mode.
 
@@ -301,8 +299,35 @@ void move_stop(void) {
     motor_pwm2 = 0;
 }
 
-// GET PERIOD FUNCTION ------------------------------------------------------------------------------------
+void turn_CW(int speed) {
+    GPIOA->ODR &= ~(BIT1 | BIT2);
+    GPIOA->ODR |= (BIT0 | BIT3);
+    pwm1 = speed;
+    pwm2 = speed;
+}
 
+void turn_CCW(int speed) {
+    GPIOA->ODR &= ~(BIT0 | BIT3);
+    GPIOA->ODR |= (BIT1 | BIT2);
+    pwm1 = speed;
+    pwm2 = speed;
+}
+
+void turn_random() {
+    int turn_angle = (rand() % (180 - LOWER_ANGLE + 1)) + LOWER_ANGLE;
+    int direction = rand() % 2;
+    float turn_time = 0.88 * turn_angle / 180.0;
+
+    if (direction == 1) {
+        turn_CW(PWM_MAX);
+    } else {
+        turn_CCW(PWM_MAX);
+    }
+    delayms((int)(turn_time * 1000));
+    move_forward(PWM_MAX);
+}
+
+// GET PERIOD FUNCTION ------------------------------------------------------------------------------------
 long long int GetPeriod(int n)
 {
 	int i;
@@ -483,10 +508,12 @@ void pickCoin() {
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 	if ((v1%10000) > perimeter_threshold || (v2%10000) > perimeter_threshold) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
 		eputs("PERIMETER DETECTED!");
+		turn_random();
+		/*
 		move_backward(50); // move backward
-        // STOP MOVING BACKWARDS
+        	// STOP MOVING BACKWARDS
 		move_left(50); // turn left by 90 degrees
-		move_forward(50); // continue moving forward
+		move_forward(50); // continue moving forward */
 	}
 
 	else {
@@ -495,8 +522,6 @@ void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 }
 
 // METAL DETECTOR TO DETECT COIN  -------------------------------------------------------------------------------------------
-#define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
-
 void detectCoin() {
 	long long int count;
 	float f;
@@ -536,6 +561,7 @@ void detectCoin() {
         move_forward(100);
     }
 
+	// change to 20
 	if (coin_count == 3) {
 		eputs("3 COINS PICKED UP!!!! HOORAY!!! WE ARE DONE!!!");
 		done = 1;
@@ -543,11 +569,6 @@ void detectCoin() {
 		// play song and dance
 
 	}
-
-    // else { // no coin detected
-       
-    // }
-
 }
 
 int main(void)

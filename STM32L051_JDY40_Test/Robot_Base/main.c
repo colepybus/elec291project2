@@ -5,10 +5,10 @@
 #include "UART2.h"
 #include "../Common/Include/serial.h"
 #include "adc.h"
-#include <math.h>
+//#include <math.h>
 //#include "manual_functions.h"
 //#include "auto_functions.h"
-#include "motor_control.h"
+//#include "motor_control.h"
 
 //THIS IS THE FULL FUNCTIONING STM32 CODE EVERYTHING MUST BE ADDED TO
 
@@ -24,8 +24,8 @@
 //    out4   PA2 -|8       25|- PA15
 //    out5   PA3 -|9       24|- PA14 
 //           PA4 -|10      23|- PA13
-//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (white robot)
-//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (yellow arm)
+//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (BASE: yellow -> green (mC))
+//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (ARM: green -> yellow (mC))
 //(jdy push) PA7 -|13      20|- PA10 (Reserved for RXD)
 // (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
 // (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
@@ -57,17 +57,24 @@
 volatile int PWM_Counter = 0;
 volatile unsigned char ISR_pwm1=100, ISR_pwm2=100;
 
-//functions that makes it wait 1 ms
+#define F_CPU 32000000L // Set CPU frequency to 32MHz
+#define DEF_F 100000L // 10us tick for timer
+#define PWM_MAX 100
 
-// void wait_1ms(void)
-// {
-// 	// For SysTick info check the STM32l0xxx Cortex-M0 programming manual.
-// 	SysTick->LOAD = (F_CPU/1000L) - 1;  // set reload register, counter rolls over from zero, hence -1
-// 	SysTick->VAL = 0; // load the SysTick counter
-// 	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
-// 	while((SysTick->CTRL & BIT16)==0); // Bit 16 is the COUNTFLAG.  True when counter rolls over from zero.
-// 	SysTick->CTRL = 0x00; // Disable Systick counter
-// }
+volatile int PWM_counter_motor = 0;
+volatile unsigned char pwm1 = 0, pwm2 = 0;
+
+// functions that makes it wait 1 ms
+
+void wait_1ms(void)
+{
+	// For SysTick info check the STM32l0xxx Cortex-M0 programming manual.
+	SysTick->LOAD = (F_CPU/1000L) - 1;  // set reload register, counter rolls over from zero, hence -1
+	SysTick->VAL = 0; // load the SysTick counter
+	SysTick->CTRL  = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick IRQ and SysTick Timer */
+	while((SysTick->CTRL & BIT16)==0); // Bit 16 is the COUNTFLAG.  True when counter rolls over from zero.
+	SysTick->CTRL = 0x00; // Disable Systick counter
+}
 
 
 //makes it wait "len" amount of ms
@@ -83,10 +90,42 @@ void waitms(int len)
 // The following function is associated with the TIM2 interrupt 
 // via the interrupt vector table defined in startup.c
 
+
+
 void TIM2_Handler(void) 
 {
 	TIM2->SR &= ~BIT0; // clear update interrupt flag
 	PWM_Counter++;
+
+	PWM_counter_motor++; 
+
+	// PWM FOR MOTOR
+
+	// Motor 1 PWM (PA0 for forward, PA1 for backward)
+    if (PWM_Counter < pwm1) {
+        if ((GPIOA->ODR & BIT1) != 0) { // If PA1 is HIGH, move backward
+            GPIOA->ODR |= BIT1;  // Set PA1 HIGH
+        } else { // Forward
+            GPIOA->ODR |= BIT0;  // Set PA0 HIGH
+        }
+    } else {
+        GPIOA->ODR &= ~(BIT0 | BIT1); // Clear both forward and backward pins
+    }
+
+    // Motor 2 PWM (PA2 for forward, PA3 for backward)
+    if (PWM_Counter < pwm2) {
+        if ((GPIOA->ODR & BIT3) != 0) { // If PA3 is HIGH, move backward
+            GPIOA->ODR |= BIT3;  // Set PA3 HIGH
+        } else { // Forward
+            GPIOA->ODR |= BIT2;  // Set PA2 HIGH
+        }
+    } else {
+        GPIOA->ODR &= ~(BIT2 | BIT3); // Clear both forward and backward pins
+    }
+
+    if(++PWM_Counter >= PWM_MAX) {PWM_Counter = 0;}
+
+	// PWM FOR SERVOS
 	
 	if(ISR_pwm1>PWM_Counter)
 	{
@@ -149,7 +188,7 @@ void Hardware_Init(void)
     // GPIOB->MODER = (GPIOB->MODER & ~(BIT14|BIT15)) | BIT14;  // PB7
 	// GPIOB->OTYPER &= ~BIT7; // Push-pull
 
-	// Motor pin configurations
+	// MOTOR PIN CONFIGURATIONS
 	
 	// Configure all motor control pins as outputs
 	GPIOA->MODER &= ~(BIT0 | BIT1 | BIT2 | BIT3 | BIT4 | BIT5 | BIT6 | BIT7);
@@ -215,6 +254,47 @@ void ReceptionOff (void)
 
 // A define to easily read PA8 (PA8 must be configured as input first)
 #define PA8 (GPIOA->IDR & BIT8)
+
+// FUNCTIONS FOR MOTOR CONTROL ----------------------------------------------------------------
+void move_backward(int speed) {
+    // Set direction pins for backward movement
+    GPIOA->ODR &= ~(BIT1 | BIT3); // Set PA1 & PA3 LOW
+    GPIOA->ODR |= (BIT0 | BIT2);  // Set PA0 and PA2 HIGH (forward direction)
+
+    pwm1 = speed;
+    pwm2 = speed;
+}
+
+void move_forward(int speed) {
+    // Set direction pins for forward movement
+    GPIOA->ODR &= ~(BIT0 | BIT2); // Set PA1 & PA3 LOW
+    GPIOA->ODR |= (BIT1 | BIT3);  // Set PA1 and PA3 HIGH (backward direction)
+
+    pwm1 = speed;
+    pwm2 = speed;
+}
+
+void move_left(int speed) {
+    GPIOA->ODR &= ~(BIT0 | BIT2); 
+    GPIOA->ODR |= (BIT1 | BIT3);
+
+    pwm1 = speed;
+    pwm2 = 0;
+}
+
+void move_right(int speed) {
+    GPIOA->ODR &= ~(BIT0 | BIT2);
+    GPIOA->ODR |= (BIT1 | BIT3);
+
+
+    pwm1 = 0;
+    pwm2 = speed;
+}
+
+void move_stop(void) {
+    pwm1 = 0;
+    pwm2 = 0;
+}
 
 // GET PERIOD FUNCTION ------------------------------------------------------------------------------------
 
@@ -426,6 +506,7 @@ void detectCoin() {
         eputs("coin detected!\r\n");
 
         move_backward(100);
+
         pickCoin();
 
         base_count=GetPeriod(100); // recalibrate base_count after coin is picked
@@ -457,7 +538,7 @@ int main(void)
 
     // to know whether in automatic or manual mode
 
-    static mode = 1; // 1 = manual mode. 2 = automatic mode
+    static int mode = 0; // 1 = manual mode. 2 = automatic mode
 
 
 	Hardware_Init();
@@ -506,23 +587,23 @@ int main(void)
 
 		j=readADC(ADC_CHSELR_CHSEL8);
 		p1_v=(j*33000)/0xfff;
-		eputs("ADC[8]=0x");
-		PrintNumber(j, 16, 4);
-		eputs(", ");
-		PrintNumber(p1_v/10000, 10, 1);
-		eputc('.');
-		PrintNumber(p1_v%10000, 10, 4);
-		eputs("V ");
+		// eputs("ADC[8]=0x");
+		// PrintNumber(j, 16, 4);
+		// eputs(", ");
+		// PrintNumber(p1_v/10000, 10, 1);
+		// eputc('.');
+		// PrintNumber(p1_v%10000, 10, 4);
+		// eputs("V ");
 
 		j=readADC(ADC_CHSELR_CHSEL9);
 		p2_v=(j*33000)/0xfff;
-		eputs("ADC[9]=0x");
-		PrintNumber(j, 16, 4);
-		eputs(", ");
-		PrintNumber(p2_v/10000, 10, 1);
-		eputc('.');
-		PrintNumber(p2_v%10000, 10, 4);
-		eputs("V ");
+		// eputs("ADC[9]=0x");
+		// PrintNumber(j, 16, 4);
+		// eputs(", ");
+		// PrintNumber(p2_v/10000, 10, 1);
+		// eputc('.');
+		// PrintNumber(p2_v%10000, 10, 4);
+		// eputs("V ");
 		
 		// eputs("PA14=");
 		// if(PA14)
@@ -535,12 +616,16 @@ int main(void)
 		// }
 
         // reset arm to default position
-        ISR_pwm1=75; ISR_pwm2=75;
+        //ISR_pwm1=75; ISR_pwm2=75;
+
+
 
 		//stm recieving of data
 
 		if(ReceivedBytes2()>0) // Something has arrived
 		{
+			//eputs("GETTING IN THE LOOP\r\n");
+			//waitms(1000);
 			c=egetc2();
 			
 			if(c=='!') // Master is sending message
@@ -552,6 +637,7 @@ int main(void)
 
 					//move_forward(100);
 					printf(buff);
+					//move_stop();
 
 					if (strstr(buff, "2")) {
 						printf("buff is equal to @test 2");
@@ -565,8 +651,10 @@ int main(void)
 
 					else
 					{
-						move_forward(50);
+						//move_forward(0);
+						move_stop();
 						printf("stopping robot");
+						//waitms(150);
 						
 					}
 					
@@ -589,14 +677,43 @@ int main(void)
 		// ISR_pwm1=75; ISR_pwm2=75;
 
         // AUTOMATIC MODE
-        if (mode == 0) {
-            detectPerimeter(p1_v, p2_v, 3000);
-            detectCoin();
-        }
+        //if (mode == 0) {
+            // //detectPerimeter(p1_v, p2_v, 3000);
+            // //detectCoin();
+			// move_forward(100);
+			// eputs("moving forward");
+			// delayms(1000);
+			// eputs("stopping now");
+			
+			// move_stop();
+			// //move_forward(0);
+
+			// delayms(10000);
+
+			// Alternate forward and backward motion in a loop
+
+        	// Forward for 1 second
+        	// move_forward(100);
+        	// waitms(1000);
+
+        	// // Backward for 1 second
+        	// move_backward(100);
+        	// waitms(1000); 
+
+        	// // Turn right for 1 second
+        	// move_right(100);
+        	// waitms(1000);
+
+        	// // Turn left for 1 second
+        	// move_left(100);
+        	// waitms(1000);
+
+        	// // Stop + delay
+        	// move_stop();
+        	// waitms(1000);
+        //}
 	
       
-
-
 		//waitms(500);	
 
         		// // Now turn on one of outputs per cycle to check

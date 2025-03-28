@@ -60,7 +60,7 @@ volatile unsigned char servo_pwm1=100, servo_pwm2=100;
 #define F_CPU 32000000L     // Set CPU frequency to 32MHz
 #define DEF_F 100000L       // 10us tick for timer
 #define PWM_MAX 100
-#define LOWER 90            // lower limit for random angle turn
+#define LOWER_ANGLE 90            // lower limit for random angle turn
 #define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
 
 volatile int PWM_Counter_Motor = 0;
@@ -70,6 +70,10 @@ volatile unsigned char motor_pwm1 = 0, motor_pwm2 = 0;
 volatile int use_servo = 0; // flag to indicate if servo needs to be used
 
 int done = 0; // flag to indicate if all coins picked up - yo check the type of this variable its supposed to be
+
+// to know whether in automatic or manual mode
+
+volatile int mode = 0; // 0 = manual mode. 1 = automatic mode
 
 // functions that makes it wait 1 ms
 
@@ -302,15 +306,15 @@ void move_stop(void) {
 void turn_CW(int speed) {
     GPIOA->ODR &= ~(BIT1 | BIT2);
     GPIOA->ODR |= (BIT0 | BIT3);
-    pwm1 = speed;
-    pwm2 = speed;
+    motor_pwm1 = speed;
+    motor_pwm2 = speed;
 }
 
 void turn_CCW(int speed) {
     GPIOA->ODR &= ~(BIT0 | BIT3);
     GPIOA->ODR |= (BIT1 | BIT2);
-    pwm1 = speed;
-    pwm2 = speed;
+    motor_pwm1 = speed;
+    motor_pwm2 = speed;
 }
 
 void turn_random() {
@@ -323,7 +327,7 @@ void turn_random() {
     } else {
         turn_CCW(PWM_MAX);
     }
-    delayms((int)(turn_time * 1000));
+    waitms((int)(turn_time * 1000));
     move_forward(PWM_MAX);
 }
 
@@ -521,6 +525,31 @@ void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 	}
 }
 
+float get_frequency() { // get frequency of signal on PA8
+	long long int count;
+	float f; 
+
+	count=GetPeriod(100); // count reading
+	// eputs("count=");
+	// PrintNumber(count, 10, 6);
+    // eputs("\r\n");
+	
+
+	f=(float)(F_CPU*100.0) / (float)count; // convert to frequency
+
+	// eputs("freq=");
+	// PrintNumber(f, 10, 7);
+	// eputs(" Hz \r\n");
+	// eputs("count=\r\n");
+	// PrintNumber(count, 10, 6);
+	// eputs("          \r");
+
+	return f;
+}
+
+
+
+
 // METAL DETECTOR TO DETECT COIN  -------------------------------------------------------------------------------------------
 void detectCoin() {
 	long long int count;
@@ -545,6 +574,8 @@ void detectCoin() {
     {
         eputs("coin detected!\r\n");
 
+
+		
         move_backward(100);
 		waitms(500);
 		move_stop();
@@ -586,9 +617,9 @@ int main(void)
     int timeout_cnt=0;
     int cont1=0, cont2=100;
 
-    // to know whether in automatic or manual mode
+	int freq_to_send=0;
 
-    static int mode = 0; // 0 = manual mode. 1 = automatic mode
+
 
 
 	Hardware_Init();
@@ -618,6 +649,8 @@ int main(void)
 	SendATCommand("AT+RFC113\r\n"); 
 
 	cnt=0;
+	freq_to_send=0;
+	
 
     // LED_toggle=0;
 	// PB3_0;
@@ -670,11 +703,11 @@ int main(void)
 
 		//stm recieving of data
 
-		// if(ReceivedBytes2()>0) // Something has arrived
-		// {
-		// 	//eputs("GETTING IN THE LOOP\r\n");
-		// 	//waitms(1000);
-		// 	c=egetc2();
+		if(ReceivedBytes2()>0) // Something has arrived 
+		{
+			//eputs("GETTING IN THE LOOP\r\n");
+			//waitms(1000);
+			c=egetc2();
 			
 			if(c=='!') // Master is sending message
 			{
@@ -722,8 +755,6 @@ int main(void)
 					}
 
 				
-
-				
 					else if (mode == 0 && strstr(buff, "1")) {
 						printf("moving forward (1)\r\n");
 						move_forward(100);
@@ -766,22 +797,34 @@ int main(void)
 
 						//waitms(150);
 						
-		// 			}
+		 			}
 					
-		// 		}
-		// 		else
-		// 		{
-		// 			printf("*** BAD MESSAGE ***: %s\r", buff);
-		// 		}				
-		// 	}
-		// 	else if(c=='@') // Master wants slave data
-		// 	{
-		// 		sprintf(buff, "%05u\n", cnt);
-		// 		cnt++;
-		// 		waitms(5); // The radio seems to need this delay...
-		// 		eputs2(buff);
-		// 	}
-		// }
+		 		}
+				else
+				{
+					printf("*** BAD MESSAGE ***: %s\r", buff);
+				}				
+			}
+
+			else if(c=='@') // Master wants slave data
+			{
+				if (mode == 0) {
+				freq_to_send = (int)get_frequency();
+				sprintf(buff, "%05u", freq_to_send);
+
+				//sprintf(buff, "%05u", cnt);
+				eputs("SENDING MESSAGE TO MASTER: \r\n");
+				eputs(buff); // print buff
+				freq_to_send = (int)get_frequency();
+				//cnt++;
+				waitms(5); // The radio seems to need this delay...
+				eputs2(buff);
+
+				}
+
+				
+			}
+	}
 
 		// find default positions for servo
 		// ISR_pwm1=75; ISR_pwm2=75;

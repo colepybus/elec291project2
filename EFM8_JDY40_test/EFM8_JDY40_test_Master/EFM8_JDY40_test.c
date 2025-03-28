@@ -416,7 +416,7 @@ void main (void)
 		
 		//waitms(5); // This may need adjustment depending on how busy is the slave
 		
-		putchar1('@'); // Request a message from the slave
+		//putchar1('@'); // Request a message from the slave
 		
 		timeout_cnt=0;
 		
@@ -496,15 +496,23 @@ void main (void)
 
 			//printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
 			waitms(100);
-			/*getstr1(buff, sizeof(buff)-1);
+
+
+			// getting message from the slave
+
+			putchar1('@'); // Request a message from the slave
+
+			getstr1(buff, sizeof(buff)-1);
+
 			if(strlen(buff)==5) // Check for valid message size (5 characters)
 			{
 				printf("Slave says: %s\r\n", buff);
 			}
+			
 			else
 			{
 				printf("*** BAD MESSAGE ***: %s\r\n", buff);
-			}*/
+			}
 			
 			
 			

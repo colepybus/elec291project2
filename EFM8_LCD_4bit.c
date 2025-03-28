@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>    // <-- needed for strtok, atof
 
+//THIS FILE IS WHAT ALLOWS THE EFM8  TO RECIEVE THE LEAPMOTION METRICS VIA SERIAL
+
 #define SYSCLK    72000000L 
 #define BAUDRATE    115200L 
 
@@ -60,8 +62,9 @@ int getsn (char * buff, int len)
 
 void main (void)
 {
-	char buff[64];
+	char buff[128];
 	char pinchbuf[16];
+	char displaybuf[CHARS_PER_LINE + 1];
 
 	LCD_4BIT();
 	LCDprint("Leap -> EFM8", 1, 1);
@@ -69,48 +72,79 @@ void main (void)
 
 	while(1)
 	{
-		// Block until we get a full line from UART:
-		getsn(buff, sizeof(buff));
+		// // Block until we get a full line from UART:
+		// getsn(buff, sizeof(buff));
 
-		//------------------------------------------
-		// 1) Parse out the pinch value (5th field)
-		//------------------------------------------
-		// Incoming format example:
-		//  !61957,1,85.40,Left,0.79,0.00
-		//   ^   1   2     3     4     5     6 fields
+		// //------------------------------------------
+		// // 1) Parse out the pinch value (5th field)
+		// //------------------------------------------
+		// // Incoming format example:
+		// //  !61957,1,85.40,Left,0.79,0.00
+		// //   ^   1   2     3     4     5     6 fields
 
-		// Skip leading '!' if present:
-		char *line = buff;
-		if(line[0] == '!') line++;
+		// // Skip leading '!' if present:
+		// char *line = buff;
+		// if(line[0] == '!') line++;
 
-		float pinchVal = 0.0f;
-		char *token = strtok(line, ",");
-		int fieldCount = 1;
+		// float pinchVal = 0.0f;
+		// char *token = strtok(line, ",");
+		// int fieldCount = 1;
 
-		while(token != NULL)
-		{
-			if(fieldCount == 5) // The pinch field
-			{
-				pinchVal = atof(token);
-				break;
-			}
-			token = strtok(NULL, ",");
-			fieldCount++;
-		}
+		// while(token != NULL)
+		// {
+		// 	if(fieldCount == 5) // The pinch field
+		// 	{
+		// 		pinchVal = atof(token);
+		// 		break;
+		// 	}
+		// 	token = strtok(NULL, ",");
+		// 	fieldCount++;
+		// }
 
-		// Format “Pinch=xx.xx” for line 1
-		sprintf(pinchbuf, "Pinch=%.2f", pinchVal);
+		// // Format “Pinch=xx.xx” for line 1
+		// sprintf(pinchbuf, "Pinch=%.2f", pinchVal);
 
-		//------------------------------------------
-		// 2) Display pinch on line 1
-		//------------------------------------------
-		LCDprint("                ", 1, 1);      // Clear line 1
-		LCDprint(pinchbuf, 1, 1);
+		// //------------------------------------------
+		// // 2) Display pinch on line 1
+		// //------------------------------------------
+		// LCDprint("                ", 1, 1);      // Clear line 1
+		// LCDprint(pinchbuf, 1, 1);
 
-		//------------------------------------------
-		// 3) Display the entire incoming string on line 2
-		//------------------------------------------
-		LCDprint("                ", 2, 1);      // Clear line 2
-		LCDprint(buff, 2, 1);
+		// //------------------------------------------
+		// // 3) Display the entire incoming string on line 2
+		// //------------------------------------------
+		// LCDprint("                ", 2, 1);      // Clear line 2
+		// LCDprint(buff, 2, 1);
+
+		// Block until we get a full line from UART
+        getsn(buff, sizeof(buff));
+
+        // Example output to parse:
+        // "Right Hand Grab: 0.500000 | Left Hand Pinch: 0.600000 | Right Hand Turn: 0.200000 | Right Hand Move: 0.300000"
+        
+        // Parse Left Hand Pinch
+        char* leftPinchPos = strstr(buff, "Left Hand Pinch:");
+        float leftPinch = 0.0f;
+        if (leftPinchPos)
+        {
+            leftPinch = atof(leftPinchPos + strlen("Left Hand Pinch:"));
+        }
+
+        // Parse Right Hand Grab
+        char* rightGrabPos = strstr(buff, "Right Hand Grab:");
+        float rightGrab = 0.0f;
+        if (rightGrabPos)
+        {
+            rightGrab = atof(rightGrabPos + strlen("Right Hand Grab:"));
+        }
+
+        // First line: Left Hand Pinch
+        sprintf(displaybuf, "L Pinch: %.2f", leftPinch);
+        LCDprint(displaybuf, 1, 1);
+
+        // Second line: Right Hand Grab
+        sprintf(displaybuf, "R Grab: %.2f", rightGrab);
+        LCDprint(displaybuf, 2, 1);
+
 	}
 }

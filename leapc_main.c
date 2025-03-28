@@ -84,7 +84,7 @@ int main() {
 
     printf("opened connection\n");
 
-    setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
+    //setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
 
     printf("tried setting up efm8serial with port\n");
 
@@ -93,23 +93,62 @@ int main() {
 
         if (frame) {  
             printf("\rFrame ID: %lld | Hands: %u | Framerate: %f", 
-                   frame->tracking_frame_id, frame->nHands, frame->framerate);
+            frame->tracking_frame_id, frame->nHands, frame->framerate);
 
             // Check if hands are detected
-            if (frame->nHands > 0 && frame->pHands) {
-                LEAP_HAND* hand = frame->pHands;  // Pointer to the first detected hand
-                
-                // Get chirality (left or right)
-                const char* handType = (hand->type == eLeapHandType_Left) ? "Left" : "Right";
 
-                float pinch = hand->pinch_strength;
-                float grab = hand->grab_strength;
+            LEAP_HAND* hand = frame->pHands;  // Pointer to the first detected hand
+            LEAP_PALM palm = hand->palm;
+            LEAP_QUATERNION quaternion = palm.orientation;
 
-                printf(" | Hand: %s | Pinch Strength: %f | Grab Strength: %f", handType, hand->pinch_strength, hand->grab_strength);
+            float w = quaternion.w;
+            float x = quaternion.x;
+            float y = quaternion.y;
+            float z = quaternion.z;
 
-                sendToEFM8(frame->tracking_frame_id, frame->nHands, frame->framerate, handType, pinch, grab);
+            // Get chirality (left or right)
+            const char* handType = (hand->type == eLeapHandType_Left) ? "Left" : "Right";
+
+            float pinch = hand->pinch_strength;
+            float grab = hand->grab_strength;
+
+            //printf(" | Hand: %s | Pinch Strength: %f | Grab Strength: %f | Palm Normal X: %f | Palm Normal Y: %f | Palm Normal Z: %f\n", 
+            //handType, hand->pinch_strength, hand->grab_strength, hand->palm.normal.x, hand->palm.normal.y, hand->palm.normal.z);
+            //printf(" | Palm Orientation: W: %f | X: %f | Y: %f | Z: %f\n", w, x, y, z);
+
+            if (frame->nHands >= 2){
+                LEAP_HAND* leftHand = NULL;
+                LEAP_HAND* rightHand = NULL;
+            
+                for (uint32_t i = 0; i < frame->nHands; i++) {
+                        if (frame->pHands[i].type == eLeapHandType_Left) {
+                            leftHand = &frame->pHands[i];
+                        } else if (frame->pHands[i].type == eLeapHandType_Right) {
+                            rightHand = &frame->pHands[i];
+                        }
+                    }
+            
+
+
+            printf("Right Hand Grab: %f | Left Hand Pinch: %f | Right Hand Turn: %f | Right Hand Move: %f\n",
+            rightHand->grab_strength, leftHand->pinch_strength, rightHand->palm.normal.x, rightHand->palm.normal.z);
 
             }
+
+            //Palm normal x: -1 is to turn left, +1  is to turn right, sits at zero (cutoff can be 0.2-0.3ish each way)
+            //Palm normal z: 1 is to move forward, -1 is to move backward, sits at zero (cutoff can be 0.3ish each way)
+            //Pinch Strength: 0 to 1, threshold can be 0.7-8 to make robot pick up coin
+            //Grab strength: 0 to 1,  
+
+            //
+
+            //sendToEFM8(frame->tracking_frame_id, frame->nHands, frame->framerate, handType, pinch, grab);
+
+            //now will get the normal vector of hand palm, as well as finger vector (perpendicular to palm)
+
+            //printf("%.2f",hand->palm.normal.x);
+
+            
         } else {
             printf("\rNo hands detected...                     ");
         }

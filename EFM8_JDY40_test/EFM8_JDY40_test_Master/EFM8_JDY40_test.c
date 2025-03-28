@@ -469,7 +469,7 @@ void main (void)
 			{
 				mode = 3;
 			}
-			
+
 			else if (norm_x <-0.5 && norm_x>= -1.5) //left
 			{
 				mode = 4;
@@ -487,7 +487,7 @@ void main (void)
 			else
 			{
 				mode = 0;
-			}
+			} 
 
 			sprintf(buff, "test %d\n", mode);
 		//	sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);

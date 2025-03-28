@@ -614,20 +614,20 @@ int main(void)
 
 		//PB3_1;
 
-		j=readADC(ADC_CHSELR_CHSEL8);
-		p1_v=(j*33000)/0xfff;
-		// eputs("ADC[8]=0x");
-		// PrintNumber(j, 16, 4);
-		// eputs(", ");
-		// PrintNumber(p1_v/10000, 10, 1);
-		// eputc('.');
-		// PrintNumber(p1_v%10000, 10, 4);
-		// eputs("V ");
+		 j=readADC(ADC_CHSELR_CHSEL8);
+		 p1_v=(j*33000)/0xfff;
+		// // eputs("ADC[8]=0x");
+		// // PrintNumber(j, 16, 4);
+		// // eputs(", ");
+		// // PrintNumber(p1_v/10000, 10, 1);
+		// // eputc('.');
+		// // PrintNumber(p1_v%10000, 10, 4);
+		// // eputs("V ");
 
-		j=readADC(ADC_CHSELR_CHSEL9);
-		p2_v=(j*33000)/0xfff;
-		// eputs("ADC[9]=0x");
-		// PrintNumber(j, 16, 4);
+		 j=readADC(ADC_CHSELR_CHSEL9);
+		 p2_v=(j*33000)/0xfff;
+		 //eputs("ADC[9]=0x");
+		// // PrintNumber(j, 16, 4);
 		// eputs(", ");
 		// PrintNumber(p2_v/10000, 10, 1);
 		// eputc('.');
@@ -649,11 +649,11 @@ int main(void)
 
 		//stm recieving of data
 
-		if(ReceivedBytes2()>0) // Something has arrived
-		{
-			//eputs("GETTING IN THE LOOP\r\n");
-			//waitms(1000);
-			c=egetc2();
+		// if(ReceivedBytes2()>0) // Something has arrived
+		// {
+		// 	//eputs("GETTING IN THE LOOP\r\n");
+		// 	//waitms(1000);
+		// 	c=egetc2();
 			
 			if(c=='!') // Master is sending message
 			{
@@ -731,6 +731,11 @@ int main(void)
 						move_left(100);
 						waitms(10);
 					}
+		// 				// manual mode
+		// 				// pickCoin();
+		// 				// toggleMagnet(1);
+		// 				// detectCoin();
+		// 			}
 
 					else
 					{
@@ -740,25 +745,26 @@ int main(void)
 
 						//waitms(150);
 						
-					}
+		// 			}
 					
-				}
-				else
-				{
-					printf("*** BAD MESSAGE ***: %s\r", buff);
-				}				
-			}
-			else if(c=='@') // Master wants slave data
-			{
-				sprintf(buff, "%05u\n", cnt);
-				cnt++;
-				waitms(5); // The radio seems to need this delay...
-				eputs2(buff);
-			}
-		}
+		// 		}
+		// 		else
+		// 		{
+		// 			printf("*** BAD MESSAGE ***: %s\r", buff);
+		// 		}				
+		// 	}
+		// 	else if(c=='@') // Master wants slave data
+		// 	{
+		// 		sprintf(buff, "%05u\n", cnt);
+		// 		cnt++;
+		// 		waitms(5); // The radio seems to need this delay...
+		// 		eputs2(buff);
+		// 	}
+		// }
 
 		// find default positions for servo
 		// ISR_pwm1=75; ISR_pwm2=75;
+
 
         // AUTOMATIC MODE
         if (mode == 1) {
@@ -842,7 +848,7 @@ int main(void)
 		// 		PB5_0;
 		// 		PB6_0;
 		// 		PB7_0;
-		// 		break;
+		// 		break;y
 		// }
 	}
 

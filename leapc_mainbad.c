@@ -51,16 +51,15 @@ void sendToEFM8(float pinch, float grab, float pitch, float roll)
     if (serial_fd < 0) return; // Not open
 
     char buffer[32];
-    // Format e.g. "!0.79,0.12,-0.33,1.00\n"
+    // Format: "!pinch,grab,pitch,roll\n"
     snprintf(buffer, sizeof(buffer), "!%.2f,%.2f,%.2f,%.2f\n", 
              pinch, grab, pitch, roll);
 
-    // Print just to show we formed the string:
-    printf("[DEBUG] Outgoing: %s", buffer); // <--- CHANGED
+    printf("[DEBUG] Outgoing: %s", buffer);
 
     int n = write(serial_fd, buffer, strlen(buffer));
     if (n > 0) {
-        printf("[DEBUG] Sent to EFM8: %s\n", buffer); // <--- CHANGED
+        printf("[DEBUG] Sent to EFM8: %s\n", buffer);
     } else {
         perror("ERROR writing to serial");
     }
@@ -70,38 +69,28 @@ int main() {
     printf("Starting Leap Motion connection...\n");
 
     // 1) Open Leap Motion Connection
-    OpenConnection();
+    //OpenConnection();
     printf("opened connection\n");
 
     // 2) Setup EFM8 Serial
     //setupEMF8Serial("/dev/tty.usbserial-D3098FBT");
     printf("tried setting up efm8serial with port\n");
 
-    while (1) {  // Continuous loop
+    while (1) {
         LEAP_TRACKING_EVENT* frame = GetFrame();
         if (frame) {  
-            // Print some basics
-            // Using "\n" for each iteration so it visibly updates
-            // <--- CHANGED from \r to \n for clarity
-            printf("Frame ID: %lld | Hands: %u | Framerate: %.2f\n",
+            // Show basic frame info on a new line:
+            printf("\nFrame ID: %lld | Hands: %u | Framerate: %.2f\n",
                    frame->tracking_frame_id, 
                    frame->nHands, 
                    frame->framerate);
 
-            LEAP_HAND* hand = frame->pHands;  // pointer to the *first* hand
-
-            // Send the first hand’s data every iteration <--- CHANGED
-            //sendToEFM8(pinch, grab, pitch, roll);
-
-            
-
-
-            // If you have 2 or more hands, do extra logic:
+            // We ONLY care about sending data if both hands exist:
             if (frame->nHands >= 2) {
-                LEAP_HAND* leftHand = NULL;
+                LEAP_HAND* leftHand  = NULL;
                 LEAP_HAND* rightHand = NULL;
 
-                // Find left + right
+                // Identify each hand
                 for (uint32_t i = 0; i < frame->nHands; i++) {
                     if (frame->pHands[i].type == eLeapHandType_Left) {
                         leftHand = &frame->pHands[i];
@@ -110,18 +99,35 @@ int main() {
                     }
                 }
 
-            float pinch = leftHand->pinch_strength;
-            float grab = rightHand->grab_strength;
-            float pitch = rightHand->palm.normal.x;
-            float roll = rightHand->palm.normal.z;
+                // If we have both:
+                if (leftHand && rightHand) {
+                    // Grab = rightHand->grab_strength
+                    float grab  = rightHand->grab_strength;
+                    // Pinch = leftHand->pinch_strength
+                    float pinch = leftHand->pinch_strength;
+                    // Pitch & roll from the right hand
+                    float pitch = rightHand->palm.normal.x;
+                    float roll  = rightHand->palm.normal.z;
 
-            printf("Left Pinch %.2f | Right Grab %.2f | Right Pitch %.2f | Right Roll %.2f\n",
-                    pinch, grab, pitch, roll);
+                    // Print it out
+                    printf("RightHand Grab=%.2f | LeftHand Pinch=%.2f | RightHand Pitch=%.2f | RightHand Roll=%.2f\n",
+                           grab, pinch, pitch, roll);
 
+                    // Now send these to EFM8
+                    sendToEFM8(pinch, grab, pitch, roll);
+                }
+                else {
+                    // If we do NOT actually have both 
+                    printf("Did not find both left and right hands.\n");
+                }
+            }
+            else {
+                // If fewer than 2 hands:
+                printf("Not enough hands (need >=2)\n");
             }
         } else {
-            // No frame found => no hands
-            printf("No hands detected...\n"); // <--- CHANGED
+            // No frame => no hands at all
+            printf("No hands detected...\n");
         }
 
         fflush(stdout);

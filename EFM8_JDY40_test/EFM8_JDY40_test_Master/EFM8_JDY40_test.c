@@ -10,6 +10,17 @@
 #define BAUDRATE 115200L
 #define SARCLK 18000000L
 
+#define JDY40_SET_PIN P1_4
+
+#define LCD_RS P1_7
+// #define LCD_RW Px_x // Not used in this code.  Connect to GND
+#define LCD_E  P2_0
+#define LCD_D4 P1_3
+#define LCD_D5 P1_2
+#define LCD_D6 P1_1
+#define LCD_D7 P1_0
+#define CHARS_PER_LINE 16	
+
 idata char buff[20];
 
 char _c51_external_startup (void)
@@ -61,7 +72,9 @@ char _c51_external_startup (void)
 	#endif
 	
 	P0MDOUT |= 0x11; // Enable UART0 TX (P0.4) and UART1 TX (P0.0) as push-pull outputs
-	P2MDOUT |= 0x01; // P2.0 in push-pull mode
+	// P2MDOUT |= 0x01; // P2.0 in push-pull mode
+	P1MDOUT |= 0x10;  // Set P1.4 as push-pull output
+    P1 |= 0x10;       // Start with JDY40 in normal mode (SET high)
 	XBR0     = 0x01; // Enable UART0 on P0.4(TX) and P0.5(RX)                     
 	XBR1     = 0X00;
 	XBR2     = 0x41; // Enable crossbar and uart 1
@@ -148,6 +161,71 @@ void waitms (unsigned int ms)
 		for (k=0; k<4; k++) Timer3us(250);
 }
 
+void LCD_pulse (void)
+{
+	LCD_E=1;
+	Timer3us(40);
+	LCD_E=0;
+}
+
+void LCD_byte (unsigned char x)
+{
+	// The accumulator in the C8051Fxxx is bit addressable!
+	ACC=x; //Send high nible
+	LCD_D7=ACC_7;
+	LCD_D6=ACC_6;
+	LCD_D5=ACC_5;
+	LCD_D4=ACC_4;
+	LCD_pulse();
+	Timer3us(40);
+	ACC=x; //Send low nible
+	LCD_D7=ACC_3;
+	LCD_D6=ACC_2;
+	LCD_D5=ACC_1;
+	LCD_D4=ACC_0;
+	LCD_pulse();
+}
+
+void WriteData (unsigned char x)
+{
+	LCD_RS=1;
+	LCD_byte(x);
+	waitms(2);
+}
+
+void WriteCommand (unsigned char x)
+{
+	LCD_RS=0;
+	LCD_byte(x);
+	waitms(5);
+}
+
+void LCD_4BIT (void)
+{
+	LCD_E=0; // Resting state of LCD's enable is zero
+	// LCD_RW=0; // We are only writing to the LCD in this program
+	waitms(20);
+	// First make sure the LCD is in 8-bit mode and then change to 4-bit mode
+	WriteCommand(0x33);
+	WriteCommand(0x33);
+	WriteCommand(0x32); // Change to 4-bit mode
+
+	// Configure the LCD
+	WriteCommand(0x28);
+	WriteCommand(0x0c);
+	WriteCommand(0x01); // Clear screen command (takes some time)
+	waitms(20); // Wait for clear screen command to finsih.
+}
+
+void LCDprint(char * string, unsigned char line, bit clear)
+{
+	int j;
+
+	WriteCommand(line==2?0xc0:0x80);
+	waitms(5);
+	for(j=0; string[j]!=0; j++)	WriteData(string[j]);// Write the message
+	if(clear) for(; j<CHARS_PER_LINE; j++) WriteData(' '); // Clear the rest of the line
+}
 
 void UART1_Init (unsigned long baudrate)
 {
@@ -274,24 +352,28 @@ void waitms_or_RI1 (unsigned int ms)
 void SendATCommand (char * s)
 {
 	printf("Command: %s", s);
-	P2_0=0; // 'set' pin to 0 is 'AT' mode.
+	JDY40_SET_PIN = 0;
+	//P2_0=0; // 'set' pin to 0 is 'AT' mode.
 	waitms(5);
 	sendstr1(s);
 	getstr1(buff, sizeof(buff)-1);
 	waitms(10);
-	P2_0=1; // 'set' pin to 1 is normal operation mode.
+	JDY40_SET_PIN = 1;
+	//P2_0=1; // 'set' pin to 1 is normal operation mode.
 	printf("Response: %s\r\n", buff);
 }
 
 void ReceptionOff (void)
 {
-	P2_0=0; // 'set' pin to 0 is 'AT' mode.
+	//P2_0=0; // 'set' pin to 0 is 'AT' mode.
+	JDY40_SET_PIN = 0;
 	waitms(10);
 	sendstr1("AT+DVID0000\r\n"); // Some unused id, so that we get nothing in RXD1.
 	waitms(10);
 	// Clear Overrun and Parity error flags 
 	SCON1&=0b_0011_1111;
-	P2_0=1; // 'set' pin to 1 is normal operation mode.
+	JDY40_SET_PIN = 0;
+	//P2_0=1; // 'set' pin to 1 is normal operation mode.
 }
 
 //joystick functions
@@ -341,7 +423,7 @@ void InitPushButton(void)
 {
     SFRPAGE = 0x20;  // Switch to Port Configuration Page
     P3MDOUT &= ~(1 << 2); // Set P3.2 as open-drain (input mode)
-    P3 |= (1 << 2);  // Enable internal pull-up resistor
+    P3 |= (1 << 2);  // Enable internal pull-up resistor => p3.2
 	P3 |= (1 << 0); // P3.0
 	P3 |= (1 << 1); // P3.1
     SFRPAGE = 0x00;  // Restore SFRPAGE
@@ -357,11 +439,14 @@ void main (void)
 	float norm_x;
 	float norm_y;
 	int mode = 0;
+	int freq = 0;
 
 	bit button_state;
 	bit button_1_state;
 	bit button_2_state;
-
+	
+	LCD_4BIT();
+	
 	waitms(500);
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	//printf("\r\nEFM8LB12 JDY-40 Master Test.\r\n");
@@ -401,6 +486,10 @@ void main (void)
 	InitPinADC(2, 5); // Configure P2.5 as analog input
     InitADC();
 	InitPushButton();
+
+	
+	
+	LCDprint("Frequency", 1,1);
 	
 	while(1)
 	{
@@ -411,10 +500,90 @@ void main (void)
 		waitms(5); // This may need adjustment depending on how busy is the slave
 		//sendstr1(buff); // Send the test message
 		
+		//sending stuff to slave regardless of whether smth has come back
+		   // Read 14-bit value from the pins configured as analog inputs
+		   v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
+		   v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
+		   v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
+		   v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
+
+		   norm_x = (v[1] / 3.294) * 2.0 - 1.0;  // Horizontal (P2.3)
+		   norm_y = (v[0] / 3.294) * 2.0 - 1.0;  // Vertical   (P2.2)
+
+		   button_state = (P3 & (1 << 2)) ? 0 : 1;
+		   
+		   button_1_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
+		   button_2_state = (P3 & (1 << 1)) ? 0 : 1; 
+
+		   if (button_1_state == 1) {
+			   printf("button 1 pressed. switch to automatic mode");
+			   mode = 5;
+		   }
+
+		   else if (button_2_state == 1) {
+			   printf("button 2 pressed. switch to manual mode");
+			   mode = 6;
+		   }
+		   
+		   
+
+		   else if(button_state == 1){
+		   
+		   waitms(500);
+		   
+			   if(button_state ==1){
+			   
+			   	printf("joystick button is pressed. pick coin");
+			   		mode = 7;
+			   }
+		   }
+
+		   // else if (norm_x <= 1.5 && norm_x > 0.5)
+		   // if (sqrt(norm_x^2 + norm_y^2) > 0.5) {
+		   // 	if (norm_y/sqrt(norm_x^2 + norm_y^2) >= 1/sqrt(2)) mode = 2;  // forward
+		   // 	if (norm_x/sqrt(norm_x^2 + norm_y^2) > 1/sqrt(2)) mode = 1;   // right 
+		   // 	if (norm_y/sqrt(norm_x^2 + norm_y^2) <= -1/sqrt(2)) mode = 4; // backward
+		   // 	if (norm_x/sqrt(norm_x^2 + norm_y^2) < -1/sqrt(2)) mode = 3;  // left
+		   // 	else mode = 0; 
+		   // }
+
+		   // test with diagonal joystick control 
+		   else if (norm_x <= 1.5 && norm_x > 0.5) //right
+		   {
+			   mode = 4;
+		   }
+
+		   else if (norm_x <-0.5 && norm_x>= -1.5) //left
+		   {
+			   mode = 3;
+		   }
+		   
+		   else if (norm_y <= 1.5 && norm_y > 0.5) // forward
+		   {
+			   mode = 1;
+		   }
+
+		   else if (norm_y <-0.5 && norm_y>= -1.5) //backwards
+		   {
+			   mode = 2;
+		   }
+		   else
+		   {
+			   mode = 0;
+		   } 
+
+		   sprintf(buff, "test= %01d\n", mode);
+	   //	sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);
+   //	sprintf(buff," %7.5f, %7.5f mode = %d\n", norm_x, norm_y, mode);
+		   // printf("master sending: %s\n", buff); // see if there's an @
+		   sendstr1(buff);
+
+
+
 		//if(++cont1>200) cont1=0; // Increment test counters for next message
 		//if(++cont2>200) cont2=0;
 		
-		//waitms(5); // This may need adjustment depending on how busy is the slave
+		waitms(5); // This may need adjustment depending on how busy is the slave
 		
 		putchar1('@'); // Request a message from the slave
 		
@@ -432,83 +601,22 @@ void main (void)
 		if(RXU1()) // Something has arrived from the slave
 		{
 		//printf("send");
-			   // Read 14-bit value from the pins configured as analog inputs
-			v[0] = Volts_at_Pin(QFP32_MUX_P2_2);
-			v[1] = Volts_at_Pin(QFP32_MUX_P2_3);
-			v[2] = Volts_at_Pin(QFP32_MUX_P2_4);
-			v[3] = Volts_at_Pin(QFP32_MUX_P2_5);
-
-			norm_x = (v[1] / 3.294) * 2.0 - 1.0;  // Horizontal (P2.3)
-			norm_y = (v[0] / 3.294) * 2.0 - 1.0;  // Vertical   (P2.2)
-
-			button_state = (P3 & (1 << 2)) ? 0 : 1;
-			button_1_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
-			button_2_state = (P3 & (1 << 1)) ? 0 : 1; 
-
-			if (button_1_state == 1) {
-				printf("button 1 pressed. switch to automatic mode");
-				mode = 5;
-			}
-
-			else if (button_2_state == 1) {
-				printf("button 2 pressed. switch to manual mode");
-				mode = 6;
-			}
-
-			// else if (norm_x <= 1.5 && norm_x > 0.5)
-			// if (sqrt(norm_x^2 + norm_y^2) > 0.5) {
-			// 	if (norm_y/sqrt(norm_x^2 + norm_y^2) >= 1/sqrt(2)) mode = 2;  // forward
-			// 	if (norm_x/sqrt(norm_x^2 + norm_y^2) > 1/sqrt(2)) mode = 1;   // right 
-			// 	if (norm_y/sqrt(norm_x^2 + norm_y^2) <= -1/sqrt(2)) mode = 4; // backward
-			// 	if (norm_x/sqrt(norm_x^2 + norm_y^2) < -1/sqrt(2)) mode = 3;  // left
-			// 	else mode = 0; 
-			// }
-
-			// test with diagonal joystick control 
-			else if (norm_x <= 1.5 && norm_x > 0.5) //right
-			{
-				mode = 3;
-			}
-
-			else if (norm_x <-0.5 && norm_x>= -1.5) //left
-			{
-				mode = 4;
-			}
-			
-			else if (norm_y <= 1.5 && norm_y > 0.5) // forward
-			{
-				mode = 1;
-			}
-
-			else if (norm_y <-0.5 && norm_y>= -1.5) //backwards
-			{
-				mode = 2;
-			}
-			else
-			{
-				mode = 0;
-			} 
-
-			sprintf(buff, "test %d\n", mode);
-		//	sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);
-	//	sprintf(buff," %7.5f, %7.5f mode = %d\n", norm_x, norm_y, mode);
-        	sendstr1(buff);
-
 			//printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
-			waitms(100);
-			/*getstr1(buff, sizeof(buff)-1);
-			if(strlen(buff)==5) // Check for valid message size (5 characters)
+			//waitms(100);
+			getstr1(buff, sizeof(buff)-1);
+			//freq = buff;
+
+			//LCDprint(freq,2,1);
+			
+			if(strlen(buff)==6) // Check for valid message size (5 characters)
 			{
 				printf("Slave says: %s\r\n", buff);
+				LCDprint(buff,2,1);
 			}
 			else
 			{
 				printf("*** BAD MESSAGE ***: %s\r\n", buff);
-			}*/
-			
-			
-			
-
+			}
 			
 		}
 		else // Timed out waiting for reply
@@ -516,7 +624,9 @@ void main (void)
 			printf("NO RESPONSE\r\n", buff);
 		}
 		
-		waitms(50);  // Set the information interchange pace: communicate about every 50ms
+		//waitms(50);  // Set the information interchange pace: communicate about every 50ms
+		//LCDprint("Frequency", 1,1);
+		//waitms(10);
 	}
 	
 	

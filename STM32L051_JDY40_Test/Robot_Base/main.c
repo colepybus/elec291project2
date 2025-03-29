@@ -60,8 +60,9 @@ volatile unsigned char servo_pwm1=100, servo_pwm2=100;
 #define F_CPU 32000000L     // Set CPU frequency to 32MHz
 #define DEF_F 100000L       // 10us tick for timer
 #define PWM_MAX 100
-#define LOWER_ANGLE 180            // lower limit for random angle turn
+#define LOWER_ANGLE 180     // lower limit for random angle turn
 #define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
+#define SCALE_LED 485	    // maximum reading above base frequency divded by 7 
 
 volatile int PWM_Counter_Motor = 0;
 volatile unsigned char motor_pwm1 = 0, motor_pwm2 = 0;
@@ -651,6 +652,53 @@ void detectCoin() {
 	}
 }
 
+// LED BONUS FUNCTION -----------------------------------------------------------------------------------------------------------------------------------------------
+void LED_scale(int base_count, int count) {
+    // 1 light on
+    if (abs(base_count-count) < SCALE_LED) {
+        P0_2 = 0;
+        P0_3 = 0;
+        P0_4 = 1;
+    }
+    // 2 lights on
+    if ((abs(base_count-count) >= SCALE_LED) || (abs(base_count-count) < 2*SCALE_LED)) {
+        P0_2 = 0;
+        P0_3 = 1;
+        P0_4 = 0;
+    }
+    // 3 lights on 
+    if ((abs(base_count-count) >= 2*SCALE_LED) || (abs(base_count-count) < 3*SCALE_LED)) {
+        P0_2 = 0;
+        P0_3 = 1;
+        P0_4 = 1;
+    }
+    // 4 lights on 
+    if ((abs(base_count-count) >= 3*SCALE_LED) || (abs(base_count-count) < 4*SCALE_LED)) {
+        P0_2 = 1;
+        P0_3 = 0;
+        P0_4 = 0;
+    }
+    // 5 lights on 
+    if ((abs(base_count-count) >= 4*SCALE_LED) || (abs(base_count-count) < 5*SCALE_LED)) {
+        P0_2 = 1;
+        P0_3 = 0;
+        P0_4 = 1;
+    }
+    // 6 lights on 
+    if ((abs(base_count-count) >=5*SCALE_LED) || (abs(base_count-count) < 6*SCALE_LED)) {
+        P0_2 = 1;
+        P0_3 = 1;
+        P0_4 = 0;
+    }
+    // 7 lights on 
+    if (abs(base_count-count) >= 6*SCALE_LED) {
+        P0_2 = 1;
+        P0_3 = 1;
+        P0_4 = 1;
+    }
+}
+
+// MAIN --------------------------------------------------------- -------------------------------------------------------------------------------------------
 int main(void)
 {
     int j, v;
@@ -699,24 +747,9 @@ int main(void)
 
 	cnt=0;
 	freq_to_send=0;
-	
-
-    // LED_toggle=0;
-	// PB3_0;
-	// PB4_0;
-	// PB5_0;
-	// PB6_0;
-	// PB7_0;
-
-	// JDY40 
 					
 	while (1)
 	{
-
-		//move_forward(100);
-
-		//PB3_1;
-
 		 j=readADC(ADC_CHSELR_CHSEL8);
 		 p1_v=(j*33000)/0xfff;
 		// // eputs("ADC[8]=0x");
@@ -737,21 +770,10 @@ int main(void)
 		// PrintNumber(p2_v%10000, 10, 4);
 		// eputs("V ");
 		
-		// eputs("PA14=");
-		// if(PA14)
-		// {
-		// 	eputs("1 ");
-		// }
-		// else
-		// {
-		// 	eputs("0 ");
-		// }
-
         // reset arm to default position
         //ISR_pwm1=75; ISR_pwm2=75;
 
 		//stm recieving of data
-
 		if(ReceivedBytes2()>0) // Something has arrived 
 		{
 			//eputs("GETTING IN THE LOOP\r\n");
@@ -899,6 +921,7 @@ int main(void)
 				move_forward(100);
 				detectPerimeter(p1_v, p2_v, 3000);
 				detectCoin();
+				LED_scale(); 
 				waitms(50); // decreased this value from 1000 to 50	
 			}
 		

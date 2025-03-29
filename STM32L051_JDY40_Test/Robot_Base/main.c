@@ -192,7 +192,7 @@ uint32_t GetTick(void) {
 }
 
 
-// FUNCTIONS FOR JDY40 ----------------------------------------------------------------
+// FUNCTIONS FOR JDY40 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 void SendATCommand (char * s)
 {
 	char buff[40];
@@ -219,7 +219,7 @@ void ReceptionOff (void)
 // A define to easily read PA8 (PA8 must be configured as input first)
 #define PA8 (GPIOA->IDR & BIT8)
 
-// FUNCTIONS FOR MOTOR CONTROL ----------------------------------------------------------------
+// FUNCTIONS FOR MOTOR CONTROL ----------------------------------------------------------------------------------------------------------------------------------------------------------
 void move_backward(int speed) {
     // Set direction pins for backward movement
     GPIOA->ODR &= ~(BIT1 | BIT3); // Set PA1 & PA3 LOW
@@ -288,7 +288,7 @@ void turn_random() {
     move_forward(PWM_MAX);
 }
 
-// GET PERIOD FUNCTION ------------------------------------------------------------------------------------
+// GET PERIOD FUNCTION ------------------------------------------------------------------------------------------------------------------------------------------------
 long long int GetPeriod(int n)
 {
 	int i;
@@ -397,7 +397,7 @@ void PrintNumber(long int val, int Base, int digits)
 // A define to easily read PA14 (PA14 must be configured as input first)
 #define PA14 (GPIOA->IDR & BIT14)
 
-// TOGGLE MAGNET -------------------------------------------------------------------------------------------
+// TOGGLE MAGNET ------------------------------------------------------------------------------------------------------------------------------------------------------------
 void toggleMagnet(uint8_t state) {
 	if (state) {
 		PB3_1;
@@ -406,7 +406,7 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
-// PICK COIN MOVEMENT -------------------------------------------------------------------------------------------
+// PICK COIN MOVEMENT ---------------------------------------------------------------------------------------------------------------------------------------------------------
 void pickCoin() {
 	use_servo = 1;
 
@@ -461,7 +461,7 @@ void pickCoin() {
 
 volatile int perimeter_detected = 0;
 
-// DETECT PERIMETER -------------------------------------------------------------------------------------------
+// DETECT PERIMETER ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //jank shit 4.2
 
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
@@ -493,7 +493,7 @@ float get_frequency() { // get frequency of signal on PA8
 
 
 
-// METAL DETECTOR TO DETECT COIN  -------------------------------------------------------------------------------------------
+// METAL DETECTOR TO DETECT COIN  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void detectCoin() {
 	long long int count;
 	float f;
@@ -540,52 +540,6 @@ void detectCoin() {
 		// play song and dance
 
 	}
-}
-
-// LED BONUS FUNCTION -----------------------------------------------------------------------------------------------------------------------------------------------
-void LED_scale(int base_count, int count) {
-    // 1 light on
-    if (abs(base_count-count) < SCALE_LED) {
-        P0_2 = 0;
-        P0_3 = 0;
-        P0_4 = 1;
-    }
-    // 2 lights on
-    if ((abs(base_count-count) >= SCALE_LED) || (abs(base_count-count) < 2*SCALE_LED)) {
-        P0_2 = 0;
-        P0_3 = 1;
-        P0_4 = 0;
-    }
-    // 3 lights on 
-    if ((abs(base_count-count) >= 2*SCALE_LED) || (abs(base_count-count) < 3*SCALE_LED)) {
-        P0_2 = 0;
-        P0_3 = 1;
-        P0_4 = 1;
-    }
-    // 4 lights on 
-    if ((abs(base_count-count) >= 3*SCALE_LED) || (abs(base_count-count) < 4*SCALE_LED)) {
-        P0_2 = 1;
-        P0_3 = 0;
-        P0_4 = 0;
-    }
-    // 5 lights on 
-    if ((abs(base_count-count) >= 4*SCALE_LED) || (abs(base_count-count) < 5*SCALE_LED)) {
-        P0_2 = 1;
-        P0_3 = 0;
-        P0_4 = 1;
-    }
-    // 6 lights on 
-    if ((abs(base_count-count) >=5*SCALE_LED) || (abs(base_count-count) < 6*SCALE_LED)) {
-        P0_2 = 1;
-        P0_3 = 1;
-        P0_4 = 0;
-    }
-    // 7 lights on 
-    if (abs(base_count-count) >= 6*SCALE_LED) {
-        P0_2 = 1;
-        P0_3 = 1;
-        P0_4 = 1;
-    }
 }
 
 // MAIN --------------------------------------------------------- -------------------------------------------------------------------------------------------

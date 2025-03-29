@@ -225,7 +225,7 @@ void Hardware_Init(void)
 	TIM2->CR1 |= BIT4;      // Downcounting    
 	TIM2->CR1 |= BIT7;      // ARPE enable    
 	TIM2->DIER |= BIT0;     // enable update event (reload event) interrupt 
-	TIM2->CR1 |= BIT0;      // enable counting    
+	TIM2->CR1 |= BIT0;      // enable counting   
 	
 	__enable_irq();
 
@@ -529,10 +529,10 @@ void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 
     if ((v1 % 10000) > perimeter_threshold || (v2 % 10000) > perimeter_threshold) {
         if (last_detection_time == 0) {
-		eputs("PERIMETER DETECTED!");
+            eputs("PERIMETER DETECTED!");
             move_backward(100);
             waitms(500);
-		turn_random();
+            turn_random();
             last_detection_time = GetTick(); // Use TIM2-based timing
         }
     } else {
@@ -865,16 +865,16 @@ int main(void)
 			else if(c=='@') // Master wants slave data
 			{
 				if (mode == 0) {
-				freq_to_send = (int)get_frequency();
-				sprintf(buff, "%05u", freq_to_send);
+					freq_to_send = (int)get_frequency();
+					sprintf(buff, "%05u", freq_to_send);
 
-				//sprintf(buff, "%05u", cnt);
-				eputs("SENDING MESSAGE TO MASTER: \r\n");
-				eputs(buff); // print buff
-				freq_to_send = (int)get_frequency();
-				//cnt++;
-				waitms(5); // The radio seems to need this delay...
-				eputs2(buff);
+					//sprintf(buff, "%05u", cnt);
+					eputs("SENDING MESSAGE TO MASTER: \r\n");
+					eputs(buff); // print buff
+					freq_to_send = (int)get_frequency();
+					//cnt++;
+					waitms(5); // The radio seems to need this delay...
+					eputs2(buff);
 
 				}
 

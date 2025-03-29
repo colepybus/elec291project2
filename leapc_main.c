@@ -46,14 +46,14 @@ void setupEMF8Serial(const char* portName)
     printf("EFM8 USB serial port configured.\n");
 }
 
-void sendToEFM8(float pinch, float grab, float pitch, float roll)
+void sendToEFM8(float grab, float pitch, float roll)
 {
     if (serial_fd < 0) return; // Not open
 
     char buffer[32];
-    // Format e.g. "!0.79,0.12,-0.33,1.00\n"
-    snprintf(buffer, sizeof(buffer), "!%.2f,%.2f,%.2f,%.2f\n", 
-             pinch, grab, pitch, roll);
+    // Format e.g. "!0.79,-0.33,-1.00\n"
+    snprintf(buffer, sizeof(buffer), "!%.2f,%.2f,%.2f\n", 
+            grab, pitch, roll);
 
     // Print just to show we formed the string:
     printf("[DEBUG] Outgoing: %s", buffer); // <--- CHANGED
@@ -111,12 +111,14 @@ int main() {
                 }
 
             float pinch = leftHand->pinch_strength;
-            float grab = rightHand->grab_strength;
-            float pitch = rightHand->palm.normal.x;
-            float roll = rightHand->palm.normal.z;
+            float grab = leftHand->grab_strength;
+            float pitch = rightHand->palm.normal.z;
+            float roll = rightHand->palm.normal.x;
 
-            printf("Left Pinch %.2f | Right Grab %.2f | Right Pitch %.2f | Right Roll %.2f\n",
-                    pinch, grab, pitch, roll);
+            sendToEFM8(grab, pitch, roll);
+
+            printf("Left Grab %.2f | Right Pitch %.2f | Right Roll %.2f\n", 
+            grab, pitch, roll);
 
             }
         } else {

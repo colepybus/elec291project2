@@ -60,7 +60,7 @@ volatile unsigned char servo_pwm1=100, servo_pwm2=100;
 #define F_CPU 32000000L     // Set CPU frequency to 32MHz
 #define DEF_F 100000L       // 10us tick for timer
 #define PWM_MAX 100
-#define LOWER_ANGLE 120            // lower limit for random angle turn
+#define LOWER_ANGLE 180            // lower limit for random angle turn
 #define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
 
 volatile int PWM_Counter_Motor = 0;
@@ -76,6 +76,8 @@ int done = 0; // flag to indicate if all coins picked up - yo check the type of 
 volatile int mode = 0; // 0 = manual mode. 1 = automatic mode
 
 // functions that makes it wait 1 ms
+
+
 
 void wait_1ms(void)
 {
@@ -99,11 +101,14 @@ void waitms(int len)
 // The following function is associated with the TIM2 interrupt 
 // via the interrupt vector table defined in startup.c
 
-
+//jank shit 5.2
+volatile uint32_t tim2_ticks = 0;
 
 void TIM2_Handler(void) 
 {
 	TIM2->SR &= ~BIT0; // clear update interrupt flag
+    //jank shit 5.2
+    tim2_ticks++;
 
 	// PWM FOR SERVOS
 
@@ -220,7 +225,7 @@ void Hardware_Init(void)
 	TIM2->CR1 |= BIT4;      // Downcounting    
 	TIM2->CR1 |= BIT7;      // ARPE enable    
 	TIM2->DIER |= BIT0;     // enable update event (reload event) interrupt 
-	TIM2->CR1 |= BIT0;      // enable counting    
+	TIM2->CR1 |= BIT0;      // enable counting   
 	
 	__enable_irq();
 
@@ -234,6 +239,12 @@ void Hardware_Init(void)
 	GPIOA->PUPDR |= BIT26; 
 	GPIOA->PUPDR &= ~(BIT27);
 }
+
+//jank shit 3.2
+uint32_t GetTick(void) {
+    return tim2_ticks;
+}
+
 
 // FUNCTIONS FOR JDY40 ----------------------------------------------------------------
 void SendATCommand (char * s)
@@ -508,37 +519,63 @@ void pickCoin() {
 	waitms(500);
 }
 
+volatile int perimeter_detected = 0;
+
 // DETECT PERIMETER -------------------------------------------------------------------------------------------
+//jank shit 4.2
+
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
-	int time_val1 = 0, time_val2 = 0;
-	if((v1%10000) > perimeter_threshold) time_val1 = 1;
-	if((v2%10000) > perimeter_threshold){ time_val2 = 1;
-	waitms(500);
-	if((((v1%10000) > perimeter_threshold) && time_val1 == 1) || (((v2%10000) > perimeter_threshold) && time_val2 == 1)) {
-		eputs("PERIMETER DETECTED!");
-		move_backward(100); 
-		waitms(10); 
-		turn_random();
-	}}
+    static uint32_t last_detection_time = 0;
 
-	else {
-		eputs("NO PERIMETER DETECTED!");
-	}
-
-/*
-	waitms(50); // can change;
-	int time2_val1 = 
-	if ((v1%10000) > perimeter_threshold || (v2%10000) > perimeter_threshold) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
-		eputs("PERIMETER DETECTED!");
-		move_backward(100); 
-		waitms(10); 
-		turn_random();
-	}
-
-	else {
-		eputs("NO PERIMETER DETECTED!");
-	}*/
+    if ((v1 % 10000) > perimeter_threshold || (v2 % 10000) > perimeter_threshold) {
+        if (last_detection_time == 0) {
+            eputs("PERIMETER DETECTED!");
+            move_backward(100);
+            waitms(500);
+            turn_random();
+            last_detection_time = GetTick(); // Use TIM2-based timing
+        }
+    } else {
+        last_detection_time = 0; // Reset when no perimeter
+    }
 }
+
+
+    
+
+
+    // 	int time_val1 = 0, time_val2 = 0;
+// 	if((v1%10000) > perimeter_threshold) time_val1 = 1;
+// 	if((v2%10000) > perimeter_threshold){ time_val2 = 1;
+// 	waitms(500);
+// 	if((((v1%10000) > perimeter_threshold) && time_val1 == 1) || (((v2%10000) > perimeter_threshold) && time_val2 == 1)) {
+// 		eputs("PERIMETER DETECTED!");
+// 		move_backward(100); 
+// 		waitms(10); 
+// 		turn_random();
+// 	}}
+
+// 	else {
+// 		eputs("NO PERIMETER DETECTED!");
+// 	}
+
+
+//ORIGINAL
+// waitms(50); // can change;
+// if ((v1%10000) > perimeter_threshold || (v2%10000) > perimeter_threshold) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
+//     eputs("PERIMETER DETECTED!");
+//     move_backward(100); 
+//     waitms(10); 
+//     turn_random();
+// }
+
+// else {
+//     eputs("NO PERIMETER DETECTED!");
+// }
+
+
+
+
 
 float get_frequency() { // get frequency of signal on PA8
 	long long int count;

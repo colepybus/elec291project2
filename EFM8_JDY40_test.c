@@ -447,6 +447,7 @@ void main (void)
 			}
 
 			sprintf(buff, "%d\n", mode);
+			printf("master sending: %s\n", buff);
         	sendstr1(buff);
 
 			//printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);

@@ -202,43 +202,35 @@ int getsn (char * buff, int len)
 void main (void)
 {
 	char buff[32];
-	float pinchVal = 0.0; // ADDED: Will hold the parsed pinch value
-	char pinchStr[16];    // ADDED: Buf
-
+	float pinchVal = 0.0;
+	float pitchVal = 0.0; 
+	float rollVal = 0.0;  
+	
+	char values[17];   
 
 	// Configure the LCD
 	LCD_4BIT();
 	
-
-
    	// Display something in the LCD
 	LCDprint("Leap -> EFM8", 1, 1);
 	LCDprint("Waiting data...", 2, 1);
-	while(1)
-	{
+	while(1){
 
 		getsn(buff, sizeof(buff));
 
-		{
-			char *pinchPtr = strstr(buff, "pinch:");
-			if(pinchPtr != NULL)
-			{
-				// Move pointer past "pinch:"
-				pinchPtr += 6; 
-				// Convert to float
-				pinchVal = atof(pinchPtr);
+			if(buff[0] == '!'){
 
-				// Format it for display, e.g. "Pinch=0.85"
-				sprintf(pinchStr, "Pinch=%.2f", pinchVal);
-
-				// Clear and print pinch value on second line
-				LCDprint("                ", 2, 1);
-				LCDprint(pinchStr, 2, 1);
-				continue; // Skip the default display below
+				sscanf(buff, "!%f,%f,%f", &pinchVal, &pitchVal, &rollVal);
+			
+				// format to display grab, pitch, and roll on lcd
+				sprintf(values, "G=%.2fP=%.2fR=%.2f", &grabVal, &pitchVal, &rollVal);
+				LCDprint(values, 1, 1);
+				
 			}
-		}
+			else{
 
-		LCDprint("                ", 2, 1);
-		LCDprint(buff, 2, 1);
+				LCDprint(buff, 2, 1);
+				
+			}
 	}
 }

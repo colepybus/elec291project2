@@ -9,7 +9,7 @@ LIBPATH1= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/lib/gcc/arm-none
 LIBPATH2= /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/arm-none-eabi/lib/thumb/v6-m/nofp
 LIBSPEC=-L"$(LIBPATH1)" -L"$(LIBPATH2)"
 
-OBJS=main.o UART2.o startup.o serial.o newlib_stubs.o adc.o motor_control.o
+OBJS=main.o UART2.o startup.o serial.o newlib_stubs.o adc.o
 # For smaller hex file remove '-u _printf_float' below
 
 main.hex: $(OBJS)
@@ -32,10 +32,6 @@ serial.o: ../Common/Source/serial.c
 	
 newlib_stubs.o: ../Common/Source/newlib_stubs.c
 	$(CC) -c $(CCFLAGS) ../Common/Source/newlib_stubs.c -o newlib_stubs.o
-
-motor_control.o: motor_control.c
-	$(CC) $(CCFLAGS) -c motor_control.c -o motor_control.o
-
 
 #clean: 
 #	rm -f $(OBJS) main.elf main.hex main.map

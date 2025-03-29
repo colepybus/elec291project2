@@ -613,6 +613,7 @@ void main (void)
 				printf("Slave says: %s\r\n", buff);
 				LCDprint(buff,2,1);
 			}
+			
 			else
 			{
 				printf("*** BAD MESSAGE ***: %s\r\n", buff);

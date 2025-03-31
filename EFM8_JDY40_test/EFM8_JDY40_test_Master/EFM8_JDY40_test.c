@@ -96,8 +96,8 @@ char _c51_external_startup (void)
   	
 	TMR2CN0=0x00;   // Stop Timer2; Clear TF2;
 	CKCON0|=0b_0001_0000; // Timer 2 uses the system clock
-	TMR2RL=(0x10000L-(SYSCLK/(2*TIMER_2_FREQ))); // Initialize reload value
-	TMR2=0xffff;   // Set to reload immediately
+	//TMR2RL=(0x10000L-(SYSCLK/(2*TIMER_2_FREQ))); // Initialize reload value
+	//TMR2=0xffff;   // Set to reload immediately
 	ET2=1;         // Enable Timer2 interrupts
 	TR2=1;         // Start Timer2 (TMR2CN is bit addressable)
 
@@ -112,18 +112,12 @@ void Timer2_ISR (void) interrupt INTERRUPT_TIMER2
 
 void setSpeakerFrequency(unsigned int input_val)
 {
-    unsigned long freq_out;
+    
+    int freq_out;
 
-    // 1. Clamp the incoming “freq” to the valid input range
-    if(input_val < 184000) input_val = 184000;
-    if(input_val > 187000) input_val = 187000;
+	freq_out = (input_val / 2) - 90000;
 
-    // 2. Map input_val [184000..187000] → freq_out [550..2048]
-    //    1498 = (2048 - 550), and 3000 = (187000 - 184000)
-    freq_out = 550UL + ((unsigned long)(input_val - 184000) * 1498UL) / 3000UL;
-
-    // Optionally ensure a lower bound of ~50 Hz if you prefer:
-    if(freq_out < 50) freq_out = 50;
+	if (freq_out < 1) freq_out = 1;
 
     // 3. Stop Timer2, load new reload, and restart
     TR2 = 0;  // Stop Timer2

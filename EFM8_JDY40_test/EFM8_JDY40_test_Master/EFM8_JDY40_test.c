@@ -10,7 +10,7 @@
 #define BAUDRATE 115200L
 #define SARCLK 18000000L
 #define SCALE_LED 450
-#define BASE 184000
+#define BASE 183000
 #define DEFAULT_F 15500L
 
 #define JDY40_SET_PIN P1_4
@@ -106,7 +106,7 @@ char _c51_external_startup (void)
 	TR2=1;         // Start Timer2 (TMR2CN is bit addressable)
 
 	//sketchy
-	EA = 1
+	EA = 1;
 
 	return 0;
 }
@@ -478,7 +478,7 @@ void InitPushButton(void)
 // Input parameters: 
 // base_count - base level deteciong intensity 
 // count - present detection intensity 
-
+/*
 void LED_scale(int count) {
     // 1 light on
     if (abs(BASE - count) < SCALE_LED) {
@@ -522,33 +522,36 @@ void LED_scale(int count) {
         P0_3 = 1;
         P0_4 = 1;
     }
-}
+} */
 
-/*
 void LED_scale(int count) {
     // 1 light on
     if (abs(BASE - count) < SCALE_LED) {
         P0_2 = 0;
         P0_3 = 0;
         P0_4 = 1;
+      	printf("1 led, ");
     }
     // 2 lights on
     else if (abs(BASE - count) < 2*SCALE_LED) {
         P0_2 = 0;
         P0_3 = 1;
         P0_4 = 0;
+        printf("2 led");
     }
     // 3 lights on 
     else if (abs(BASE - count) < 3*SCALE_LED) {
         P0_2 = 0;
         P0_3 = 1;
         P0_4 = 1;
+        printf("3 led");
     }
     // 4 lights on 
     else if (abs(BASE - count) < 4*SCALE_LED) {
         P0_2 = 1;
         P0_3 = 0;
         P0_4 = 0;
+        printf("4 led");
     }
     // 5 lights on 
     else if (abs(BASE - count) < 5*SCALE_LED) {
@@ -568,7 +571,7 @@ void LED_scale(int count) {
         P0_3 = 1;
         P0_4 = 1;
     }
-} */
+}
 
 void main (void)
 {

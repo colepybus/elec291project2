@@ -1,3 +1,5 @@
+// Bonus functions 
+
 #include "../Common/Include/stm32l051xx.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +8,57 @@
 #include "../Common/Include/serial.h"
 #include "adc.h"
 
-// Ranges for coin detection
+// maximum reading above base frequency divded by 7 
+#define SCALE_LED 400
+#define BASE 183000
+
+void LED_scale(int base_count, int count) {
+    // 1 light on
+    if (abs(BASE - count) < SCALE_LED) {
+        P0_2 = 0;
+        P0_3 = 0;
+        P0_4 = 1;
+    }
+    // 2 lights on
+    if ((abs(BASE - count) >= SCALE_LED) || (abs(base_count-count) < 2*SCALE_LED)) {
+        P0_2 = 0;
+        P0_3 = 1;
+        P0_4 = 0;
+    }
+    // 3 lights on 
+    if ((abs(BASE - count) >= 2*SCALE_LED) || (abs(base_count-count) < 3*SCALE_LED)) {
+        P0_2 = 0;
+        P0_3 = 1;
+        P0_4 = 1;
+    }
+    // 4 lights on 
+    if ((abs(BASE - count) >= 3*SCALE_LED) || (abs(base_count-count) < 4*SCALE_LED)) {
+        P0_2 = 1;
+        P0_3 = 0;
+        P0_4 = 0;
+    }
+    // 5 lights on 
+    if ((abs(BASE - count) >= 4*SCALE_LED) || (abs(base_count-count) < 5*SCALE_LED)) {
+        P0_2 = 1;
+        P0_3 = 0;
+        P0_4 = 1;
+    }
+    // 6 lights on 
+    if ((abs(BASE - count) >=5*SCALE_LED) || (abs(base_count-count) < 6*SCALE_LED)) {
+        P0_2 = 1;
+        P0_3 = 1;
+        P0_4 = 0;
+    }
+    // 7 lights on 
+    if (abs(BASE - count) >= 6*SCALE_LED) {
+        P0_2 = 1;
+        P0_3 = 1;
+        P0_4 = 1;
+    }
+}
+
+
+
 #define TOONIE_HIGH
 #define TOONIE_LOW
 #define LOONIE_HIGH
@@ -46,3 +98,4 @@ void money_counter(double detect, int init_count, int coin_count) {
         }
     }
 }
+		

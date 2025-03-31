@@ -10,7 +10,7 @@
 #define BAUDRATE 115200L
 #define SARCLK 18000000L
 #define SCALE_LED 400
-#define BASE 183000
+#define BASE 184000
 
 #define JDY40_SET_PIN P1_4
 
@@ -449,42 +449,88 @@ void LED_scale(int count) {
         P0_4 = 1;
     }
     // 2 lights on
-    if ((abs(BASE - count) >= SCALE_LED) || (abs(BASE - count) < 2*SCALE_LED)) {
+    else if ((abs(BASE - count) >= SCALE_LED) && (abs(BASE - count) < 2*SCALE_LED)) {
         P0_2 = 0;
         P0_3 = 1;
         P0_4 = 0;
     }
     // 3 lights on 
-    if ((abs(BASE - count) >= 2*SCALE_LED) || (abs(BASE - count) < 3*SCALE_LED)) {
+    else if ((abs(BASE - count) >= 2*SCALE_LED) && (abs(BASE - count) < 3*SCALE_LED)) {
         P0_2 = 0;
         P0_3 = 1;
         P0_4 = 1;
     }
     // 4 lights on 
-    if ((abs(BASE - count) >= 3*SCALE_LED) || (abs(BASE - count) < 4*SCALE_LED)) {
+    else if ((abs(BASE - count) >= 3*SCALE_LED) && (abs(BASE - count) < 4*SCALE_LED)) {
         P0_2 = 1;
         P0_3 = 0;
         P0_4 = 0;
     }
     // 5 lights on 
-    if ((abs(BASE - count) >= 4*SCALE_LED) || (abs(BASE - count) < 5*SCALE_LED)) {
+    else if ((abs(BASE - count) >= 4*SCALE_LED) && (abs(BASE - count) < 5*SCALE_LED)) {
         P0_2 = 1;
         P0_3 = 0;
         P0_4 = 1;
     }
     // 6 lights on 
-    if ((abs(BASE - count) >=5*SCALE_LED) || (abs(BASE - count) < 6*SCALE_LED)) {
+    else if ((abs(BASE - count) >=5*SCALE_LED) && (abs(BASE - count) < 6*SCALE_LED)) {
         P0_2 = 1;
         P0_3 = 1;
         P0_4 = 0;
     }
     // 7 lights on 
-    if (abs(BASE - count) >= 6*SCALE_LED) {
+    else if (abs(BASE - count) >= 6*SCALE_LED) {
         P0_2 = 1;
         P0_3 = 1;
         P0_4 = 1;
     }
 }
+
+/*
+void LED_scale(int count) {
+    // 1 light on
+    if (abs(BASE - count) < SCALE_LED) {
+        P0_2 = 0;
+        P0_3 = 0;
+        P0_4 = 1;
+    }
+    // 2 lights on
+    else if (abs(BASE - count) < 2*SCALE_LED) {
+        P0_2 = 0;
+        P0_3 = 1;
+        P0_4 = 0;
+    }
+    // 3 lights on 
+    else if (abs(BASE - count) < 3*SCALE_LED) {
+        P0_2 = 0;
+        P0_3 = 1;
+        P0_4 = 1;
+    }
+    // 4 lights on 
+    else if (abs(BASE - count) < 4*SCALE_LED) {
+        P0_2 = 1;
+        P0_3 = 0;
+        P0_4 = 0;
+    }
+    // 5 lights on 
+    else if (abs(BASE - count) < 5*SCALE_LED) {
+        P0_2 = 1;
+        P0_3 = 0;
+        P0_4 = 1;
+    }
+    // 6 lights on 
+    else if (abs(BASE - count) < 6*SCALE_LED) {
+        P0_2 = 1;
+        P0_3 = 1;
+        P0_4 = 0;
+    }
+    // 7 lights on 
+    else {
+        P0_2 = 1;
+        P0_3 = 1;
+        P0_4 = 1;
+    }
+} */
 
 void main (void)
 {
@@ -670,7 +716,12 @@ void main (void)
 				printf("Slave says: %s\r\n", buff);
 				LCDprint(buff,2,1);
 				freq_int = atoi(buff); 
-				LED_scale(freq_int); // TEST THIS 
+				LED_scale(freq_int); // TEST THIS
+				
+				
+				// debugging if integer
+				// freq_sub = 200000 - freq_int;
+				// printf("%d", freq_sub);
 				
 			}
 			

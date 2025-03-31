@@ -76,6 +76,7 @@ char _c51_external_startup (void)
 	P0MDOUT |= 0x1D; // Enable UART0 TX (P0.4) and UART1 TX (P0.0) as push-pull outputs changed from P0MDOUT |= 0x1D
 	// P2MDOUT |= 0x01; // P2.0 in push-pull mode
 	P1MDOUT |= 0x10;  // Set P1.4 as push-pull output
+	P2MDOUT |= 0b_00000010; //P2.1 as push-pull output
     P1 |= 0x10;       // Start with JDY40 in normal mode (SET high)
 	XBR0     = 0x01; // Enable UART0 on P0.4(TX) and P0.5(RX)                     
 	XBR1     = 0X00;
@@ -93,7 +94,42 @@ char _c51_external_startup (void)
 	TR1 = 1; // START Timer1
 	TI = 1;  // Indicate TX0 ready
   	
+	TMR2CN0=0x00;   // Stop Timer2; Clear TF2;
+	CKCON0|=0b_0001_0000; // Timer 2 uses the system clock
+	TMR2RL=(0x10000L-(SYSCLK/(2*TIMER_2_FREQ))); // Initialize reload value
+	TMR2=0xffff;   // Set to reload immediately
+	ET2=1;         // Enable Timer2 interrupts
+	TR2=1;         // Start Timer2 (TMR2CN is bit addressable)
+
 	return 0;
+}
+
+void Timer2_ISR (void) interrupt INTERRUPT_TIMER2
+{
+    TF2H = 0;           // Clear interrupt flag
+    P2_1 = !P2_1;       // Toggle the speaker pin
+}
+
+void setSpeakerFrequency(unsigned int input_val)
+{
+    unsigned long freq_out;
+
+    // 1. Clamp the incoming “freq” to the valid input range
+    if(input_val < 184000) input_val = 184000;
+    if(input_val > 187000) input_val = 187000;
+
+    // 2. Map input_val [184000..187000] → freq_out [550..2048]
+    //    1498 = (2048 - 550), and 3000 = (187000 - 184000)
+    freq_out = 550UL + ((unsigned long)(input_val - 184000) * 1498UL) / 3000UL;
+
+    // Optionally ensure a lower bound of ~50 Hz if you prefer:
+    if(freq_out < 50) freq_out = 50;
+
+    // 3. Stop Timer2, load new reload, and restart
+    TR2 = 0;  // Stop Timer2
+    TMR2RL = 0x10000L - (SYSCLK / (2L * freq_out));
+    TMR2 = 0xFFFF;  // Force immediate reload of TMR2 from TMR2RL
+    TR2 = 1;        // Start Timer2
 }
 
 void InitADC (void)
@@ -721,6 +757,7 @@ void main (void)
 				// debugging if integer
 				// freq_sub = 200000 - freq_int;
 				// printf("%d", freq_sub);
+				setSpeakerFrequency(freq_int);
 				
 			}
 			

@@ -11,6 +11,7 @@
 #define SARCLK 18000000L
 #define SCALE_LED 450
 #define BASE 184000
+#define DEFAULT_F 15500L
 
 #define JDY40_SET_PIN P1_4
 
@@ -99,8 +100,8 @@ char _c51_external_startup (void)
 	//TMR2RL=(0x10000L-(SYSCLK/(2*TIMER_2_FREQ))); // Initialize reload value
 	//TMR2=0xffff;   // Set to reload immediately
 	//sketchy
-	TMR2RL=(0x10000L-(SYSCLK/(2*1000))); // Initialize reload value
-	TMR2=0xFFFF;   // Set to reload immediately
+	TMR2RL=(-(SYSCLK/(2*DEFAULT_F))); // Initialize reload value
+	TMR2=0xffff;   // Set to reload immediately
 	ET2=1;         // Enable Timer2 interrupts
 	TR2=1;         // Start Timer2 (TMR2CN is bit addressable)
 
@@ -118,18 +119,19 @@ void Timer2_ISR (void) interrupt INTERRUPT_TIMER2
 
 void setSpeakerFrequency(unsigned int input_val)
 {
-    
+    unsigned long int f;
     int freq_out;
 
 	freq_out = (input_val / 2) - 90000;
-
+	printf("freq_out: %d", freq_out);
 	if (freq_out < 1) freq_out = 1;
 
     // 3. Stop Timer2, load new reload, and restart
     TR2 = 0;  // Stop Timer2
     TMR2RL = 0x10000L - (SYSCLK / (2L * freq_out));
-    TMR2 = 0xFFFF;  // Force immediate reload of TMR2 from TMR2RL
     TR2 = 1;        // Start Timer2
+	f=SYSCLK/(2L*(0x10000L-TMR2RL));
+	printf("\nActual frequency: %lu\n", f);
 }
 
 void InitADC (void)

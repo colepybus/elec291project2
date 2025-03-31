@@ -19,7 +19,7 @@ volatile unsigned char servo_pwm1=100, servo_pwm2=100;
 #define F_CPU 32000000L     // Set CPU frequency to 32MHz
 #define DEF_F 100000L       // 10us tick for timer
 #define PWM_MAX 100
-#define LOWER_ANGLE 180     // lower limit for random angle turn
+#define LOWER_ANGLE 120     // lower limit for random angle turn
 #define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
 #define SCALE_LED 485	    // maximum reading above base frequency divded by 7 
 

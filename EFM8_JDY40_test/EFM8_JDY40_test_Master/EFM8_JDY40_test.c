@@ -98,8 +98,14 @@ char _c51_external_startup (void)
 	CKCON0|=0b_0001_0000; // Timer 2 uses the system clock
 	//TMR2RL=(0x10000L-(SYSCLK/(2*TIMER_2_FREQ))); // Initialize reload value
 	//TMR2=0xffff;   // Set to reload immediately
+	//sketchy
+	TMR2RL=(0x10000L-(SYSCLK/(2*1000))); // Initialize reload value
+	TMR2=0xFFFF;   // Set to reload immediately
 	ET2=1;         // Enable Timer2 interrupts
 	TR2=1;         // Start Timer2 (TMR2CN is bit addressable)
+
+	//sketchy
+	EA = 1
 
 	return 0;
 }

@@ -589,6 +589,9 @@ void main (void)
 	bit button_1_state;
 	bit button_2_state;
 	
+	char uart0_buffer[32];
+	int uart0_index = 0;
+
 	LCD_4BIT();
 	
 	waitms(500);
@@ -658,6 +661,48 @@ void main (void)
 		   
 		   button_1_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
 		   button_2_state = (P3 & (1 << 1)) ? 0 : 1; 
+
+		// ================================================
+        // NEW: Handle UART0 (Leap Motion) data
+        // ================================================
+        
+		if (RI0) { // Check if UART0 has data
+            char c = SBUF0; // Read the byte
+            RI0 = 0; // Clear flag
+
+            if (uart0_index < sizeof(uart0_buffer) - 1) {
+                uart0_buffer[uart0_index++] = c;
+
+                // Check for newline (end of message)
+                if (c == '\n') {
+                    uart0_buffer[uart0_index] = '\0'; // Terminate string
+                    uart0_index = 0;
+
+                    // Parse "!X.XX" format (e.g., "!0.75\n")
+                    char *pinchStart = strchr(uart0_buffer, '!');
+                    if (pinchStart != NULL) {
+                        pinchVal = atof(pinchStart + 1); // Convert to float
+
+                        // Format as "X.XX"
+                        sprintf(pinchStr, "%.2f", pinchVal);
+
+                        // Position cursor at row 2, column 9
+                        WriteCommand(0xC0 + 9); // 0xC0 = row 2 start
+                        waitms(1);
+
+                        // Write the 4 characters (e.g., "0.75")
+                        for (int i = 0; i < 4; i++) {
+                            WriteData(pinchStr[i]);
+                        }
+                    }
+                }
+            } else {
+                uart0_index = 0; // Reset on overflow
+            }
+        }
+
+		// END OF NEW
+
 
 		   if (button_1_state == 1) {
 			   printf("button 1 pressed. switch to automatic mode");

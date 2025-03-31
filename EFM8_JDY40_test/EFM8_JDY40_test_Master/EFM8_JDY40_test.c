@@ -9,7 +9,7 @@
 #define SYSCLK 72000000
 #define BAUDRATE 115200L
 #define SARCLK 18000000L
-#define SCALE_LED 400
+#define SCALE_LED 450
 #define BASE 184000
 
 #define JDY40_SET_PIN P1_4
@@ -73,7 +73,7 @@ char _c51_external_startup (void)
 		#error SYSCLK must be either 12250000L, 24500000L, 48000000L, or 72000000L
 	#endif
 	
-	P0MDOUT |= 0x11; // Enable UART0 TX (P0.4) and UART1 TX (P0.0) as push-pull outputs
+	P0MDOUT |= 0x1D; // Enable UART0 TX (P0.4) and UART1 TX (P0.0) as push-pull outputs changed from P0MDOUT |= 0x1D
 	// P2MDOUT |= 0x01; // P2.0 in push-pull mode
 	P1MDOUT |= 0x10;  // Set P1.4 as push-pull output
     P1 |= 0x10;       // Start with JDY40 in normal mode (SET high)
@@ -716,8 +716,7 @@ void main (void)
 				printf("Slave says: %s\r\n", buff);
 				LCDprint(buff,2,1);
 				freq_int = atoi(buff); 
-				LED_scale(freq_int); // TEST THIS
-				
+				LED_scale(freq_int); 
 				
 				// debugging if integer
 				// freq_sub = 200000 - freq_int;

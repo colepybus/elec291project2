@@ -496,6 +496,7 @@ void main (void)
 	float norm_y;
 	int mode = 0;
 	int freq = 0;
+	int freq_int; 
 
 	bit button_state;
 	bit button_1_state;
@@ -668,7 +669,8 @@ void main (void)
 			{
 				printf("Slave says: %s\r\n", buff);
 				LCDprint(buff,2,1);
-				LED_scale(atoi(buff)); // TEST THIS 
+				freq_int = atoi(buff); 
+				LED_scale(freq_int); // TEST THIS 
 				
 			}
 			

@@ -832,7 +832,7 @@ void main (void)
 			
 			if(strlen(buff)==6) // Check for valid message size (6 characters)
 			{
-				if (strcmp(buff, "*DONE*") == 0) { 
+				if (strstr(buff, "DONE") == 0) { 
 					play_song();
 				}
 				else {

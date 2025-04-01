@@ -832,10 +832,10 @@ void main (void)
 			
 			if(strlen(buff)==6) // Check for valid message size (6 characters)
 			{
-				if (strstr(buff, "DONE") == 0) { 
+				if (strstr(buff, "DONE")) { 
 					play_song();
 				}
-				else {
+				else if (mode != 5) {
 					printf("Slave says: %s\r\n", buff);
 					LCDprint(buff,2,1);
 					freq_int = atoi(buff); 

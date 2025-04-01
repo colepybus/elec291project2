@@ -713,22 +713,21 @@ int main(void)
 					eputs2(buff);
 
 				}
-
-				else {
-					sprintf(buff, "noData");
-					eputs2(buff);
-				}
 			}
 		}
 	}
 
         // AUTOMATIC MODE
         if (mode == 1) {
-		if (done == 0) {
-			move_forward(100);
-			detectPerimeter(p1_v, p2_v, 3000);
-			detectCoin();
-			waitms(50); // decreased this value from 1000 to 50	
+			if (done == 0) {
+				move_forward(100);
+				detectPerimeter(p1_v, p2_v, 3000);
+				detectCoin();
+				waitms(50); // decreased this value from 1000 to 50	
+			}
+			else if (done == 1) {
+		        eputs2("DONE");  // Send "DONE" to master
+		        waitms(10);      // Short delay to ensure transmission
+		    }
 		}
-	}
 }

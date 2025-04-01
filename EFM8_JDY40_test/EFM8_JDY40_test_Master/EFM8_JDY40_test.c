@@ -584,20 +584,68 @@ void LED_scale(int count) {
 
 void play_song() {
     // Stop current playback
-    TR2 = 0;
+    TR2 = 0; 
     
-    // Define the melody (sequence of notes)
-    unsigned int melody[] =        {G5,  A5,  C6,  A5,  E6,  E6,  D6,  G5,  A5,  C6,  A5,  D6,  D6,  C6,  G5,  A5,  C6,  A5,  C6,  D6,  B5,  A5,  G5,  G5,  D6,  C6};
-    unsigned int noteDurations[] = {100, 100, 100, 100, 300, 300, 600, 100, 100, 100, 100, 300, 300, 600, 100, 100, 100, 100, 300, 300, 300, 100, 600, 200, 400, 400};
+    songSpeakerFrequency(G5);
+    waitms(100); 
+    songSpeakerFrequency(A5);
+    waitms(100); 
+    songSpeakerFrequency(C6);
+    waitms(100); 
+    songSpeakerFrequency(A5);
+    waitms(100); 
+    songSpeakerFrequency(E6);
+    waitms(300); 
+    songSpeakerFrequency(E6);
+    waitms(300);
+    songSpeakerFrequency(D6);
+    waitms(600); 
     
-    for (int i = 0; i < sizeof(melody) / sizeof(melody[0]); i++) {
-        setSpeakerFrequency(melody[i]);  // Play note
-        delay_ms(noteDurations[i]);      // Hold note
-    }
+    songSpeakerFrequency(G5);
+    waitms(100); 
+    songSpeakerFrequency(A5);
+    waitms(100); 
+    songSpeakerFrequency(C6);
+    waitms(100); 
+    songSpeakerFrequency(A5);
+    waitms(100);
+    songSpeakerFrequency(D6);
+    waitms(300); 
+    songSpeakerFrequency(D6);
+    waitms(300); 
+    songSpeakerFrequency(C6);
+    waitms(600); 
     
+    songSpeakerFrequency(G5);
+    waitms(100); 
+    songSpeakerFrequency(A5);
+    waitms(100); 
+    songSpeakerFrequency(C6);
+    waitms(100); 
+    songSpeakerFrequency(A5);
+    waitms(100);
+    songSpeakerFrequency(C6);
+    waitms(300); 
+    songSpeakerFrequency(D6);
+    waitms(300); 
+    songSpeakerFrequency(B5);
+    waitms(300); 
+    songSpeakerFrequency(A5);
+    waitms(100); 
+    songSpeakerFrequency(G5);
+    waitms(500);
+    
+    songSpeakerFrequency(A5);
+    waitms(200); 
+    songSpeakerFrequency(D6);
+    waitms(400); 
+    songSpeakerFrequency(C6);
+    waitms(400); 
+   
     // Stop playback after song
     TR2 = 0;
 }
+
 void main (void)
 {
     int timeout_cnt=0;

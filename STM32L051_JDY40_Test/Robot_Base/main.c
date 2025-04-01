@@ -789,10 +789,10 @@ int main(void)
 				waitms(50); // decreased this value from 1000 to 50	
 			}
 			else if (done == 1) {
-				sprintf(buff, "DONE");
+				sprintf(buff, "*DONE*");
 				eputs2(buff);
 				waitms(5);
 			}
-        	}
+        }
 	}
 }

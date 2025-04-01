@@ -10,7 +10,7 @@
 #define BAUDRATE 115200L
 #define SARCLK 18000000L
 #define SCALE_LED 450
-#define BASE 184000
+#define BASE 183000
 #define DEFAULT_F 15500L
 
 #define JDY40_SET_PIN P1_4
@@ -825,30 +825,28 @@ void main (void)
 		
 		if(RXU1()) // Something has arrived from the slave
 		{
-		//printf("send");
-			//printf ("V@P2.2=%7.5fV, V@P2.3=%7.5fV, V@P2.4=%7.5fV, V@P2.5=%7.5fV, Horizontal:%7.5f, Vertical:%7.5f, ButtonState:%d\r", v[0], v[1], v[2], v[3], norm_x, norm_y, button_state);
-			//waitms(100);
 			getstr1(buff, sizeof(buff)-1);
 			//freq = buff;
 
 			//LCDprint(freq,2,1);
 			
-			if(strlen(buff)==6) // Check for valid message size (5 characters)
+			if(strlen(buff)==6) // Check for valid message size (6 characters)
 			{
-				printf("Slave says: %s\r\n", buff);
-				LCDprint(buff,2,1);
-				freq_int = atoi(buff); 
-				LED_scale(freq_int); 
+				if (strcmp(buff, "*DONE*") == 0) { 
+					play_song();
+				}
+				else {
+					printf("Slave says: %s\r\n", buff);
+					LCDprint(buff,2,1);
+					freq_int = atoi(buff); 
+					LED_scale(freq_int); 
+					
+					// debugging if integer
+					// freq_sub = 200000 - freq_int;
+					// printf("%d", freq_sub);
+					setSpeakerFrequency(freq_int);
+				}
 				
-				// debugging if integer
-				// freq_sub = 200000 - freq_int;
-				// printf("%d", freq_sub);
-				setSpeakerFrequency(freq_int);
-				
-			}
-
-			else if (strcmp(buff, "DONE") == 0) { 
-				play_song();
 			}
 			else
 			{

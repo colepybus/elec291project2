@@ -122,8 +122,11 @@ void setSpeakerFrequency(unsigned int input_val)
 {
     unsigned long int f;
     int freq_out;
-    
-    if (input_val == 0) TR2 = 0; 
+
+	if (input_val == 0) {
+		TR2 = 0;
+		return;
+	}
 
 	freq_out = (input_val / 2) - 90000;
 	printf("freq_out: %d", freq_out);
@@ -717,7 +720,8 @@ void main (void)
 
 	
 	
-	LCDprint("Frequency", 1,1);
+	//LCDprint("Frequency", 1,8);
+
 	
 	while(1)
 	{
@@ -744,19 +748,20 @@ void main (void)
 		   button_2_state = (P3 & (1 << 1)) ? 0 : 1; 
 
 		   if (button_1_state == 1) {
-			   printf("button 1 pressed. switch to automatic mode");
+			   //printf("button 1 pressed. switch to automatic mode");
 			   mode = 5;
-			   actual_mode = 1;
-			   
+			   actual_mode = 1; // automatic
+			   TR2 = 0;  // turn off speaker 
+			   LCDprint("Automatic", 2, 1);
+
 		   }
 
 		   else if (button_2_state == 1) {
-			   printf("button 2 pressed. switch to manual mode");
+			   //printf("button 2 pressed. switch to manual mode");
 			   mode = 6;
+			   play_song(); 
 		   }
 		   
-		   
-
 		   else if(button_state == 1){
 		   
 		   waitms(500);
@@ -764,38 +769,34 @@ void main (void)
 			   if(button_state ==1){
 			   
 			   	printf("joystick button is pressed. pick coin");
-			   		mode = 7;
+			   	mode = 7;
+			   	LCDprint("Picking coin", 2, 1);
 			   }
 		   }
-
-		   // else if (norm_x <= 1.5 && norm_x > 0.5)
-		   // if (sqrt(norm_x^2 + norm_y^2) > 0.5) {
-		   // 	if (norm_y/sqrt(norm_x^2 + norm_y^2) >= 1/sqrt(2)) mode = 2;  // forward
-		   // 	if (norm_x/sqrt(norm_x^2 + norm_y^2) > 1/sqrt(2)) mode = 1;   // right 
-		   // 	if (norm_y/sqrt(norm_x^2 + norm_y^2) <= -1/sqrt(2)) mode = 4; // backward
-		   // 	if (norm_x/sqrt(norm_x^2 + norm_y^2) < -1/sqrt(2)) mode = 3;  // left
-		   // 	else mode = 0; 
-		   // }
 
 		   // test with diagonal joystick control 
 		   else if (norm_x <= 1.5 && norm_x > 0.5) //right
 		   {
 			   mode = 4;
+			   LCDprint("Moving Right", 2, 1);
 		   }
 
 		   else if (norm_x <-0.5 && norm_x>= -1.5) //left
 		   {
 			   mode = 3;
+			   LCDprint("Moving Left", 2, 1);
 		   }
 		   
 		   else if (norm_y <= 1.5 && norm_y > 0.5) // forward
 		   {
 			   mode = 1;
+			   LCDprint("Moving Front", 2, 1);
 		   }
 
 		   else if (norm_y <-0.5 && norm_y>= -1.5) //backwards
 		   {
 			   mode = 2;
+			   LCDprint("Moving Back", 2, 1);
 		   }
 		   else
 		   {
@@ -803,16 +804,8 @@ void main (void)
 		   } 
 
 		   sprintf(buff, "test= %01d\n", mode);
-	 	   // sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);
-   		   // sprintf(buff," %7.5f, %7.5f mode = %d\n", norm_x, norm_y, mode);
-		   // printf("master sending: %s\n", buff); // see if there's an @
 		   sendstr1(buff);
 
-
-
-		//if(++cont1>200) cont1=0; // Increment test counters for next message
-		//if(++cont2>200) cont2=0;
-		
 		waitms(5); // This may need adjustment depending on how busy is the slave
 		
 		putchar1('@'); // Request a message from the slave
@@ -841,20 +834,21 @@ void main (void)
 					play_song();
 				}
 				else if (actual_mode == 0) {
+					//LCDprint("Freq", 1,1);
+					char displayF[20];
+					sprintf(displayF, "Freq=%s", buff);
+					LCDprint(displayF, 1, 1);
+					
 				    printf("Slave says: %s\r\n", buff);
-				    LCDprint(buff,2,1);
+				    //LCDprint(buff,1,10);
 				    freq_int = atoi(buff); 
 				    LED_scale(freq_int); 
 				    
-				    // Only set speaker frequency if NOT in automatic mode
-				    if (mode != 5) { 
-				        setSpeakerFrequency(freq_int);
-				    } 
-				    else {
-				        setSpeakerFrequency(0); // Ensure speaker is off in automatic mode
-				    }
-				}  
-			
+				   	setSpeakerFrequency(freq_int);
+				}
+				else {
+				 	P2_1 = 0; 
+				}  	
 			}
 			else
 			{
@@ -866,12 +860,5 @@ void main (void)
 		{
 			printf("NO RESPONSE\r\n", buff);
 		}
-		
-		//waitms(50);  // Set the information interchange pace: communicate about every 50ms
-		//LCDprint("Frequency", 1,1);
-		//waitms(10);
-		
-		//LED_scale(freq_int); 
-		//setSpeakerFrequency(freq_int); 
 	}
 }

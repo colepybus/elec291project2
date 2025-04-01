@@ -122,6 +122,8 @@ void setSpeakerFrequency(unsigned int input_val)
 {
     unsigned long int f;
     int freq_out;
+    
+    if (input_val == 0) TR2 = 0; 
 
 	freq_out = (input_val / 2) - 90000;
 	printf("freq_out: %d", freq_out);
@@ -801,8 +803,8 @@ void main (void)
 		   } 
 
 		   sprintf(buff, "test= %01d\n", mode);
-	   //	sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);
-   //	sprintf(buff," %7.5f, %7.5f mode = %d\n", norm_x, norm_y, mode);
+	 	   // sprintf(buff, "test x= %7.5f y= %7.5f\n mode = %d", norm_x, norm_y, mode);
+   		   // sprintf(buff," %7.5f, %7.5f mode = %d\n", norm_x, norm_y, mode);
 		   // printf("master sending: %s\n", buff); // see if there's an @
 		   sendstr1(buff);
 
@@ -839,17 +841,20 @@ void main (void)
 					play_song();
 				}
 				else if (actual_mode == 0) {
-					printf("Slave says: %s\r\n", buff);
-					LCDprint(buff,2,1);
-					freq_int = atoi(buff); 
-					LED_scale(freq_int); 
-					
-					// debugging if integer
-					// freq_sub = 200000 - freq_int;
-					// printf("%d", freq_sub);
-					setSpeakerFrequency(freq_int);
-				}
-				
+				    printf("Slave says: %s\r\n", buff);
+				    LCDprint(buff,2,1);
+				    freq_int = atoi(buff); 
+				    LED_scale(freq_int); 
+				    
+				    // Only set speaker frequency if NOT in automatic mode
+				    if (mode != 5) { 
+				        setSpeakerFrequency(freq_int);
+				    } 
+				    else {
+				        setSpeakerFrequency(0); // Ensure speaker is off in automatic mode
+				    }
+				}  
+			
 			}
 			else
 			{
@@ -866,7 +871,7 @@ void main (void)
 		//LCDprint("Frequency", 1,1);
 		//waitms(10);
 		
-		LED_scale(freq_int); 
-		setSpeakerFrequency(freq_int); 
+		//LED_scale(freq_int); 
+		//setSpeakerFrequency(freq_int); 
 	}
 }

@@ -573,6 +573,31 @@ void LED_scale(int count) {
     }
 }
 
+// END SONG BONUS FUNCTION -----------------------------------------------------------------------------------------------------------------------------------------------
+
+#define G5 784
+#define A5 880
+#define B5 988
+#define C6 1047
+#define D6 1175
+#define E6 1316
+
+void play_song() {
+    // Stop current playback
+    TR2 = 0;
+    
+    // Define the melody (sequence of notes)
+    unsigned int melody[] =        {G5,  A5,  C6,  A5,  E6,  E6,  D6,  G5,  A5,  C6,  A5,  D6,  D6,  C6,  G5,  A5,  C6,  A5,  C6,  D6,  B5,  A5,  G5,  G5,  D6,  C6};
+    unsigned int noteDurations[] = {100, 100, 100, 100, 300, 300, 600, 100, 100, 100, 100, 300, 300, 600, 100, 100, 100, 100, 300, 300, 300, 100, 600, 200, 400, 400};
+    
+    for (int i = 0; i < sizeof(melody) / sizeof(melody[0]); i++) {
+        setSpeakerFrequency(melody[i]);  // Play note
+        delay_ms(noteDurations[i]);      // Hold note
+    }
+    
+    // Stop playback after song
+    TR2 = 0;
+}
 void main (void)
 {
     int timeout_cnt=0;
@@ -803,14 +828,12 @@ void main (void)
 				LCDprint(buff,2,1);
 				freq_int = atoi(buff); 
 				LED_scale(freq_int); 
-				
-				// debugging if integer
-				// freq_sub = 200000 - freq_int;
-				// printf("%d", freq_sub);
 				setSpeakerFrequency(freq_int);
 				
 			}
-			
+			else if (strcmp(buff, "DONE") == 0) {
+				play_song(); 
+			}
 			else
 			{
 				printf("*** BAD MESSAGE ***: %s\r\n", buff);

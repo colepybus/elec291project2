@@ -5,6 +5,33 @@
 #include "UART2.h"
 #include "../Common/Include/serial.h"
 #include "adc.h"
+//#include <math.h>
+//#include "manual_functions.h"
+//#include "auto_functions.h"
+//#include "motor_control.h"
+
+//THIS IS THE FULL FUNCTIONING STM32 CODE EVERYTHING MUST BE ADDED TO
+
+// LQFP32 pinout
+//                 ----------
+//           VDD -|1       32|- VSS
+//          PC14 -|2       31|- BOOT0
+//          PC15 -|3       30|- PB7 
+//          NRST -|4       29|- PB6 
+//          VDDA -|5       28|- PB5 
+//    out2   PA0 -|6       27|- PB4 
+//    out3   PA1 -|7       26|- PB3 (OUT 1)
+//    out4   PA2 -|8       25|- PA15
+//    out5   PA3 -|9       24|- PA14 
+//           PA4 -|10      23|- PA13
+//           PA5 -|11      22|- PA12 (pwm2) - servo 2 (BASE: yellow -> green (mC))
+//           PA6 -|12      21|- PA11 (pwm1) - servo 1 (ARM: green -> yellow (mC))
+//(jdy push) PA7 -|13      20|- PA10 (Reserved for RXD)
+// (ADC_IN8) PB0 -|14      19|- PA9  (Reserved for TXD)
+// (ADC_IN9) PB1 -|15      18|- PA8  (Measure the period at this pin)
+//           VSS -|16      17|- VDD
+//                 ----------
+
 
 //This is our main file for the robot base, it is responsible for the following:
 // 1. Receive signal from EFM8 using the JDY40 module
@@ -13,15 +40,28 @@
 // AUTOMATIC MODE: Set algorithm for robot to follow, operate wheels and arm based off algorithm and coin detection
 // (detect coin --> execute arm thing --> turn 180 --> keep going)
 
+// JDY40 NECESSARY INFORMATION TO BE RECEIEVED: 
+// Operating mode (0,1,2), Joystick (float x_norm, float y_norm, bit press), leapmotion eventually 
+
+// STILL NEED: JDY40 stuff, 
+
+// leapmotion possible bonus, arm 3d operation with joysticks, play song and dance after challenge complete, take in path data and optimize with ML
+
+//sets the cpu frequency to 32MHz, and makes DEF_F a 10us tick
+
+//#define F_CPU 32000000L
+//#define DEF_F 100000L // 10us tick
+
+// sets a pwm counter and timer pwms to 100 initially
+
 volatile int PWM_Counter_Servo = 0;
 volatile unsigned char servo_pwm1=100, servo_pwm2=100;
 
 #define F_CPU 32000000L     // Set CPU frequency to 32MHz
 #define DEF_F 100000L       // 10us tick for timer
 #define PWM_MAX 100
-#define LOWER_ANGLE 120     // lower limit for random angle turn
+#define LOWER_ANGLE 120            // lower limit for random angle turn
 #define METAL_THRESHOLD 100 // count changes by atleast 100 from baseline count when coin is near
-#define SCALE_LED 485	    // maximum reading above base frequency divded by 7 
 
 volatile int PWM_Counter_Motor = 0;
 volatile unsigned char motor_pwm1 = 0, motor_pwm2 = 0;
@@ -31,7 +71,13 @@ volatile int use_servo = 0; // flag to indicate if servo needs to be used
 
 int done = 0; // flag to indicate if all coins picked up - yo check the type of this variable its supposed to be
 
+// to know whether in automatic or manual mode
+
 volatile int mode = 0; // 0 = manual mode. 1 = automatic mode
+
+// functions that makes it wait 1 ms
+
+
 
 void wait_1ms(void)
 {
@@ -145,7 +191,15 @@ void Hardware_Init(void)
 	// Make pins PB3 to PB7 outputs (page 200 of RM0451, two bits used to configure: bit0=1, bit1=0)
      GPIOB->MODER = (GPIOB->MODER & ~(BIT6|BIT7)) | BIT6;    // PB3
 	 GPIOB->OTYPER &= ~BIT3; // Push-pull
-	
+    // GPIOB->MODER = (GPIOB->MODER & ~(BIT8|BIT9)) | BIT8;    // PB4
+	// GPIOB->OTYPER &= ~BIT4; // Push-pull
+    // GPIOB->MODER = (GPIOB->MODER & ~(BIT10|BIT11)) | BIT10; // PB5
+	// GPIOB->OTYPER &= ~BIT5; // Push-pull
+    // GPIOB->MODER = (GPIOB->MODER & ~(BIT12|BIT13)) | BIT12; // PB6
+	// GPIOB->OTYPER &= ~BIT6; // Push-pull
+    // GPIOB->MODER = (GPIOB->MODER & ~(BIT14|BIT15)) | BIT14;  // PB7
+	// GPIOB->OTYPER &= ~BIT7; // Push-pull
+
 	// MOTOR PIN CONFIGURATIONS
 	
 	// Configure all motor control pins (PA0 - PA3) as outputs
@@ -192,7 +246,7 @@ uint32_t GetTick(void) {
 }
 
 
-// FUNCTIONS FOR JDY40 ---------------------------------------------------------------------------------------------------------------------------------------------------------
+// FUNCTIONS FOR JDY40 ----------------------------------------------------------------
 void SendATCommand (char * s)
 {
 	char buff[40];
@@ -219,7 +273,7 @@ void ReceptionOff (void)
 // A define to easily read PA8 (PA8 must be configured as input first)
 #define PA8 (GPIOA->IDR & BIT8)
 
-// FUNCTIONS FOR MOTOR CONTROL ----------------------------------------------------------------------------------------------------------------------------------------------------------
+// FUNCTIONS FOR MOTOR CONTROL ----------------------------------------------------------------
 void move_backward(int speed) {
     // Set direction pins for backward movement
     GPIOA->ODR &= ~(BIT1 | BIT3); // Set PA1 & PA3 LOW
@@ -288,7 +342,7 @@ void turn_random() {
     move_forward(PWM_MAX);
 }
 
-// GET PERIOD FUNCTION ------------------------------------------------------------------------------------------------------------------------------------------------
+// GET PERIOD FUNCTION ------------------------------------------------------------------------------------
 long long int GetPeriod(int n)
 {
 	int i;
@@ -397,7 +451,7 @@ void PrintNumber(long int val, int Base, int digits)
 // A define to easily read PA14 (PA14 must be configured as input first)
 #define PA14 (GPIOA->IDR & BIT14)
 
-// TOGGLE MAGNET ------------------------------------------------------------------------------------------------------------------------------------------------------------
+// TOGGLE MAGNET -------------------------------------------------------------------------------------------
 void toggleMagnet(uint8_t state) {
 	if (state) {
 		PB3_1;
@@ -406,14 +460,15 @@ void toggleMagnet(uint8_t state) {
 	}
 }
 
-// PICK COIN MOVEMENT ---------------------------------------------------------------------------------------------------------------------------------------------------------
+// PICK COIN MOVEMENT -------------------------------------------------------------------------------------------
 void pickCoin() {
 	use_servo = 1;
 
-	servo_pwm1=75; servo_pwm2=75; // starts default (1 - 75) (2 - 240)
+	servo_pwm1=75; servo_pwm2=75;// starts default (1 - 75) (2 - 240)
 	waitms(500);
 
 	// ROTATE OUT
+	//ISR_pwm2=82; // move bottom servo - 90 degrees left
 	while (servo_pwm2 < 157) {
 		servo_pwm2++;
 		waitms(10);
@@ -421,6 +476,7 @@ void pickCoin() {
 
 	waitms(500);
 	// MOVE DOWN
+	// ISR_pwm1=240; // move top servo - 180 degrees down
 	while (servo_pwm1 < 240) {
 		servo_pwm1++;
 		waitms(10);
@@ -429,6 +485,7 @@ void pickCoin() {
 	waitms(500);
 
 	//SWEEP FOR COINS
+	//ISR_pwm2=240;// move bottom servo - 90 degrees left
 	toggleMagnet(1);
 	while (servo_pwm2 < 240) {
 		
@@ -436,13 +493,16 @@ void pickCoin() {
 		waitms(10);
 	}
 	waitms(500);
-
+	// MOVE UP
+	//ISR_pwm1=75;// move top servo - 170 degrees up
 	while (servo_pwm1 > 75) {
 		servo_pwm1--;
 		waitms(10);
 	}
 
 	waitms(500);
+	// MOVE OVER BOX
+	//ISR_pwm2=100;// move bottom servo - 120 degrees right
 	
 	while (servo_pwm2 > 100) {
 		servo_pwm2--;
@@ -461,7 +521,7 @@ void pickCoin() {
 
 volatile int perimeter_detected = 0;
 
-// DETECT PERIMETER ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// DETECT PERIMETER -------------------------------------------------------------------------------------------
 //jank shit 4.2
 
 void detectPerimeter(int v1, int v2, int perimeter_threshold) {
@@ -481,56 +541,46 @@ void detectPerimeter(int v1, int v2, int perimeter_threshold) {
 }
 
 
-    
-
-
-    // 	int time_val1 = 0, time_val2 = 0;
-// 	if((v1%10000) > perimeter_threshold) time_val1 = 1;
-// 	if((v2%10000) > perimeter_threshold){ time_val2 = 1;
-// 	waitms(500);
-// 	if((((v1%10000) > perimeter_threshold) && time_val1 == 1) || (((v2%10000) > perimeter_threshold) && time_val2 == 1)) {
-// 		eputs("PERIMETER DETECTED!");
-// 		move_backward(100); 
-// 		waitms(10); 
-// 		turn_random();
-// 	}}
-
-// 	else {
-// 		eputs("NO PERIMETER DETECTED!");
-// 	}
-
-
-//ORIGINAL
-// waitms(50); // can change;
-// if ((v1%10000) > perimeter_threshold || (v2%10000) > perimeter_threshold) { // checks if the 4 digits after decimal of v1 and v2 > perimeter threshold (100 = 0.1V)
-//     eputs("PERIMETER DETECTED!");
-//     move_backward(100); 
-//     waitms(10); 
-//     turn_random();
-// }
-
-// else {
-//     eputs("NO PERIMETER DETECTED!");
-// }
-
-
-
-
-
 float get_frequency() { // get frequency of signal on PA8
 	long long int count;
 	float f; 
 
 	count=GetPeriod(100); // count reading
+	// eputs("count=");
+	// PrintNumber(count, 10, 6);
+    // eputs("\r\n");
+	
 
 	f=(float)(F_CPU*100.0) / (float)count; // convert to frequency
+
+	// eputs("freq=");
+	// PrintNumber(f, 10, 7);
+	// eputs(" Hz \r\n");
+	// eputs("count=\r\n");
+	// PrintNumber(count, 10, 6);
+	// eputs("          \r");
+
 	return f;
 }
 
+// DANCE BONUS  -------------------------------------------------------------------------------------------
+void move_dance(void){
+    turn_CW(100);
+    waitms(4000);
+    turn_CCW(100);
+    waitms(4000);
+    move_right(100);
+    waitms(3000);
+    move_left(100);
+    waitms(3000);
+    move_right(100);
+    waitms(3000);
+    move_left(100);
+    waitms(3000);
+    move_stop();
+}
 
-
-
-// METAL DETECTOR TO DETECT COIN  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// METAL DETECTOR TO DETECT COIN  -------------------------------------------------------------------------------------------
 void detectCoin() {
 	long long int count;
 	float f;
@@ -554,10 +604,9 @@ void detectCoin() {
     {
         eputs("coin detected!\r\n");
         move_backward(100);
-		waitms(40); // decreased from 100
+		waitms(200); // decreased from 100
 		move_stop();
-		waitms(1000);
-
+        waitms(1000);
         pickCoin();
 		eputs("got coin!");
 		eputs("coin count:");
@@ -571,19 +620,23 @@ void detectCoin() {
     }
 
 	// change to 20
-	if (coin_count == 20) {
+	if (coin_count == 2) {
 		eputs("20 COINS PICKED UP!!!! HOORAY!!! WE ARE DONE!!!");
 		done = 1;
 		move_stop();
+		waitms(100);
+		move_dance();
 		// play song and dance
 
 	}
 }
 
-// MAIN --------------------------------------------------------- -------------------------------------------------------------------------------------------
 int main(void)
 {
     int j, v;
+
+	// unsigned char LED_toggle=0; // Used to test the outputs
+
 	int p1_v, p2_v; // perimeter sensor ADC values read by MC
 
 	// jdy variables
@@ -594,6 +647,9 @@ int main(void)
     int cont1=0, cont2=100;
 
 	int freq_to_send=0;
+
+
+
 
 	Hardware_Init();
 	initUART2(9600);
@@ -631,8 +687,7 @@ int main(void)
 
 		 j=readADC(ADC_CHSELR_CHSEL9);
 		 p2_v=(j*33000)/0xfff;
-
-		//stm recieving of data
+		
 		if(ReceivedBytes2()>0) // Something has arrived 
 		{
 			c=egetc2();
@@ -674,21 +729,21 @@ int main(void)
 					}
 
 					else if (mode == 0 && strstr(buff, "3")) {
-						printf("turning right (3)\r\n");
-						move_right(100);
-						waitms(5);
-					}
-
-					else if (mode == 0 && strstr(buff, "4")) {
-						printf("turning left (4)\r\n");
+						printf("turning left (3)\r\n");
 						move_left(100);
 						waitms(5);
 					}
 
+					else if (mode == 0 && strstr(buff, "4")) {
+						printf("turning right (4)\r\n");
+						move_right(100);
+						waitms(5);
+					}
+					
 					else
 					{
 						move_stop();
-						printf("stopping robot\r\n");
+						printf("stopping robot\r\n");	
 		 			}
 					
 		 		}
@@ -713,12 +768,20 @@ int main(void)
 					eputs2(buff);
 
 				}
-			}
-		}
-	}
 
+				else {
+					sprintf(buff, "noData");
+					eputs2(buff);
+				}
+			}
+	}
+	
+	
+	
+	
         // AUTOMATIC MODE
         if (mode == 1) {
+
 			if (done == 0) {
 				move_forward(100);
 				detectPerimeter(p1_v, p2_v, 3000);
@@ -726,8 +789,10 @@ int main(void)
 				waitms(50); // decreased this value from 1000 to 50	
 			}
 			else if (done == 1) {
-		        eputs2("DONE");  // Send "DONE" to master
-		        waitms(10);      // Short delay to ensure transmission
-		    }
-		}
+				sprintf(buff, "DONE");
+				eputs2(buff);
+				waitms(5);
+			}
+        	}
+	}
 }

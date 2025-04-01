@@ -25,6 +25,7 @@
 #define CHARS_PER_LINE 16	
 
 idata char buff[20];
+int actual_mode = 0;
 
 char _c51_external_startup (void)
 {
@@ -743,6 +744,8 @@ void main (void)
 		   if (button_1_state == 1) {
 			   printf("button 1 pressed. switch to automatic mode");
 			   mode = 5;
+			   actual_mode = 1;
+			   
 		   }
 
 		   else if (button_2_state == 1) {
@@ -835,7 +838,7 @@ void main (void)
 				if (strstr(buff, "DONE")) { 
 					play_song();
 				}
-				else if (mode != 5) {
+				else if (actual_mode == 0) {
 					printf("Slave says: %s\r\n", buff);
 					LCDprint(buff,2,1);
 					freq_int = atoi(buff); 
@@ -862,7 +865,8 @@ void main (void)
 		//waitms(50);  // Set the information interchange pace: communicate about every 50ms
 		//LCDprint("Frequency", 1,1);
 		//waitms(10);
+		
+		LED_scale(freq_int); 
+		setSpeakerFrequency(freq_int); 
 	}
-	
-	
 }

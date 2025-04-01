@@ -10,7 +10,7 @@
 #define BAUDRATE 115200L
 #define SARCLK 18000000L
 #define SCALE_LED 450
-#define BASE 183000
+#define BASE 184000
 #define DEFAULT_F 15500L
 
 #define JDY40_SET_PIN P1_4
@@ -106,7 +106,7 @@ char _c51_external_startup (void)
 	TR2=1;         // Start Timer2 (TMR2CN is bit addressable)
 
 	//sketchy
-	EA = 1;
+	EA = 1
 
 	return 0;
 }
@@ -478,7 +478,7 @@ void InitPushButton(void)
 // Input parameters: 
 // base_count - base level deteciong intensity 
 // count - present detection intensity 
-/*
+
 void LED_scale(int count) {
     // 1 light on
     if (abs(BASE - count) < SCALE_LED) {
@@ -522,36 +522,33 @@ void LED_scale(int count) {
         P0_3 = 1;
         P0_4 = 1;
     }
-} */
+}
 
+/*
 void LED_scale(int count) {
     // 1 light on
     if (abs(BASE - count) < SCALE_LED) {
         P0_2 = 0;
         P0_3 = 0;
         P0_4 = 1;
-      	printf("1 led, ");
     }
     // 2 lights on
     else if (abs(BASE - count) < 2*SCALE_LED) {
         P0_2 = 0;
         P0_3 = 1;
         P0_4 = 0;
-        printf("2 led");
     }
     // 3 lights on 
     else if (abs(BASE - count) < 3*SCALE_LED) {
         P0_2 = 0;
         P0_3 = 1;
         P0_4 = 1;
-        printf("3 led");
     }
     // 4 lights on 
     else if (abs(BASE - count) < 4*SCALE_LED) {
         P0_2 = 1;
         P0_3 = 0;
         P0_4 = 0;
-        printf("4 led");
     }
     // 5 lights on 
     else if (abs(BASE - count) < 5*SCALE_LED) {
@@ -571,9 +568,7 @@ void LED_scale(int count) {
         P0_3 = 1;
         P0_4 = 1;
     }
-}
-
-// END SONG BONUS FUNCTION -----------------------------------------------------------------------------------------------------------------------------------------------
+} */
 
 #define G5 784
 #define A5 880
@@ -581,6 +576,18 @@ void LED_scale(int count) {
 #define C6 1047
 #define D6 1175
 #define E6 1316
+
+void songSpeakerFrequency(unsigned int input_val)
+{
+    unsigned long int f;
+
+    // 3. Stop Timer2, load new reload, and restart
+    TR2 = 0;  // Stop Timer2
+    TMR2RL = 0x10000L - (SYSCLK / (2L * input_val));
+    TR2 = 1;        // Start Timer2
+	f=SYSCLK/(2L*(0x10000L-TMR2RL));
+	printf("\nActual frequency: %lu\n", f);
+}
 
 void play_song() {
     // Stop current playback
@@ -635,6 +642,7 @@ void play_song() {
     songSpeakerFrequency(G5);
     waitms(500);
     
+    
     songSpeakerFrequency(A5);
     waitms(200); 
     songSpeakerFrequency(D6);
@@ -662,9 +670,6 @@ void main (void)
 	bit button_1_state;
 	bit button_2_state;
 	
-	char uart0_buffer[32];
-	int uart0_index = 0;
-
 	LCD_4BIT();
 	
 	waitms(500);
@@ -734,48 +739,6 @@ void main (void)
 		   
 		   button_1_state = (P3 & (1 << 0)) ? 0 : 1; // If HIGH, button not pressed; If LOW, button pressed
 		   button_2_state = (P3 & (1 << 1)) ? 0 : 1; 
-
-		// ================================================
-        // NEW: Handle UART0 (Leap Motion) data
-        // ================================================
-        
-		if (RI0) { // Check if UART0 has data
-            char c = SBUF0; // Read the byte
-            RI0 = 0; // Clear flag
-
-            if (uart0_index < sizeof(uart0_buffer) - 1) {
-                uart0_buffer[uart0_index++] = c;
-
-                // Check for newline (end of message)
-                if (c == '\n') {
-                    uart0_buffer[uart0_index] = '\0'; // Terminate string
-                    uart0_index = 0;
-
-                    // Parse "!X.XX" format (e.g., "!0.75\n")
-                    char *pinchStart = strchr(uart0_buffer, '!');
-                    if (pinchStart != NULL) {
-                        pinchVal = atof(pinchStart + 1); // Convert to float
-
-                        // Format as "X.XX"
-                        sprintf(pinchStr, "%.2f", pinchVal);
-
-                        // Position cursor at row 2, column 9
-                        WriteCommand(0xC0 + 9); // 0xC0 = row 2 start
-                        waitms(1);
-
-                        // Write the 4 characters (e.g., "0.75")
-                        for (int i = 0; i < 4; i++) {
-                            WriteData(pinchStr[i]);
-                        }
-                    }
-                }
-            } else {
-                uart0_index = 0; // Reset on overflow
-            }
-        }
-
-		// END OF NEW
-
 
 		   if (button_1_state == 1) {
 			   printf("button 1 pressed. switch to automatic mode");
@@ -876,11 +839,16 @@ void main (void)
 				LCDprint(buff,2,1);
 				freq_int = atoi(buff); 
 				LED_scale(freq_int); 
+				
+				// debugging if integer
+				// freq_sub = 200000 - freq_int;
+				// printf("%d", freq_sub);
 				setSpeakerFrequency(freq_int);
 				
 			}
-			else if (strcmp(buff, "DONE") == 0) {
-				play_song(); 
+
+			else if (strcmp(buff, "DONE") == 0) { 
+				play_song();
 			}
 			else
 			{

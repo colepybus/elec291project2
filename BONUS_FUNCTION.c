@@ -35,8 +35,7 @@ void play_song() {
     unsigned int melody[] =        {G5,  A5,  C6,  A5,  E6,  E6,  D6,  G5,  A5,  C6,  A5,  D6,  D6,  C6,  G5,  A5,  C6,  A5,  C6,  D6,  B5,  A5,  G5,  G5,  D6,  C6};
     unsigned int noteDurations[] = {100, 100, 100, 100, 300, 300, 600, 100, 100, 100, 100, 300, 300, 600, 100, 100, 100, 100, 300, 300, 300, 100, 600, 200, 400, 400};
     
-    int i;
-    for (i = 0; i < sizeof(melody) / sizeof(melody[0]); i++) {
+    for (int i = 0; i < sizeof(melody) / sizeof(melody[0]); i++) {
         setSpeakerFrequency(melody[i]);  // Play note
         delay_ms(noteDurations[i]);      // Hold note
     }

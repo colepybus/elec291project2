@@ -106,7 +106,7 @@ char _c51_external_startup (void)
 	TR2=1;         // Start Timer2 (TMR2CN is bit addressable)
 
 	//sketchy
-	EA = 1
+	EA = 1;
 
 	return 0;
 }

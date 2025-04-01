@@ -592,7 +592,7 @@ void play_song() {
     
     for (int i = 0; i < sizeof(melody) / sizeof(melody[0]); i++) {
         setSpeakerFrequency(melody[i]);  // Play note
-        delay_ms(noteDurations[i]);      // Hold note
+        waitms(noteDurations[i]);      // Hold note
     }
     
     // Stop playback after song
@@ -656,16 +656,15 @@ void main (void)
 	InitPinADC(2, 3); // Configure P2.3 as analog input
 	InitPinADC(2, 4); // Configure P2.4 as analog input
 	InitPinADC(2, 5); // Configure P2.5 as analog input
-    InitADC();
+    	InitADC();
 	InitPushButton();
-
-	
-	
 	LCDprint("Frequency", 1,1);
 	
 	while(1)
 	{
-		
+		play_song(); 
+		waitms(100); 
+		/*
 		//sprintf(buff, "%03d,%03d\n", cont1, cont2); // Construct a test message
 		putchar1('!'); // Send a message to the slave. First send the 'attention' character which is '!'
 		// Wait a bit so the slave has a chance to get ready
@@ -847,7 +846,7 @@ void main (void)
 		
 		//waitms(50);  // Set the information interchange pace: communicate about every 50ms
 		//LCDprint("Frequency", 1,1);
-		//waitms(10);
+		//waitms(10);*/
 	}
 	
 	
